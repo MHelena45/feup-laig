@@ -2,18 +2,18 @@
  * MyCylinder
  * @constructor
  * @param scene - Reference to MyScene object
- * @param radius_base - radius of the base
- * @param radius_top - radius of the top
- * @param height - cylinder height
- * @param slices - number of divisions in rotation
- * @param stacks - number of divisions in height
+ * @param base - radius of the base (Z=0)
+ * @param top - radius of the top (Z = height)
+ * @param height - size in the direction of the positive Z axis
+ * @param slices - number of divisions around the circumference
+ * @param stacks - number of divisions along the Z direction
  *
  */
 class MyCylinder extends CGFobject {
-	constructor(scene, id, radius_base, radius_top, height, slices, stacks) {
+	constructor(scene, id, base, top, height, slices, stacks) {
 		super(scene);
-		this.radius_base = radius_base;
-		this.radius_top = radius_top;
+		this.base = base;
+		this.top = top;
 		this.height = height;
 		this.slices = slices;
 		this.stacks = stacks;
@@ -22,7 +22,7 @@ class MyCylinder extends CGFobject {
 	}
 	
 	initBuffers() {
-	/*	this.vertices = [];
+		this.vertices = [];
         this.indices = [];
         this.normals = [];
         this.texCoords = [];
@@ -59,7 +59,7 @@ class MyCylinder extends CGFobject {
         this.slices = 3 + Math.round(9 * complexity); //complexity varies 0-1, so slices varies 3-12
         // reinitialize buffers
         this.initBuffers();
-        this.initNormalVizBuffers();*/
+        this.initNormalVizBuffers();
     }
 }
 

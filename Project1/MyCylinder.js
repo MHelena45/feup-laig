@@ -26,41 +26,46 @@ class MyCylinder extends CGFobject {
         this.indices = [];
         this.normals = [];
         this.texCoords = [];
+    
+        var tx = 0;
+        var ty = 0;
+        var tz = 0; 
+        var lengthx = 1 / this.slices;
+        var lengthy = 1 / this.stacks;
+        var lengthz = this.height/ this.stacks;
+              
+        var ang = (2 * Math.PI) / this.slices;        
+        var deltaRadius = (this.top - this.base) / this.stacks;
+        var delta = (deltaRadius * i) + this.base; 
 
-        var ang = 0;
-        var alphaAng = 2*Math.PI/this.slices;
-
-        // ---- for a single texture
-        for(var i = 0; i < this.slices+1; i++) {
-            // 2 vertices per slice (up and down)
-            this.vertices.push(Math.cos(ang), 0, -Math.sin(ang));
-            this.vertices.push(Math.cos(ang), 1, -Math.sin(ang));
-
-            // 2 triangles make a square
-            this.indices.push((2*i+3)%(2*(this.slices+1)), (2*i+1)% (2*(this.slices+1)),2*i );
-            this.indices.push( (2*i+2)%(2*(this.slices+1)),(2*i+3)% (2*(this.slices+1)) ,2*i);
-
-            // both normals are the same
-            this.normals.push(Math.cos(ang), 0, -Math.sin(ang));
-            this.normals.push(Math.cos(ang), 0, -Math.sin(ang));
-
-            // texCoords
-            // ---- for when we want to repeat a texture per slice - only works for even slice cylinders
-            //this.texCoords.push(i%2, i%2, i%2, Math.abs(i-1)%2);
-            this.texCoords.push(i/this.slices, 1, i/this.slices, 0);
-            ang+=alphaAng;
+        for (var i = 0; i <= this.stacks; i++) {
+            delta = (deltaRadius * i) + this.base;
+            for (var j = 0; j < this.slices; j++) {
+                this.vertices.push(delta * Math.cos(ang * j), delta * Math.sin(ang * j), tz);
+                this.normals.push(delta * Math.cos(ang * j), delta * Math.sin(ang * j), tz);
+                this.texCoords.push(tx, ty);
+                tx += lengthx;
+            }
+            tx = 0;
+            ty += lengthy;
+            tz += lengthz;
+        }
+    
+        for (var i = 0; i < this.stacks; i++) {
+            for (var j = 0; j < this.slices - 1; j++) {
+                this.indices.push(i * this.slices + j, i * this.slices + j + 1, (i + 1) * this.slices + j);
+                this.indices.push(i * this.slices + j + 1, (i + 1) * this.slices + j + 1, (i + 1) * this.slices + j);
+            }
+    
+            this.indices.push(i * this.slices + this.slices - 1, i * this.slices, (i + 1) * this.slices + this.slices - 1);
+            this.indices.push(i * this.slices, i * this.slices + this.slices, (i + 1) * this.slices + this.slices - 1);
         }
         
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
     
-    updateBuffers(complexity){
-        this.slices = 3 + Math.round(9 * complexity); //complexity varies 0-1, so slices varies 3-12
-        // reinitialize buffers
-        this.initBuffers();
-        this.initNormalVizBuffers();
-    }
+
 }
 
 

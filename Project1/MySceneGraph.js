@@ -600,9 +600,9 @@ class MySceneGraph {
                 if (!(loops != null && !isNaN(loops)) && (loops > 0))
                     return "unable to parse loops of the primitive coordinates for ID = " + primitiveId;
             
-                var sphere = new MyTorus(this.scene, primitiveId, innerRadius, outerRadius, slices,loops);
+                var torus = new MyTorus(this.scene, primitiveId, innerRadius, outerRadius, slices,loops);
 
-                this.primitives[primitiveId] = sphere;
+                this.primitives[primitiveId] = torus;
             }
             else {
                 console.warn("To do: Parse other primitives.");

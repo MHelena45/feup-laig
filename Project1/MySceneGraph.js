@@ -600,7 +600,7 @@ class MySceneGraph {
                 if (!(loops != null && !isNaN(loops)) && (loops > 0))
                     return "unable to parse loops of the primitive coordinates for ID = " + primitiveId;
             
-                var torus = new MyTorus(this.scene, primitiveId, innerRadius, outerRadius, slices,loops);
+                var torus = new MyTorus(this.scene, primitiveId, innerRadius, outerRadius, slices, loops);
 
                 this.primitives[primitiveId] = torus;
             }
@@ -786,7 +786,10 @@ class MySceneGraph {
 
         //To test the parsing/creation of the primitives, call the display function directly
         //this.primitives['demoRectangle'].display();
-        this.primitives['demoSphere'].enableNormalViz();        
-        this.primitives['demoSphere'].display();
+        //this.primitives['demoSphere'].enableNormalViz();        
+        //this.primitives['demoSphere'].display();
+
+        this.primitives['demoTorus'].enableNormalViz();        
+        this.primitives['demoTorus'].display();
     }
 }

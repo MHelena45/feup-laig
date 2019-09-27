@@ -32,7 +32,7 @@ class MyCylinder extends CGFobject {
         var tz = 0; 
         var lengthx = 1 / this.slices;
         var lengthy = 1 / this.stacks;
-        var lengthz = 1 / this.stacks;
+        var lengthz = this.height/ this.stacks;
               
         var ang = (2 * Math.PI) / this.slices;        
         var deltaRadius = (this.top - this.base) / this.stacks;

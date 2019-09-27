@@ -842,9 +842,12 @@ class MySceneGraph {
 
         //To test the parsing/creation of the primitives, call the display function directly
         this.primitives['cylinder'].display();
+        this.primitives['cylinder'].enableNormalViz();
 
+        //this.primitives["triangle"].display();
+       // this.primitives["triangle"].enableNormalViz();
 
-        //this.primitives['demoRectangle'].display();
+        this.primitives['demoRectangle'].display();
        // this.primitives['demoSphere'].enableNormalViz();        
        // this.primitives['demoSphere'].display();
     }

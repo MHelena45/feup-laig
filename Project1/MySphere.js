@@ -31,12 +31,12 @@ class MySphere extends CGFobject {
         var theta = (Math.PI / 2) / this.stacks;
         var fi = (2 * Math.PI) / this.slices;
 
-        for(var i = 0; i <= this.stacks; i++) {
+        for(var i = -this.stacks; i <= this.stacks; i++) {
             for(var j = 0; j <= this.slices; j++) {
                 this.vertices.push(
-                    Math.cos(i * theta) * Math.cos(j * fi),
-                    Math.cos(i * theta) * Math.sin(j * fi),
-                    Math.sin(i * theta)
+                    this.radius * Math.cos(i * theta) * Math.cos(j * fi),
+                    this.radius * Math.cos(i * theta) * Math.sin(j * fi),
+                    this.radius * Math.sin(i * theta)
                 );
 
                 this.normals.push(
@@ -45,6 +45,7 @@ class MySphere extends CGFobject {
                     Math.sin(i * theta)
                 );
 
+                // Not yet tested
                 this.texCoords.push(
                     i * 1 / this.slices,
                     j * 1 / this.stacks
@@ -52,7 +53,7 @@ class MySphere extends CGFobject {
             }
         }
 
-        for(var i = 0; i < this.stacks; i++) {
+        for(var i = 0; i < this.stacks * 2; i++) {
             for(var j = 0; j < this.slices; j++) {
                 this.indices.push(
                     i * (this.slices + 1) + j,

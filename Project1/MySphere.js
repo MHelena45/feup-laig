@@ -17,8 +17,6 @@ class MySphere extends CGFobject {
         this.slices = slices;
         this.stacks = stacks;
 
-        console.log(this.slices);
-
 		this.initBuffers();
 	}
 	

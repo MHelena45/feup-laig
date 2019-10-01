@@ -36,6 +36,7 @@ class XMLscene extends CGFscene {
         this.setUpdatePeriod(100);
 
         this.sphere = new MySphere(this, 1, 1, 10, 10);
+        
     }
 
     /**

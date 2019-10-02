@@ -869,8 +869,8 @@ class MySceneGraph {
         //this.primitives['cylinder'].enableNormalViz();
         //this.primitives['cylinder'].display();
 
-        this.primitives['triangle'].enableNormalViz();
-        this.primitives['triangle'].display();
+        //this.primitives['triangle'].enableNormalViz();
+       // this.primitives['triangle'].display();
         
         //this.primitives['demoTorus'].enableNormalViz();
         //this.primitives['demoTorus'].display();
@@ -880,5 +880,7 @@ class MySceneGraph {
 
         //this.primitives['demoRectangle'].enableNormalViz();
         //this.primitives['demoRectangle'].display();
+
+        
     }
 }

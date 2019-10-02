@@ -79,5 +79,67 @@
                 <primitiveref id="demoRectangle" />
             </children>
         </component>
+        <component id="Star">
+            <transformation>
+                <translate x="6" y="5" z="24" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture"/>
+            <children>
+                <componentref id="halfStarabove" />
+                <componentref id="halfStardown" />
+            </children>
+        </component>
+        <component id="halfStardown">
+            <transformation>
+                <rotate x="0" y="180" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture"/>
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+        <component id="halfStarabove">
+            <transformation>
+                <translate x="0" y="0" z="o" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture"/>
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+        <component id="sun">
+        <transformation>
+                <scale x="4" y="4" z="4" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture"/>
+            <children>
+                <primitiveref id="demoSphere" />
+            </children>
+        </component>
+        <component id="planet">
+            <transformation>
+                <scale x="2" y="2" z="2" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture"/>
+            <children>
+                <primitiveref id="demoSphere" />
+            </children>
+        </component>
+       
     </components>
 </lxs>

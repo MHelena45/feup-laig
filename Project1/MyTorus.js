@@ -26,28 +26,28 @@ class MyTorus extends CGFobject {
         this.normals = [];
         this.texCoords = [];
 
-        var theta = (2 * Math.PI) / this.loops;
-        var fi = (2 * Math.PI) / this.slices;
+        var theta = (2 * Math.PI) / this.slices;
+        var fi = (2 * Math.PI) / this.loops;
 
 
         for(var i = 0; i <= this.slices; i++) {
             for(var j = 0; j <= this.loops; j++) {
                 this.vertices.push(
-                    (this.outerRadius + this.innerRadius * Math.cos(j * theta)) * Math.sin(i * fi),
-                    (this.outerRadius + this.innerRadius * Math.cos(j * theta)) * Math.cos(i * fi),
-                    this.innerRadius * Math.sin(j * theta)
+                    (this.outerRadius + this.innerRadius * Math.cos(i * theta)) * Math.cos(j * fi),
+                    (this.outerRadius + this.innerRadius * Math.cos(i * theta)) * Math.sin(j * fi),
+                    this.innerRadius * Math.sin(i * theta)
                 );
 
                 this.normals.push(
-                    Math.cos(j * theta) * Math.sin(i * fi),
-                    Math.cos(j * theta) * Math.cos(i * fi),
-                    Math.sin(j * theta)
+                    Math.cos(i * theta) * Math.cos(j * fi),
+                    Math.cos(i * theta) * Math.sin(j * fi),
+                    Math.sin(i * theta)
                 );
 
                 // Not yet tested
                 this.texCoords.push(
-                    j * 1 / this.slices,
-                    i * 1 / this.stacks
+                    i * 1 / this.slices,
+                    j * 1 / this.loops
                 );
             }
         }

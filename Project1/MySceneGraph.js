@@ -229,7 +229,7 @@ class MySceneGraph {
     parseView(viewsNode) {
         var children = viewsNode.children;
     
-        this.defaultCamera = this.reader.getString(viewsNode, "default");
+        this.defaultCameraID = this.reader.getString(viewsNode, "default");
 
         this.views = [];
 
@@ -559,7 +559,13 @@ class MySceneGraph {
     parseTextures(texturesNode) {
         var children = texturesNode.children;
 
+        var numTextures = 0; 
+
         this.textures = [];
+
+         // Check if there are any views
+        if (children.length == 0)
+            return "<textures> - you must define at least one texture";
         
         //For each texture in textures block, check ID and file URL
         for (var i = 0; i < children.length; i++) {
@@ -579,12 +585,18 @@ class MySceneGraph {
                 return "ID must be unique for each texture (conflict: ID = " + textureID + ")";
         
             // Get texture file path
-            var textureFile = this.reader.getString(children[i], 'file');
-            if (textureFile == null || textureFile == "")
-                return "no file defined for texture";
+            var textureFileString = this.reader.getString(children[i], 'file');
+            // DOES NOT WORK
+            var textureFile = new File([""], textureFileString);
+            if (textureFile.fileSize == undefined && textureFile.size == undefined)
+                return "no file defined for texture ID" + textureID + " - " + textureFileString + " does not exist";
             
-            this.textures[textureID] = new CGFTexture(this.scene, textureFile);
+            this.textures[textureID] = new CGFtexture(this.scene, textureFileString);
+            numTextures++;
         }
+
+        if (numTextures == 0)
+            return "At least one texture must be defined"
 
         return null;
     }

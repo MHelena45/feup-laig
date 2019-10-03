@@ -936,9 +936,29 @@ class MySceneGraph {
             }
 
             var transformationIndex = nodeNames.indexOf("transformation");
+
+            if (transformationIndex == null )
+                return "no transformation index defined for transformation";
+            else if(transformationIndex < 0)
+                return "negative transformation index defined for transformation";
+            
             var materialsIndex = nodeNames.indexOf("materials");
+            if (materialsIndex == null)
+                return "no materials index defined for materials";
+            else if(materialsIndex < 0 )
+                return "negative materials index defined for materials";
+
             var textureIndex = nodeNames.indexOf("texture");
+            if (textureIndex == null)
+                return "no texture index defined for texture";
+            else if(textureIndex < 0)
+                return "negative texture index defined for texture";
+
             var childrenIndex = nodeNames.indexOf("children");
+            if (childrenIndex == null)
+                return "no children index defined for children";
+            else if(childrenIndex < 0)
+                return "negative children index defined for children";
 
             this.onXMLMinorError("To do: Parse components.");
             // Transformations
@@ -1070,20 +1090,20 @@ class MySceneGraph {
         //To do: Create display loop for transversing the scene graph
 
         //To test the parsing/creation of the primitives, call the display function directly
-        //this.primitives['cylinder'].enableNormalViz();
-        //this.primitives['cylinder'].display();
-
-        //this.primitives['triangle'].enableNormalViz();
+       // this.primitives['cylinder'].enableNormalViz();
+       // this.primitives['cylinder'].display();
+       
+       // this.primitives['triangle'].enableNormalViz();
        // this.primitives['triangle'].display();
         
-        //this.primitives['demoTorus'].enableNormalViz();
-        //this.primitives['demoTorus'].display();
+        //this.primitives['torus'].enableNormalViz();
+        //this.primitives['torus'].display();
 
-        //this.primitives['demoSphere'].enableNormalViz();        
-        //this.primitives['demoSphere'].display();
+        //this.primitives['sphere'].enableNormalViz();        
+        //this.primitives['sphere'].display();
 
-        //this.primitives['demoRectangle'].enableNormalViz();
-        //this.primitives['demoRectangle'].display();
+       // this.primitives['rectangle'].enableNormalViz();
+        //this.primitives['rectangle'].display();
 
         
     }

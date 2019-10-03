@@ -42,7 +42,7 @@ class MyCylinder extends CGFobject {
             delta = (deltaRadius * i) + this.base;
             for (var j = 0; j < this.slices; j++) {
                 this.vertices.push(delta * Math.cos(ang * j), delta * Math.sin(ang * j), tz);
-                this.normals.push(delta * Math.cos(ang * j), delta * Math.sin(ang * j), tz);
+                this.normals.push(Math.cos(j * ang), Math.sin(j * ang), Math.atan((this.base - this.top) / this.height));
                 this.texCoords.push(tx, ty);
                 tx += lengthx;
             }

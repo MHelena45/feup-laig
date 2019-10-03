@@ -14,9 +14,15 @@
     </globals>
 
     <lights>
-        <omni id="demoLight" enabled="1">
+        <omni id="firstLight" enabled="1">
             <location x="9.8" y="11.9" z="10" w="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </omni>
+        <omni id="secondLight" enabled="0">
+            <location x="-8.2" y="-15.9" z="12" w="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </omni>
@@ -28,10 +34,18 @@
         <texture id="earthTexture" file="scenes/images/earth.jpg" />
         <texture id="moonTexture" file="scenes/images/moon.jpg" />
         <texture id="planetTexture" file="scenes/images/planet.jpg" />
+        <texture id="telescopeTexture" file="scenes/images/telescope.jpg" />
+        <texture id="boardTexture" file="scenes/images/board.jpg" />
     </textures>
 
     <materials>
-        <material id="demoMaterial" shininess="10">
+        <material id="backgroundMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="boardMaterial" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
@@ -66,7 +80,7 @@
     </transformations>
 
     <primitives>
-        <primitive id="demoRectangle">
+        <primitive id="rectangle">
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive>
 
@@ -75,14 +89,14 @@
         </primitive>
         
         <primitive id="cylinder">
-            <cylinder base="0.5" top="0.5" height="1" slices="8" stacks="8" />
+            <cylinder base="1" top="1" height="5" slices="8" stacks="8" />
         </primitive>
 
-        <primitive id="demoSphere">
+        <primitive id="sphere">
             <sphere radius="2" slices="10" stacks="10" />
         </primitive>
 
-        <primitive id="demoTorus">
+        <primitive id="torus">
             <torus innerRadius="1" outerRadius="3" slices="10" loops="10" />
         </primitive>
     </primitives>
@@ -93,7 +107,7 @@
                 <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="backgroundMaterial" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -107,11 +121,11 @@
                 <scale x="2" y="1" z="1" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="boardMaterial" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="boardTexture"/>
             <children>
-                <primitiveref id="demoRectangle" />
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
@@ -120,9 +134,9 @@
                 <translate x="6" y="5" z="24" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="sunMaterial" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="sunTexture"/>
             <children>
                 <componentref id="halfStarabove" />
                 <componentref id="halfStardown" />
@@ -130,12 +144,12 @@
         </component>
         <component id="halfStardown">
             <transformation>
-                <rotate x="0" y="180" z="0" />
+                <rotate x="0" y="0" z="180" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="inherit" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle" />
             </children>
@@ -145,28 +159,28 @@
                 <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="inherit" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle" />
             </children>
         </component>
         <component id="sun">
         <transformation>
-                <scale x="4" y="4" z="4" />
+                <scale x="4" y="2" z="4" />
             </transformation>
             <materials>
                 <material id="sunMaterial" />
             </materials>
             <texture id="sunTexture"/>
             <children>
-                <primitiveref id="demoSphere" />
+                <primitiveref id="sphere" />
             </children>
         </component>
         <component id="mercury">
             <transformation>
-                <translate x="6" y="6" z="6" />
+                <translate x="6" y="2" z="6" />
             </transformation>
             <materials>
                 <material id="planetMaterial" />
@@ -178,12 +192,36 @@
         </component>
         <component id="mercury">
             <transformation>
-                <translate x="12" y="12" z="-12" />
+                <translate x="12" y="2" z="-12" />
             </transformation>
             <materials>
                 <material id="planetMaterial" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="planetTexture"/>
+            <children>
+                <componentref id="planet" />
+            </children>
+        </component>
+        <component id="venus">
+            <transformation>
+                <translate x="17" y="2" z="-17" />
+            </transformation>
+            <materials>
+                <material id="planetMaterial" />
+            </materials>
+            <texture id="planetTexture"/>
+            <children>
+                <componentref id="planet" />
+            </children>
+        </component>
+        <component id="earth">
+            <transformation>
+                <translate x="-20" y="2" z="-17" />
+            </transformation>
+            <materials>
+                <material id="planetMaterial" />
+            </materials>
+            <texture id="planetTexture"/>
             <children>
                 <componentref id="planet" />
             </children>
@@ -193,11 +231,11 @@
                 <scale x="2" y="2" z="2" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="planetMaterial" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="planetTexture"/>
             <children>
-                <primitiveref id="demoSphere" />
+                <primitiveref id="sphere" />
             </children>
         </component>
         

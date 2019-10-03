@@ -24,6 +24,10 @@
 
     <textures>
         <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+        <texture id="sunTexture" file="scenes/images/sun.jpg" />
+        <texture id="earthTexture" file="scenes/images/earth.jpg" />
+        <texture id="moonTexture" file="scenes/images/moon.jpg" />
+        <texture id="planetTexture" file="scenes/images/planet.jpg" />
     </textures>
 
     <materials>
@@ -32,6 +36,24 @@
             <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
             <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="sunMaterial" shininess="10">
+            <emission r="1.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="1.0" g="0.5" b="0.5" a="1.0" />
+            <specular r="1.0" g="0.5" b="0.5" a="1.0" />
+        </material>
+        <material id="moonMaterial" shininess="10">
+            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="0.5" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </material>
+        <material id="planetMaterial" shininess="10">
+            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
+            <ambient r="0.7" g="0.7" b="0.7" a="0.7" />
+            <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
         </material>
     </materials>
 
@@ -76,7 +98,7 @@
             <texture id="demoTexture"/>
             <children>
                 <componentref id="board" />
-                <componentref id="Start" />
+                <componentref id="start" />
             </children>
         </component> 
         <component id="board">
@@ -120,7 +142,7 @@
         </component>
         <component id="halfStarabove">
             <transformation>
-                <translate x="0" y="0" z="o" />
+                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
@@ -135,11 +157,35 @@
                 <scale x="4" y="4" z="4" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="sunMaterial" />
+            </materials>
+            <texture id="sunTexture"/>
+            <children>
+                <primitiveref id="demoSphere" />
+            </children>
+        </component>
+        <component id="mercury">
+            <transformation>
+                <translate x="6" y="6" z="6" />
+            </transformation>
+            <materials>
+                <material id="planetMaterial" />
+            </materials>
+            <texture id="planetTexture"/>
+            <children>
+                <componentref id="planet" />
+            </children>
+        </component>
+        <component id="mercury">
+            <transformation>
+                <translate x="12" y="12" z="-12" />
+            </transformation>
+            <materials>
+                <material id="planetMaterial" />
             </materials>
             <texture id="demoTexture"/>
             <children>
-                <primitiveref id="demoSphere" />
+                <componentref id="planet" />
             </children>
         </component>
         <component id="planet">
@@ -154,6 +200,7 @@
                 <primitiveref id="demoSphere" />
             </children>
         </component>
+        
        
     </components>
 </lxs>

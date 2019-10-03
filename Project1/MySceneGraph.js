@@ -308,11 +308,91 @@ class MySceneGraph {
             }
             // ortho
             else if (children[i].nodeName == "ortho") {
+                // near
+                var near = this.reader.getFloat(children[i], 'near');
+                if (!(near != null && !isNaN(near)))
+                    return "unable to parse 'near' of view ID = " + viewId;
+                
+                // far
+                var far = this.reader.getFloat(children[i], 'far');
+                if (!(far != null && !isNaN(far)))
+                    return "unable to parse 'far' of view ID = " + viewId;
 
+                // left
+                var left = this.reader.getFloat(children[i], 'left');
+                if (!(left != null && !isNaN(left)))
+                    return "unable to parse 'left' of view ID = " + viewId;
+
+                // right
+                var right = this.reader.getFloat(children[i], 'right');
+                if (!(right != null && !isNaN(right)))
+                    return "unable to parse 'right' of view ID = " + viewId;
+
+                // top
+                var top = this.reader.getFloat(children[i], 'top');
+                if (!(top != null && !isNaN(top)))
+                    return "unable to parse 'top' of view ID = " + viewId;
+
+                // bottom
+                var bottom = this.reader.getFloat(children[i], 'bottom');
+                if (!(bottom != null && !isNaN(bottom)))
+                    return "unable to parse 'bottom' of view ID = " + viewId;
+
+                var grandChildren = children[i].children;
+                var x, y, z;
+                // from
+                var from = grandChildren[0];
+                var x = this.reader.getFloat(from, "x");
+                var y = this.reader.getFloat(from, "y");
+                var z = this.reader.getFloat(from, "z");
+
+                if (!(x != null && !isNaN(x)))
+                    return "unable to parse 'x' of 'from' tag from view ID = " + viewId;
+                if (!(y != null && !isNaN(y)))
+                    return "unable to parse 'y' of 'from' tag from view ID = " + viewId;
+                if (!(z != null && !isNaN(z)))
+                    return "unable to parse 'z' of 'from' tag from view ID = " + viewId;
+                
+                var position = vec3.fromValues(x, y, z);
+
+                // to
+                var to = grandChildren[1];
+                var x = this.reader.getFloat(to, "x");
+                var y = this.reader.getFloat(to, "y");
+                var z = this.reader.getFloat(to, "z");
+
+                if (!(x != null && !isNaN(x)))
+                    return "unable to parse 'x' of 'to' tag from view ID = " + viewId;
+                if (!(y != null && !isNaN(y)))
+                    return "unable to parse 'y' of 'to' tag from view ID = " + viewId;
+                if (!(z != null && !isNaN(z)))
+                    return "unable to parse 'z' of 'to' tag from view ID = " + viewId;
+                
+                var target = vec3.fromValues(x, y, z);
+
+                // up
+                var up;
+                if (grandChildren[2] != null) {
+                    var upXML = grandChildren[2];
+                    var x = this.reader.getFloat(upXML, "x");
+                    var y = this.reader.getFloat(upXML, "y");
+                    var z = this.reader.getFloat(upXML, "z");
+    
+                    if (!(x != null && !isNaN(x)))
+                        return "unable to parse 'x' of 'up' tag from view ID = " + viewId;
+                    if (!(y != null && !isNaN(y)))
+                        return "unable to parse 'y' of 'up' tag from view ID = " + viewId;
+                    if (!(z != null && !isNaN(z)))
+                        return "unable to parse 'z' of 'up' tag from view ID = " + viewId;
+                    
+                    up = vec3.fromValues(x, y, z);
+                }
+                else
+                    up = vec3.fromValues(0, 1, 0);
+
+                this.views[viewID] = new CGFcameraOrtho(left, right, bottom, top, near, far, position, target, up);
             }
-
         }
-
         
         this.log("Parsed views");
         return null;

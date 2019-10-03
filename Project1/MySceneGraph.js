@@ -227,8 +227,94 @@ class MySceneGraph {
      * @param {view block element} viewsNode
      */
     parseView(viewsNode) {
-        this.onXMLMinorError("To do: Parse views and create cameras.");
+        var children = viewsNode.children;
+    
+        this.defaultCamera = this.reader.getString(viewsNode, "default");
 
+        this.views = [];
+
+        // Check if there are any views
+        if (children.length == 0)
+            return "<views> - you must define at least one perspective/ortho view";
+        
+        // Any number of views (perspective or ortho)
+        for (var i = 0; i < children.length; i++) {
+
+            // error
+            if (children[i].nodeName != "perspective" && children[i].nodeName != "ortho") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current view
+            var viewID = this.reader.getString(children[i], 'id');
+            if (viewID == null)
+                return "no ID defined for view";
+
+            // Checks for repeated IDs
+            if (this.views[viewID] != null)
+                return "ID must be unique for each view (conflict: ID = " + transformationID + ")";
+
+            // perspective
+            if (children[i].nodeName == "perspective") {
+                // near
+                var near = this.reader.getFloat(children[i], 'near');
+                if (!(near != null && !isNaN(near)))
+                    return "unable to parse 'near' of view ID = " + viewId;
+                
+                // far
+                var far = this.reader.getFloat(children[i], 'far');
+                if (!(far != null && !isNaN(far)))
+                    return "unable to parse 'far' of view ID = " + viewId;
+
+                // angle
+                var angle = this.reader.getFloat(children[i], 'angle');
+                if (!(angle != null && !isNaN(angle)))
+                    return "unable to parse 'angle' of view ID = " + viewId;
+
+                var grandChildren = children[i].children;
+                var x, y, z;
+                // from
+                var from = grandChildren[0];
+                var x = this.reader.getFloat(from, "x");
+                var y = this.reader.getFloat(from, "y");
+                var z = this.reader.getFloat(from, "z");
+
+                if (!(x != null && !isNaN(x)))
+                    return "unable to parse 'x' of 'from' tag from view ID = " + viewId;
+                if (!(y != null && !isNaN(y)))
+                    return "unable to parse 'y' of 'from' tag from view ID = " + viewId;
+                if (!(z != null && !isNaN(z)))
+                    return "unable to parse 'z' of 'from' tag from view ID = " + viewId;
+                
+                var position = vec3.fromValues(x, y, z);
+
+                // to
+                var to = grandChildren[1];
+                var x = this.reader.getFloat(to, "x");
+                var y = this.reader.getFloat(to, "y");
+                var z = this.reader.getFloat(to, "z");
+
+                if (!(x != null && !isNaN(x)))
+                    return "unable to parse 'x' of 'to' tag from view ID = " + viewId;
+                if (!(y != null && !isNaN(y)))
+                    return "unable to parse 'y' of 'to' tag from view ID = " + viewId;
+                if (!(z != null && !isNaN(z)))
+                    return "unable to parse 'z' of 'to' tag from view ID = " + viewId;
+                
+                var target = vec3.fromValues(x, y, z);
+
+                this.views[viewID] = new CGFcamera(DEGREE_TO_RAD * angle, near, far, position, target)
+            }
+            // ortho
+            else if (children[i].nodeName == "ortho") {
+
+            }
+
+        }
+
+        
+        this.log("Parsed views");
         return null;
     }
 
@@ -872,8 +958,8 @@ class MySceneGraph {
         //this.primitives['triangle'].enableNormalViz();
        // this.primitives['triangle'].display();
         
-        this.primitives['demoTorus'].enableNormalViz();
-        this.primitives['demoTorus'].display();
+        //this.primitives['demoTorus'].enableNormalViz();
+        //this.primitives['demoTorus'].display();
 
         //this.primitives['demoSphere'].enableNormalViz();        
         //this.primitives['demoSphere'].display();

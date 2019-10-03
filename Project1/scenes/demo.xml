@@ -68,6 +68,19 @@
     <components>
         <component id="demoRoot">
             <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture"/>
+            <children>
+                <componentref id="board" />
+                <componentref id="Start" />
+            </children>
+        </component> 
+        <component id="board">
+            <transformation>
                 <translate x="0" y="0" z="1" />
                 <scale x="2" y="1" z="1" />
             </transformation>
@@ -79,7 +92,8 @@
                 <primitiveref id="demoRectangle" />
             </children>
         </component>
-        <component id="Star">
+
+        <component id="star">
             <transformation>
                 <translate x="6" y="5" z="24" />
             </transformation>

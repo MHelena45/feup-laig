@@ -612,12 +612,12 @@ class MySceneGraph {
             else if (primitiveType == 'cylinder') {
                 // base
                 var base = this.reader.getFloat(grandChildren[0], 'base');
-                if (!(base != null && !isNaN(base) && base >0))
+                if (!(base != null && !isNaN(base) && base >= 0))
                     return "unable to parse x1 of the primitive coordinates for ID = " + primitiveId;
 
                 // top
                 var top = this.reader.getFloat(grandChildren[0], 'top');
-                if (!(top != null && !isNaN(top) && top > 0))
+                if (!(top != null && !isNaN(top) && top >= 0))
                     return "unable to parse y1 of the primitive coordinates for ID = " + primitiveId;
 
                 // height
@@ -668,7 +668,7 @@ class MySceneGraph {
 
                 // outerRadius
                 var outerRadius = this.reader.getFloat(grandChildren[0], 'outerRadius');
-                if (!(outerRadius != null && !isNaN(outerRadius)) && (outerRadius > 0))
+                if (!(outerRadius != null && !isNaN(outerRadius)) && (outerRadius > 0) && innerRadius < outerRadius)
                     return "unable to parse outerRadius of the primitive coordinates for ID = " + primitiveId;
 
                 // slices

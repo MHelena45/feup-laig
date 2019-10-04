@@ -1090,19 +1090,19 @@ class MySceneGraph {
         //To do: Create display loop for transversing the scene graph
 
         //To test the parsing/creation of the primitives, call the display function directly
-       // this.primitives['cylinder'].enableNormalViz();
-       // this.primitives['cylinder'].display();
+       //this.primitives['cylinder'].enableNormalViz();
+       //this.primitives['cylinder'].display();
        
-       // this.primitives['triangle'].enableNormalViz();
-       // this.primitives['triangle'].display();
+       this.primitives['triangle'].enableNormalViz();
+       this.primitives['triangle'].display();
         
-        //this.primitives['torus'].enableNormalViz();
-        //this.primitives['torus'].display();
+       // this.primitives['torus'].enableNormalViz();
+       // this.primitives['torus'].display();
 
-        //this.primitives['sphere'].enableNormalViz();        
+       // this.primitives['sphere'].enableNormalViz();        
         //this.primitives['sphere'].display();
 
-       // this.primitives['rectangle'].enableNormalViz();
+        //this.primitives['rectangle'].enableNormalViz();
         //this.primitives['rectangle'].display();
 
         

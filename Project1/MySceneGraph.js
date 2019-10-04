@@ -635,7 +635,6 @@ class MySceneGraph {
                 return "unable to parse 'shininess' of the material for ID = " + materialID;
 
             grandChildren = children[i].children;
-            console.log(grandChildren);
 
             for (var j = 0; j < grandChildren.length; j++) {
                 //emission
@@ -1082,8 +1081,9 @@ class MySceneGraph {
                     case 'rotate':
                         // axis
                         var axis = this.reader.getString(children[i], 'axis');
-                        if (!(axis != null && !isNaN(axis)))
-                            return "unable to parse 'axis' component of the transformation for Component with ID = " + component.componentID;
+                        // TODO: This is not a number (Clean later)
+                        //if (!(axis != null && !isNaN(axis)))
+                            //return "unable to parse 'axis' component of the transformation for Component with ID = " + component.componentID;
 
                         // angle
                         var angle = this.reader.getString(children[i], 'angle');
@@ -1145,15 +1145,14 @@ class MySceneGraph {
 
         // SEE IF TEXTURE EXISTS
 
-        // Get i of the current texture.
-        debugger;   
-        var length_s = this.reader.getString(textureNode, 'length_s');
+        // Get s of the current texture.
+        var length_s = this.reader.getFloat(textureNode, 'length_s');
         if (length_s == null) {
             return "no length_s defined for texture ";
         }
 
-        // Get id of the current texture.
-        var length_t = this.reader.getString(textureNode, 'lenght_t');
+        // Get t of the current texture.
+        var length_t = this.reader.getFloat(textureNode, 'length_t');
         if (length_t == null)
             return "no length_t defined for texture";
 
@@ -1179,15 +1178,17 @@ class MySceneGraph {
                 continue;
             }
 
+            // NOT NECESSARY TO DO IF (DELET THIS LATER)
+
             // primitiveref
             if (grandChildren[i].nodeName == "primitiveref") {
-                var primitiveID = this.reader.getString(grandChildren[i], "primitiveref");
+                var primitiveID = this.reader.getString(grandChildren[i], "id");
                 // TEST IF ID EXISTS
                 componentChildren.push(...[primitiveID]);
             }
             // componentref
             else if (grandChildren[i].nodeName == "componentref") {
-                var componentID = this.reader.getString(grandChildren[i], "componentref");
+                var componentID = this.reader.getString(grandChildren[i], "id");
                 // TEST IF ID EXISTS
                 componentChildren.push(...[componentID]);
             }
@@ -1311,7 +1312,9 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
+        //debugger;
         this.processNode(this.idRoot);
+        
     }
 
     /**
@@ -1321,13 +1324,13 @@ class MySceneGraph {
         // Check if id exists
         var component = this.components[id];
         if (component == null) {
-            this.log("ID DOES NOT EXIST!");
+            //this.log("ID DOES NOT EXIST!");
             return;
         }
 
         // get material
         var materials = component.materialIDs;
-        this.materials[materials[0]].apply();
+        //this.materials[materials[0]].apply();
 
         // get texture
         var texture = component.textureID;
@@ -1339,12 +1342,12 @@ class MySceneGraph {
         this.scene.popMatrix();
 
         // loop children
-        for(var childrenID in component.childrenIDs) {
+        for(var i = 0; i < component.childrenIDs.length; i++) {
             // if primitive
-            if(this.primitives[childrenID] != null)
-                this.primitives[childrenID].display();
+            if(this.primitives[component.childrenIDs[i]] != null)
+                this.primitives[component.childrenIDs[i]].display();
             else
-                this.processNode(childrenID);
+                this.processNode(component.childrenIDs[i]);
         }
     }
 }

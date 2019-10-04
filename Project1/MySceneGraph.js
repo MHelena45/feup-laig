@@ -951,7 +951,6 @@ class MySceneGraph {
         this.components = [];
 
         var grandChildren = [];
-        var grandgrandChildren = [];
         var nodeNames = [];
 
         // Any number of components.
@@ -1003,15 +1002,194 @@ class MySceneGraph {
             else if(childrenIndex < 0)
                 return "negative children index defined for children";
 
-            this.onXMLMinorError("To do: Parse components.");
+            // Create component
+            var component = new component(componentID);
+
             // Transformations
+            var transformationsNode = grandChildren[transformationIndex];
+            error = this.parseComponentTransformation(component, transformationsNode);
+            if(error != null)
+                return error;
 
             // Materials
-
+            var materialsNode = grandChildren[materialsIndex];
+            error = this.parseComponentMaterials(component, materialsNode);
+            if(error != null)
+                return error;
+            
             // Texture
+            var textureNode = grandChildren[textureIndex];
+            error = this.parseComponentTextures(component, textureNode);
+            if(error != null)
+                return error;
 
             // Children
+            var childrrenNode = grandChildren[childrenIndex];
+            error = this.parseComponentChildren(component, childrenNode);
+            if(error != null)
+                return error;
+
+            // Set component
+            this.components[componentID] = component;
         }
+    }
+
+    /**
+     * Parse the transformation of component with ID = componentID
+     * @param {block element} component
+     * @param {block element} transformationsNode
+     */
+    parseComponentTransformation(component, transformationsNode) {
+        var children = transformationsNode.children;
+        var transformationMatrix = mat4.create(); // creates identity matrix
+
+        // Any number of transformations
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "transformationref" && children[i].nodeName != "translate" &&
+            children[i].nodeName != "rotate" && children[i].nodeName != "scale") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // tranformationref
+            if (children[i].nodeName == "transformationref") {
+                var transformationID = this.reader.getString(children[i], "id");
+                transformationMatrix = this.transformations[transformationID];
+
+                if (transformationMatrix == null)
+                    return "No tranformation set with id " + transformationID;
+                else
+                    break;
+            }
+            else {
+                switch (children[j].nodeName) {
+                    case 'translate':
+                        var coordinates = this.parseCoordinates3D(children[j], "translate transformation for Component with ID = " + componentID);
+                        if (!Array.isArray(coordinates))
+                            return coordinates;
+
+                        transformationMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
+                        break;
+                    case 'scale':                        
+                        var coordinates = this.parseCoordinates3D(children[j], "scale transformation for Component with ID = " + componentID);
+                        if (!Array.isArray(coordinates))
+                            return coordinates;
+
+                        transformationMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
+                        break;
+                    case 'rotate':
+                        // axis
+                        var axis = this.reader.getString(children[j], 'axis');
+                        if (!(axis != null && !isNaN(axis)))
+                            return "unable to parse 'axis' component of the transformation for Component with ID = " + componentID;
+
+                        // angle
+                        var angle = this.reader.getString(children[j], 'angle');
+                        if (!(angle != null && !isNaN(angle)))
+                            return "unable to parse 'angle' component of the transformation for Component with ID = " + componentID;
+
+                        transformationMatrix = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, axis);
+                        break;
+                }
+            }
+        }
+        // Set transformation matrix
+        component.transformationMatrix = transformationMatrix;
+    }
+
+    /**
+     * Parse the transformation of component with ID = componentID
+     * @param {block element} component
+     * @param {block element} transformationsNode
+     */
+    parseComponentMaterials(component, materialsNode) {
+        var children = materialsNode.children;
+
+        var materials = [];
+
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "material") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current material.
+            var materialID = this.reader.getString(children[i], 'id');
+            if (materialID == null)
+                return "no ID defined for material";
+
+            materials.push(...[materialID]);
+        }
+        component.materialIDs = materials;
+    }
+
+    /**
+     * Parse the transformation of component with ID = componentID
+     * @param {block element} component
+     * @param {block element} transformationsNode
+     */
+    parseComponentTextures(component, textureNode) {
+
+        if (textureNode.nodeName != "texture") {
+            this.onXMLMinorError("unknown tag <" + textureNode.nodeName + ">");
+            continue;
+        }
+
+        // Get id of the current texture.
+        var textureID = this.reader.getString(textureNode, 'id');
+        if (textureID == null)
+            return "no ID defined for texture";
+
+        // SEE IF TEXTURE EXISTS
+
+        // Get i of the current texture.
+        var length_s = this.reader.getString(textureNode, 'length_s');
+        if (length_s == null)
+            return "no length_s defined for texture";
+
+        // Get id of the current texture.
+        var length_t = this.reader.getString(textureNode, 'lenght_t');
+        if (length_t == null)
+            return "no length_t defined for texture";
+
+        component.textureID = textureID;
+        component.length_s = length_s;
+        component.length_t = length_t;
+    }
+
+    /**
+     * Parse the transformation of component with ID = componentID
+     * @param {block element} component
+     * @param {block element} transformationsNode
+     */
+    parseComponentChildren(component, childrenNode) {
+        var grandChildren = childrenNode.children;
+
+        var componentChildren = [];
+
+        for (var i = 0; i < grandChildren.length; i++) {
+
+            if (grandChildren[i].nodeName != "primitiveref" && grandChildren[i].nodeName != "componentref") {
+                this.onXMLMinorError("unknown tag <" + grandChildren[i].nodeName + ">");
+                continue;
+            }
+
+            // primitiveref
+            if (grandChildren[i].nodeName != "primitiveref") {
+                var primitiveID = this.reader.getString(children[i], "primitiveref");
+                // TEST IF ID EXISTS
+                componentChildren.push(...[primitiveID]);
+            }
+            // componentref
+            else if (grandChildren[i].nodeName != "componentref") {
+                var componentID = this.reader.getString(children[i], "componentref");
+                // TEST IF ID EXISTS
+                componentChildren.push(...[componentID]);
+            }
+        }
+        component.childrenIDs = componentChildren;
     }
 
 

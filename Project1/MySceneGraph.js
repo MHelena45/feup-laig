@@ -1310,6 +1310,7 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
+<<<<<<< HEAD
         this.processNode(this.idRoot);
     }
 
@@ -1323,6 +1324,25 @@ class MySceneGraph {
             this.log("ID DOES NOT EXIST!");
             return;
         }
+=======
+        //To do: Create display loop for transversing the scene graph
+
+        //To test the parsing/creation of the primitives, call the display function directly
+       //this.primitives['cylinder'].enableNormalViz();
+       //this.primitives['cylinder'].display();
+       
+       this.primitives['triangle'].enableNormalViz();
+       this.primitives['triangle'].display();
+        
+       // this.primitives['torus'].enableNormalViz();
+       // this.primitives['torus'].display();
+
+       // this.primitives['sphere'].enableNormalViz();        
+        //this.primitives['sphere'].display();
+
+        //this.primitives['rectangle'].enableNormalViz();
+        //this.primitives['rectangle'].display();
+>>>>>>> 804315da1cb32738cf37e030131c71baa2d938b5
 
         // get material
         var materials = component.materialIDs;

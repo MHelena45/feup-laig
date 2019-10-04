@@ -1313,7 +1313,57 @@ class MySceneGraph {
      */
     displayScene() {
         //debugger;
-        this.processNode(this.idRoot);
+
+       /* 
+       //star draw
+       this.scene.pushMatrix();
+        this.scene.translate(6,5,4);
+        this.primitives['triangle'].display();
+            this.scene.pushMatrix();
+                this.scene.translate(1,0.5,0);
+                this.scene.rotate(Math.PI ,0,0,1);
+                this.primitives['triangle'].display();        
+            this.scene.popMatrix();
+        this.scene.popMatrix();
+
+  
+
+        this.scene.pushMatrix();
+            this.scene.translate(25,50,0);
+            this.scene.scale(100,100,100);
+            this.primitives['rectangle'].display();        
+        this.scene.popMatrix();
+*/
+        this.scene.pushMatrix();
+           // this.scene.translate(-9,0,12);
+          /*  this.scene.pushMatrix();
+                this.scene.translate(0,9,0);
+                this.primitives['cylinder'].display();
+            this.scene.popMatrix();
+*/
+         /*   this.scene.pushMatrix();
+                this.scene.rotate(0.6109 ,0,1,1);
+                this.primitives['cylinder'].display();        
+            this.scene.popMatrix();
+*/
+            this.scene.pushMatrix();
+                this.scene.rotate(-0.6109 ,1,0,0);
+                this.scene.rotate(Math.PI/1.5 ,0,1,0);
+                this.primitives['cylinder'].display();        
+            this.scene.popMatrix();
+/*
+            this.scene.pushMatrix();
+                this.scene.rotate(0.6109 ,1,0,0);
+                this.primitives['cylinder'].display();        
+            this.scene.popMatrix();
+*/
+        this.scene.popMatrix();
+
+
+
+       // this.processNode(this.idRoot);
+
+        
         
     }
 
@@ -1337,6 +1387,7 @@ class MySceneGraph {
 
         // get matrix
         var matrix = component.transformationMatrix;
+        console.log(matrix);
         this.scene.pushMatrix();
         this.scene.multMatrix(matrix);
         this.scene.popMatrix();

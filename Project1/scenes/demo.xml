@@ -343,7 +343,7 @@
 
         <component id="mercuryOrbit">
             <transformation>
-                <transformation x="0" y="50" z="0" />
+                <translate x="0" y="50" z="0" />
                 <scale x="5" y="5" z="5" />
             </transformation>
             <materials>
@@ -385,7 +385,7 @@
 
         <component id="venusOrbit">
             <transformation>
-                <transformation x="0" y="50" z="0" />
+                <translate x="0" y="50" z="0" />
                 <scale x="9" y="9" z="9" />
             </transformation>
             <materials>
@@ -442,7 +442,7 @@
 
         <component id="earthOrbit">
             <transformation>
-                <transformation x="0" y="50" z="0" />
+                <translate x="0" y="50" z="0" />
                 <scale x="15" y="15" z="15" />
             </transformation>
             <materials>
@@ -484,7 +484,7 @@
 
         <component id="marsOrbit">
             <transformation>
-                <transformation x="0" y="50" z="0" />
+                <translate x="0" y="50" z="0" />
                 <scale x="21" y="21" z="21" />
             </transformation>
             <materials>
@@ -527,7 +527,7 @@
 
         <component id="jupiterOrbit">
             <transformation>
-                <transformation x="0" y="50" z="0" />
+                <translate x="0" y="50" z="0" />
                 <scale x="29" y="29" z="29" />
             </transformation>
             <materials>
@@ -569,7 +569,7 @@
 
         <component id="saturnOrbit">
             <transformation>
-                <transformation x="0" y="50" z="0" />
+                <translate x="0" y="50" z="0" />
                 <scale x="35" y="35" z="35" />
             </transformation>
             <materials>
@@ -611,7 +611,7 @@
 
         <component id="uranusOrbit">
             <transformation>
-                <transformation x="0" y="50" z="0" />
+                <translate x="0" y="50" z="0" />
                 <scale x="43" y="43" z="43" />
             </transformation>
             <materials>
@@ -653,7 +653,7 @@
 
         <component id="neptuneOrbit">
             <transformation>
-                <transformation x="0" y="50" z="0" />
+                <translate x="0" y="50" z="0" />
                 <scale x="50" y="50" z="50" />
             </transformation>
             <materials>

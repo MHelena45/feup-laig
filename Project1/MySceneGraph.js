@@ -1093,9 +1093,15 @@ class MySceneGraph {
        //this.primitives['cylinder'].enableNormalViz();
        //this.primitives['cylinder'].display();
        
-       this.primitives['triangle'].enableNormalViz();
        this.primitives['triangle'].display();
-        
+
+       /* this.pushMatrix();
+            this.rotate(Math.PI/2, 0, 1, 0);
+            this.scale(2,2,3);
+            this.primitives['triangle'].display();
+            
+        this.popMatrix();*/
+
        // this.primitives['torus'].enableNormalViz();
        // this.primitives['torus'].display();
 

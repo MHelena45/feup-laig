@@ -1044,6 +1044,7 @@ class MySceneGraph {
         var transformationMatrix = mat4.create(); // creates identity matrix
 
         // Any number of transformations
+        //debugger;
         for (var i = 0; i < children.length; i++) {
 
             if (children[i].nodeName != "transformationref" && children[i].nodeName != "translate" &&
@@ -1055,12 +1056,10 @@ class MySceneGraph {
             // tranformationref
             if (children[i].nodeName == "transformationref") {
                 var transformationID = this.reader.getString(children[i], "id");
-                transformationMatrix = this.transformations[transformationID];
-
+                transformationMatrix = mat4.multiply(transformationMatrix, this.transformations[transformationID], transformationMatrix);
+                //debugger;
                 if (transformationMatrix == null)
                     return "No tranformation set with id " + transformationID;
-                else
-                    break;
             }
             else {
                 switch (children[i].nodeName) {
@@ -1080,17 +1079,24 @@ class MySceneGraph {
                         break;
                     case 'rotate':
                         // axis
+                        var axisVector;
                         var axis = this.reader.getString(children[i], 'axis');
                         // TODO: This is not a number (Clean later)
                         //if (!(axis != null && !isNaN(axis)))
-                            //return "unable to parse 'axis' component of the transformation for Component with ID = " + component.componentID;
-
+                        //return "unable to parse 'axis' component of the transformation for Component with ID = " + component.componentID;
+    
                         // angle
-                        var angle = this.reader.getString(children[i], 'angle');
+                        var angle = this.reader.getFloat(children[i], 'angle');
                         if (!(angle != null && !isNaN(angle)))
                             return "unable to parse 'angle' component of the transformation for Component with ID = " + component.componentID;
+    
+                        if (axis == "x")
+                            transformationMatrix = mat4.rotateX(transformationMatrix, transformationMatrix, DEGREE_TO_RAD * angle);
+                        else if (axis == "y")
+                            transformationMatrix = mat4.rotateY(transformationMatrix, transformationMatrix, DEGREE_TO_RAD * angle);
+                        else if (axis == "z")
+                            transformationMatrix = mat4.rotateZ(transformationMatrix, transformationMatrix, DEGREE_TO_RAD * angle);
 
-                        transformationMatrix = mat4.rotate(transformationMatrix, transformationMatrix, DEGREE_TO_RAD * angle, axis);
                         break;
                 }
             }

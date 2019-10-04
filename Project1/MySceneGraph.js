@@ -634,30 +634,31 @@ class MySceneGraph {
             if (!(shininess != null && !isNaN(shininess)))
                 return "unable to parse 'shininess' of the material for ID = " + materialID;
 
-            grandChildren = this.children[i].children;
+            grandChildren = children[i].children;
+            console.log(grandChildren);
 
             for (var j = 0; j < grandChildren.length; j++) {
                 //emission
-                if (grandChildren[i].nodeName == "emission") {
-                    var color = this.parseColor(grandChildren[i], "'emission' of material for ID = " + materialID);
+                if (grandChildren[j].nodeName == "emission") {
+                    var color = this.parseColor(grandChildren[j], "'emission' of material for ID = " + materialID);
                     if (!Array.isArray(color))
                         return color;
                 }
                 //ambient
-                if (grandChildren[i].nodeName == "ambient") {
-                    var color = this.parseColor(grandChildren[i], "'ambient' of material for ID = " + materialID);
+                if (grandChildren[j].nodeName == "ambient") {
+                    var color = this.parseColor(grandChildren[j], "'ambient' of material for ID = " + materialID);
                     if (!Array.isArray(color))
                         return color;
                 }
                 //diffuse
-                if (grandChildren[i].nodeName == "diffuse") {
-                    var color = this.parseColor(grandChildren[i], "'diffuse' of material for ID = " + materialID);
+                if (grandChildren[j].nodeName == "diffuse") {
+                    var color = this.parseColor(grandChildren[j], "'diffuse' of material for ID = " + materialID);
                     if (!Array.isArray(color))
                         return color;
                 }
                 //specular
-                if (grandChildren[i].nodeName == "specular") {
-                    var color = this.parseColor(grandChildren[i], "'specular' of material for ID = " + materialID);
+                if (grandChildren[j].nodeName == "specular") {
+                    var color = this.parseColor(grandChildren[j], "'specular' of material for ID = " + materialID);
                     if (!Array.isArray(color))
                         return color;
                 }
@@ -720,8 +721,8 @@ class MySceneGraph {
                     case 'rotate':
                         // axis
                         var axis = this.reader.getString(grandChildren[j], 'axis');
-                        if (!(axis != null && !isNaN(axis)))
-                            return "unable to parse 'axis' component of the transformation for ID = " + transformationID;
+                        //if (!(axis != null && !isNaN(axis)))
+                            //return "unable to parse 'axis' component of the transformation for ID = " + transformationID;
 
                         // angle
                         var angle = this.reader.getString(grandChildren[j], 'angle');
@@ -947,7 +948,7 @@ class MySceneGraph {
    */
     parseComponents(componentsNode) {
         var children = componentsNode.children;
-
+        var error;
         this.components = [];
 
         var grandChildren = [];
@@ -1003,7 +1004,7 @@ class MySceneGraph {
                 return "negative children index defined for children";
 
             // Create component
-            var component = new component(componentID);
+            var component = new MyComponent(componentID);
 
             // Transformations
             var transformationsNode = grandChildren[transformationIndex];
@@ -1024,7 +1025,7 @@ class MySceneGraph {
                 return error;
 
             // Children
-            var childrrenNode = grandChildren[childrenIndex];
+            var childrenNode = grandChildren[childrenIndex];
             error = this.parseComponentChildren(component, childrenNode);
             if(error != null)
                 return error;
@@ -1063,33 +1064,33 @@ class MySceneGraph {
                     break;
             }
             else {
-                switch (children[j].nodeName) {
+                switch (children[i].nodeName) {
                     case 'translate':
-                        var coordinates = this.parseCoordinates3D(children[j], "translate transformation for Component with ID = " + componentID);
+                        var coordinates = this.parseCoordinates3D(children[i], "translate transformation for Component with ID = " + component.componentID);
                         if (!Array.isArray(coordinates))
                             return coordinates;
 
-                        transformationMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
+                        transformationMatrix = mat4.translate(transformationMatrix, transformationMatrix, coordinates);
                         break;
                     case 'scale':                        
-                        var coordinates = this.parseCoordinates3D(children[j], "scale transformation for Component with ID = " + componentID);
+                        var coordinates = this.parseCoordinates3D(children[i], "scale transformation for Component with ID = " + component.componentID);
                         if (!Array.isArray(coordinates))
                             return coordinates;
 
-                        transformationMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
+                        transformationMatrix = mat4.scale(transformationMatrix, transformationMatrix, coordinates);
                         break;
                     case 'rotate':
                         // axis
-                        var axis = this.reader.getString(children[j], 'axis');
+                        var axis = this.reader.getString(children[i], 'axis');
                         if (!(axis != null && !isNaN(axis)))
-                            return "unable to parse 'axis' component of the transformation for Component with ID = " + componentID;
+                            return "unable to parse 'axis' component of the transformation for Component with ID = " + component.componentID;
 
                         // angle
-                        var angle = this.reader.getString(children[j], 'angle');
+                        var angle = this.reader.getString(children[i], 'angle');
                         if (!(angle != null && !isNaN(angle)))
-                            return "unable to parse 'angle' component of the transformation for Component with ID = " + componentID;
+                            return "unable to parse 'angle' component of the transformation for Component with ID = " + component.componentID;
 
-                        transformationMatrix = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, axis);
+                        transformationMatrix = mat4.rotate(transformationMatrix, transformationMatrix, DEGREE_TO_RAD * angle, axis);
                         break;
                 }
             }
@@ -1134,7 +1135,7 @@ class MySceneGraph {
 
         if (textureNode.nodeName != "texture") {
             this.onXMLMinorError("unknown tag <" + textureNode.nodeName + ">");
-            continue;
+            return;
         }
 
         // Get id of the current texture.
@@ -1146,8 +1147,9 @@ class MySceneGraph {
 
         // Get i of the current texture.
         var length_s = this.reader.getString(textureNode, 'length_s');
-        if (length_s == null)
-            return "no length_s defined for texture";
+        if (length_s == null) {
+            return "no length_s defined for texture ";
+        }
 
         // Get id of the current texture.
         var length_t = this.reader.getString(textureNode, 'lenght_t');
@@ -1177,14 +1179,14 @@ class MySceneGraph {
             }
 
             // primitiveref
-            if (grandChildren[i].nodeName != "primitiveref") {
-                var primitiveID = this.reader.getString(children[i], "primitiveref");
+            if (grandChildren[i].nodeName == "primitiveref") {
+                var primitiveID = this.reader.getString(grandChildren[i], "primitiveref");
                 // TEST IF ID EXISTS
                 componentChildren.push(...[primitiveID]);
             }
             // componentref
-            else if (grandChildren[i].nodeName != "componentref") {
-                var componentID = this.reader.getString(children[i], "componentref");
+            else if (grandChildren[i].nodeName == "componentref") {
+                var componentID = this.reader.getString(grandChildren[i], "componentref");
                 // TEST IF ID EXISTS
                 componentChildren.push(...[componentID]);
             }
@@ -1308,24 +1310,40 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        //To do: Create display loop for transversing the scene graph
+        this.processNode(this.idRoot);
+    }
 
-        //To test the parsing/creation of the primitives, call the display function directly
-       // this.primitives['cylinder'].enableNormalViz();
-       // this.primitives['cylinder'].display();
-       
-       // this.primitives['triangle'].enableNormalViz();
-       // this.primitives['triangle'].display();
-        
-        //this.primitives['torus'].enableNormalViz();
-        //this.primitives['torus'].display();
+    /**
+     * 
+     */
+    processNode(id) {
+        // Check if id exists
+        var component = this.components[id];
+        if (component == null) {
+            this.log("ID DOES NOT EXIST!");
+            return;
+        }
 
-        //this.primitives['sphere'].enableNormalViz();        
-        //this.primitives['sphere'].display();
+        // get material
+        var materials = component.materialIDs;
+        this.materials[materials[0]].apply();
 
-       // this.primitives['rectangle'].enableNormalViz();
-        //this.primitives['rectangle'].display();
+        // get texture
+        var texture = component.textureID;
 
-        
+        // get matrix
+        var matrix = component.transformationMatrix;
+        this.scene.pushMatrix();
+        this.scene.multMatrix(matrix);
+        this.scene.popMatrix();
+
+        // loop children
+        for(var childrenID in component.childrenIDs) {
+            // if primitive
+            if(this.primitives[childrenID] != null)
+                this.primitives[childrenID].display();
+            else
+                this.processNode(childrenID);
+        }
     }
 }

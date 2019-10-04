@@ -8,8 +8,8 @@ class MyComponent {
         this.transformationMatrix;
         this.materialIDs = [];
         this.textureID;
-        this.lenght_s;
-        this.lenght_t;
+        this.lenght_s = 1;
+        this.lenght_t = 1;
         this.childrenIDs = [];
 	}
 }

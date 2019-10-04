@@ -909,13 +909,13 @@ class MySceneGraph {
             }
             else if (primitiveType == 'torus') {
                 // innerRadius
-                var innerRadius = this.reader.getFloat(grandChildren[0], 'innerRadius');
-                if (!(innerRadius != null && !isNaN(innerRadius)) && (innerRadius > 0))
+                var inner = this.reader.getFloat(grandChildren[0], 'inner');
+                if (!(inner != null && !isNaN(inner)) && (inner > 0))
                     return "unable to parse innerRadius of the primitive coordinates for ID = " + primitiveId;
 
                 // outerRadius
-                var outerRadius = this.reader.getFloat(grandChildren[0], 'outerRadius');
-                if (!(outerRadius != null && !isNaN(outerRadius)) && (outerRadius > 0) && innerRadius < outerRadius)
+                var outer = this.reader.getFloat(grandChildren[0], 'outer');
+                if (!(outer != null && !isNaN(outer)) && (outer > 0) && inner < outer)
                     return "unable to parse outerRadius of the primitive coordinates for ID = " + primitiveId;
 
                 // slices
@@ -928,7 +928,7 @@ class MySceneGraph {
                 if (!(loops != null && !isNaN(loops)) && (loops > 0))
                     return "unable to parse loops of the primitive coordinates for ID = " + primitiveId;
             
-                var torus = new MyTorus(this.scene, primitiveId, innerRadius, outerRadius, slices, loops);
+                var torus = new MyTorus(this.scene, primitiveId, inner, outer, slices, loops);
 
                 this.primitives[primitiveId] = torus;
             }
@@ -1319,57 +1319,7 @@ class MySceneGraph {
      */
     displayScene() {
         //debugger;
-
-       /* 
-       //star draw
-       this.scene.pushMatrix();
-        this.scene.translate(6,5,4);
-        this.primitives['triangle'].display();
-            this.scene.pushMatrix();
-                this.scene.translate(1,0.5,0);
-                this.scene.rotate(Math.PI ,0,0,1);
-                this.primitives['triangle'].display();        
-            this.scene.popMatrix();
-        this.scene.popMatrix();
-
-  
-
-        this.scene.pushMatrix();
-            this.scene.translate(25,50,0);
-            this.scene.scale(100,100,100);
-            this.primitives['rectangle'].display();        
-        this.scene.popMatrix();
-*/
-        this.scene.pushMatrix();
-           // this.scene.translate(-9,0,12);
-          /*  this.scene.pushMatrix();
-                this.scene.translate(0,9,0);
-                this.primitives['cylinder'].display();
-            this.scene.popMatrix();
-*/
-         /*   this.scene.pushMatrix();
-                this.scene.rotate(0.6109 ,0,1,1);
-                this.primitives['cylinder'].display();        
-            this.scene.popMatrix();
-*/
-            this.scene.pushMatrix();
-                this.scene.rotate(-0.6109 ,1,0,0);
-                this.scene.rotate(Math.PI/1.5 ,0,1,0);
-                this.primitives['cylinder'].display();        
-            this.scene.popMatrix();
-/*
-            this.scene.pushMatrix();
-                this.scene.rotate(0.6109 ,1,0,0);
-                this.primitives['cylinder'].display();        
-            this.scene.popMatrix();
-*/
-        this.scene.popMatrix();
-
-
-
-       // this.processNode(this.idRoot);
-
-        
+       this.processNode(this.idRoot);       
         
     }
 
@@ -1396,8 +1346,6 @@ class MySceneGraph {
         console.log(matrix);
         this.scene.pushMatrix();
         this.scene.multMatrix(matrix);
-        this.scene.popMatrix();
-
         // loop children
         for(var i = 0; i < component.childrenIDs.length; i++) {
             // if primitive
@@ -1406,5 +1354,9 @@ class MySceneGraph {
             else
                 this.processNode(component.childrenIDs[i]);
         }
+        
+        this.scene.popMatrix();
+
+        
     }
 }

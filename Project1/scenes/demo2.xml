@@ -197,8 +197,6 @@
 
             <!-- deve existir pelo menos uma transformacao -->
 
-           
-
             <translate x="ff" y="ff" z="ff" />
 
             <rotate axis="cc" angle="ff" />

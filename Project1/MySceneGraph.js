@@ -630,8 +630,38 @@ class MySceneGraph {
             if (this.materials[materialID] != null)
                 return "ID must be unique for each material (conflict: ID = " + materialID + ")";
 
-            //Continue here
-            this.onXMLMinorError("To do: Parse materials.");
+            var shininess = this.reader.getString(children[i], 'shininess');
+            if (!(shininess != null && !isNaN(shininess)))
+                return "unable to parse 'shininess' of the material for ID = " + materialID;
+
+            grandChildren = this.children[i].children;
+
+            for (var j = 0; j < grandChildren.length; j++) {
+                //emission
+                if (grandChildren[i].nodeName == "emission") {
+                    var color = this.parseColor(grandChildren[i], "'emission' of material for ID = " + materialID);
+                    if (!Array.isArray(color))
+                        return color;
+                }
+                //ambient
+                if (grandChildren[i].nodeName == "ambient") {
+                    var color = this.parseColor(grandChildren[i], "'ambient' of material for ID = " + materialID);
+                    if (!Array.isArray(color))
+                        return color;
+                }
+                //diffuse
+                if (grandChildren[i].nodeName == "diffuse") {
+                    var color = this.parseColor(grandChildren[i], "'diffuse' of material for ID = " + materialID);
+                    if (!Array.isArray(color))
+                        return color;
+                }
+                //specular
+                if (grandChildren[i].nodeName == "specular") {
+                    var color = this.parseColor(grandChildren[i], "'specular' of material for ID = " + materialID);
+                    if (!Array.isArray(color))
+                        return color;
+                }
+            }
         }
 
         this.log("Parsed materials");
@@ -669,7 +699,7 @@ class MySceneGraph {
             grandChildren = children[i].children;
             // Specifications for the current transformation.
 
-            var transfMatrix = mat4.create();
+            var transfMatrix = mat4.create(); // creates identity matrix
 
             for (var j = 0; j < grandChildren.length; j++) {
                 switch (grandChildren[j].nodeName) {
@@ -681,11 +711,24 @@ class MySceneGraph {
                         transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'scale':                        
-                        this.onXMLMinorError("To do: Parse scale transformations.");
+                        var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
+                        if (!Array.isArray(coordinates))
+                            return coordinates;
+
+                        transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'rotate':
+                        // axis
+                        var axis = this.reader.getString(grandChildren[j], 'axis');
+                        if (!(axis != null && !isNaN(axis)))
+                            return "unable to parse 'axis' component of the transformation for ID = " + transformationID;
+
                         // angle
-                        this.onXMLMinorError("To do: Parse rotate transformations.");
+                        var angle = this.reader.getString(grandChildren[j], 'angle');
+                        if (!(angle != null && !isNaN(angle)))
+                            return "unable to parse 'angle' component of the transformation for ID = " + transformationID;
+
+                        transfMatrix = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, axis);
                         break;
                 }
             }

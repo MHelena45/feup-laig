@@ -461,8 +461,8 @@ class MySceneGraph {
                 continue;
             }
             else {
-                attributeNames.push(...["location", "ambient", "diffuse", "specular"]);
-                attributeTypes.push(...["position", "color", "color", "color"]);
+                attributeNames.push(...["location", "ambient", "diffuse", "specular","attenuation"]);
+                attributeTypes.push(...["position", "color", "color", "color", "numbers"]);
             }
 
             // Get id of the current light.
@@ -498,11 +498,59 @@ class MySceneGraph {
                 var attributeIndex = nodeNames.indexOf(attributeNames[j]);
 
                 if (attributeIndex != -1) {
-                    if (attributeTypes[j] == "position")
-                        var aux = this.parseCoordinates4D(grandChildren[attributeIndex], "light position for ID" + lightId);
-                    else
-                        var aux = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID" + lightId);
+                    if (attributeTypes[j] == "position"){                   
+                        var aux = this.parseCoordinates4D(grandChildren[attributeIndex], "light position for ID" + lightId);   
+                        // check if x, y and are not null and numbers
+                        if (aux[0] != null ) {
+                            if (isNaN(aux[0]))
+                                return "one coordinate is a non numeric value on the light block";
+                        }
+                        else
+                            return "unable to parse coordinate of the light position for ID = " + lightId;
+                        
+                    }
+                    else if (attributeTypes[j] == "numbers"){         //check if attribute attenuation is 0 or greater, not null and numbers               
+                        var constant = this.reader.getFloat(grandChildren[attributeIndex], 'constant');
+                        if (constant != null ) {
+                            if (isNaN(constant))
+                                return "constant in attenuation is a non numeric value on the light block for ID = "+ lightId;
+                            else if (constant < 0)
+                                return "constant attenuation is a negative numeric value on the light block for ID = "+ lightId;
+                        }
+                        else
+                            return "unable to parse attenuation constant of the light position for ID = " + lightId;
 
+                        var linear = this.reader.getFloat(grandChildren[attributeIndex], 'linear');
+                        if (linear != null ) {
+                            if (isNaN(linear))
+                                return "linear in attenuation is a non numeric value on the light block for ID = "+ lightId;
+                            else if (linear < 0)
+                                return "linear attenuation is a negative numeric value on the light block for ID = "+ lightId;
+                        }
+                        else
+                            return "unable to parse attenuation linear of the light position for ID = " + lightId;
+                        
+                        var quadratic = this.reader.getFloat(grandChildren[attributeIndex], 'quadratic');
+                        if (quadratic != null ) {
+                            if (isNaN(quadratic))
+                                return "quadratic in attenuation is a non numeric value on the light block for ID = "+ lightId;
+                            else if (quadratic < 0)
+                                return "quadratic attenuation is a negative numeric value on the light block for ID = "+ lightId;
+                        }
+                        else
+                            return "unable to parse attenuation quadratic of the light position for ID = " + lightId;
+                    }                        
+                    else {
+                        var aux = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID" + lightId);
+                        // check if others attributes are not null and numbers
+                        if (aux[0] != null ) {
+                            if (isNaN(aux[0]))
+                                return "attribute is a non numeric value on the light block";
+                        }
+                        else
+                            return "unable to parse attribute of the light position for ID = " + lightId;
+                    }                  
+  
                     if (!Array.isArray(aux))
                         return aux;
 
@@ -511,6 +559,7 @@ class MySceneGraph {
                 else
                     return "light " + attributeNames[i] + " undefined for ID = " + lightId;
             }
+
 
             // Gets the additional attributes of the spot light
             if (children[i].nodeName == "spot") {
@@ -1156,11 +1205,17 @@ class MySceneGraph {
         if (length_s == null) {
             return "no length_s defined for texture ";
         }
+        else if (isNaN(length_s) ) {
+            return "length_s is not a number ";
+        }
 
         // Get t of the current texture.
         var length_t = this.reader.getFloat(textureNode, 'length_t');
         if (length_t == null)
             return "no length_t defined for texture";
+        else if (isNaN(length_t) ) {
+            return "length_s is not a number ";
+        }
 
         component.textureID = textureID;
         component.length_s = length_s;
@@ -1343,7 +1398,6 @@ class MySceneGraph {
 
         // get matrix
         var matrix = component.transformationMatrix;
-        console.log(matrix);
         this.scene.pushMatrix();
         this.scene.multMatrix(matrix);
         // loop children

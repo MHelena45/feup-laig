@@ -137,7 +137,7 @@
         </primitive>
         
         <primitive id="cylinder">
-            <cylinder base="0.4" top="0.2" height="2" slices="8" stacks="8" />
+            <cylinder base="0.4" top="0.2" height="2" slices="15" stacks="15" />
         </primitive>
 
         <primitive id="sphere">
@@ -204,6 +204,35 @@
             <texture id="inherit" length_s="1.0" length_t="1.0"/>
             <children>
                 <primitiveref id="cylinder" />
+                <componentref id="eyeglasssdetail1" />
+                <componentref id="eyeglasssdetail2" />
+            </children>
+        </component>
+
+        <component id="eyeglasssdetail1"> <!-- detail with torus -->
+            <transformation>
+                <scale x="0.4" y="0.4" z="0.4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="torus" />
+            </children>
+        </component>
+
+        <component id="eyeglasssdetail2"> <!-- detail with torus -->
+            <transformation>
+                <translate x="0" y="0" z="2" />
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="torus" />
             </children>
         </component>
 

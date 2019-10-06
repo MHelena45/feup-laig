@@ -500,14 +500,7 @@ class MySceneGraph {
                 if (attributeIndex != -1) {
                     if (attributeTypes[j] == "position"){                   
                         var aux = this.parseCoordinates4D(grandChildren[attributeIndex], "light position for ID" + lightId);   
-                        // check if x, y and are not null and numbers
-                        if (aux[0] != null ) {
-                            if (isNaN(aux[0]))
-                                return "one coordinate is a non numeric value on the light block";
-                        }
-                        else
-                            return "unable to parse coordinate of the light position for ID = " + lightId;
-                        
+                                                
                     }
                     else if (attributeTypes[j] == "numbers"){         //check if attribute attenuation is 0 or greater, not null and numbers               
                         var constant = this.reader.getFloat(grandChildren[attributeIndex], 'constant');
@@ -539,16 +532,11 @@ class MySceneGraph {
                         }
                         else
                             return "unable to parse attenuation quadratic of the light position for ID = " + lightId;
+
+                        global.push(...[constant,linear,quadratic]);
                     }                        
                     else {
                         var aux = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID" + lightId);
-                        // check if others attributes are not null and numbers
-                        if (aux[0] != null ) {
-                            if (isNaN(aux[0]))
-                                return "attribute is a non numeric value on the light block";
-                        }
-                        else
-                            return "unable to parse attribute of the light position for ID = " + lightId;
                     }                  
   
                     if (!Array.isArray(aux))
@@ -635,11 +623,11 @@ class MySceneGraph {
         
             // Get texture file path
             var textureFileString = this.reader.getString(children[i], 'file');
-            // DOES NOT WORK
             var textureFile = new File([""], textureFileString);
+
             if (textureFile.fileSize == undefined && textureFile.size == undefined)
                 return "no file defined for texture ID" + textureID + " - " + textureFileString + " does not exist";
-            
+                        
             this.textures[textureID] = new CGFtexture(this.scene, textureFileString);
             numTextures++;
         }
@@ -749,14 +737,29 @@ class MySceneGraph {
             // Specifications for the current transformation.
 
             var transfMatrix = mat4.create(); // creates identity matrix
-
+            
             for (var j = 0; j < grandChildren.length; j++) {
                 switch (grandChildren[j].nodeName) {
+                    case 'rotate':
+                        // axis
+                        var axis = this.reader.getString(grandChildren[j], 'axis');
+                        if (axis == null)
+                            return "unable to parse 'axis' component of the transformation for ID = " + transformationID;
+                        else if(!(axis == 'x' || axis == "y" || axis == "z"))
+                            return "unable to parse invalid 'axis' component of the transformation for ID = " + transformationID;
+                    
+                        // angle
+                        var angle = this.reader.getString(grandChildren[j], 'angle');
+                        if (!(angle != null && !isNaN(angle)))
+                            return "unable to parse 'angle' component of the transformation for ID = " + transformationID;
+
+                        transfMatrix = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, axis);
+                        break;
                     case 'translate':
                         var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
                         if (!Array.isArray(coordinates))
                             return coordinates;
-
+                       
                         transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'scale':                        
@@ -766,19 +769,7 @@ class MySceneGraph {
 
                         transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
                         break;
-                    case 'rotate':
-                        // axis
-                        var axis = this.reader.getString(grandChildren[j], 'axis');
-                        //if (!(axis != null && !isNaN(axis)))
-                            //return "unable to parse 'axis' component of the transformation for ID = " + transformationID;
-
-                        // angle
-                        var angle = this.reader.getString(grandChildren[j], 'angle');
-                        if (!(angle != null && !isNaN(angle)))
-                            return "unable to parse 'angle' component of the transformation for ID = " + transformationID;
-
-                        transfMatrix = mat4.rotate(transfMatrix, transfMatrix, DEGREE_TO_RAD * angle, axis);
-                        break;
+                    
                 }
             }
             this.transformations[transformationID] = transfMatrix;
@@ -1071,7 +1062,7 @@ class MySceneGraph {
             error = this.parseComponentTextures(component, textureNode);
             if(error != null)
                 return error;
-
+            
             // Children
             var childrenNode = grandChildren[childrenIndex];
             error = this.parseComponentChildren(component, childrenNode);
@@ -1403,8 +1394,9 @@ class MySceneGraph {
         // loop children
         for(var i = 0; i < component.childrenIDs.length; i++) {
             // if primitive
-            if(this.primitives[component.childrenIDs[i]] != null)
+            if(this.primitives[component.childrenIDs[i]] != null){
                 this.primitives[component.childrenIDs[i]].display();
+            }                
             else
                 this.processNode(component.childrenIDs[i]);
         }

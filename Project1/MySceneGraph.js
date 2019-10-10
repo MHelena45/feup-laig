@@ -755,23 +755,22 @@ class MySceneGraph {
             for (var j = 0; j < grandChildren.length; j++) {
                 switch (grandChildren[j].nodeName) {
                     case 'rotate':
-                        var axisVector = this.parseRotation(children[i], "scale transformation for ID = " + transformationID);
+                        var axisVector = this.parseRotation(grandChildren[j], "scale transformation for ID = " + transformationID);
                         if(!Array.isArray(axisVector))
                             return axisVector;
                         
                         if (axisVector[0] == "x")
-                            transformationMatrix = mat4.rotateX(transformationMatrix, transformationMatrix, DEGREE_TO_RAD * axisVector[1]);
+                            transfMatrix = mat4.rotateX(transfMatrix, transfMatrix, DEGREE_TO_RAD * axisVector[1]);
                         else if (axisVector[0] == "y")
-                            transformationMatrix = mat4.rotateY(transformationMatrix, transformationMatrix, DEGREE_TO_RAD * axisVector[1]);
+                            transfMatrix = mat4.rotateY(transfMatrix, transfMatrix, DEGREE_TO_RAD * axisVector[1]);
                         else if (axisVector[0] == "z")
-                            transformationMatrix = mat4.rotateZ(transformationMatrix, transformationMatrix, DEGREE_TO_RAD * axisVector[1]);
+                            transfMatrix = mat4.rotateZ(transfMatrix, transfMatrix, DEGREE_TO_RAD * axisVector[1]);
 
                         break;
                     case 'translate':
                         var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
                         if (!Array.isArray(coordinates))
                             return coordinates;
-
                         transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'scale':
@@ -1294,7 +1293,6 @@ class MySceneGraph {
 
         if (!Array.isArray(position))
             return position;
-
 
         // w
         var w = this.reader.getFloat(node, 'w');

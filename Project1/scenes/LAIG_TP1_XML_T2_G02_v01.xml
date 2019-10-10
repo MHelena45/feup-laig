@@ -1,0 +1,283 @@
+<lxs>
+    <scene root="demoRoot" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="30" y="15" z="30" />
+            <to x="0" y="-2" z="0" />
+        </perspective>
+    </views>
+
+    <ambient>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </ambient>
+
+    <lights>
+        <omni id="demoLight" enabled="1">
+            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+    </textures>
+
+    <materials>
+        <material id="demoMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        </material>
+    </materials>
+
+    <transformations>
+        <transformation id="demoTransform">
+            <scale x="5" y="1" z="5" />
+            <rotate axis="x" angle="-45" />
+            <rotate axis="z" angle="-45" />
+        </transformation>
+    </transformations>
+
+    <primitives>
+        <primitive id="demoRectangle">
+            <rectangle x1="0" y1="0" x2="0.1" y2="0.1" />
+        </primitive>
+        <primitive id="demoSquare">
+            <rectangle x1="0" y1="5" x2="5" y2="8" />
+        </primitive>
+        <primitive id="demoSquare2">
+            <rectangle x1="1" y1="1" x2="2" y2="2" />
+        </primitive>
+        <primitive id="mineSquare">
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+        </primitive>
+    </primitives>
+
+    <components>
+      <component id="demoRoot">
+        <transformation>
+          <scale x="2" y="1" z="1" />
+        </transformation>
+        <materials>
+          <material id="demoMaterial" />
+        </materials>
+        <texture id="demoTexture"/>
+        <children>
+          <primitiveref id="demoRectangle" />
+        </children>
+      </component>
+
+      <component id="Leg1Front">
+        <transformation>
+          <translate x="0" y="0" z="0.5" />
+          <scale x="2" y="1.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="Leg1Top">
+        <transformation>
+          <translate x="0" y="0.6" z="0" />
+          <rotate axis="x" angle="-90" />
+          <scale x="2" y="1" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="Leg1Right">
+        <transformation>
+          <translate x="1" y="0" z="0" />
+          <rotate axis="y" angle="90" />
+          <scale x="1" y="1.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="Leg1Left">
+        <transformation>
+          <translate x="-1" y="0" z="0" />
+          <rotate axis="y" angle="-90" />
+          <scale x="1" y="1.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="Leg1Back">
+        <transformation>
+          <translate x="0" y="0" z="-0.5" />
+          <rotate axis="y" angle="180" />
+          <scale x="2" y="1.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+
+      <component id="Leg2Front">
+        <transformation>
+          <translate x="0" y="0" z="-1.5" />
+          <scale x="2" y="1.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="Leg2Top">
+        <transformation>
+          <translate x="0" y="0.6" z="-2" />
+          <rotate axis="x" angle="-90" />
+          <scale x="2" y="1" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="Leg2Right">
+        <transformation>
+          <translate x="1" y="0" z="-2" />
+          <rotate axis="y" angle="90" />
+          <scale x="1" y="1.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="Leg2Left">
+        <transformation>
+          <translate x="-1" y="0" z="-2" />
+          <rotate axis="y" angle="-90" />
+          <scale x="1" y="1.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="Leg2Back">
+        <transformation>
+          <translate x="0" y="0" z="-2.5" />
+          <rotate axis="y" angle="180" />
+          <scale x="2" y="1.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="TorsoFront">
+        <transformation>
+          <translate x="0" y="2.1" z="-0.5" />
+          <scale x="2" y="3" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="TorsoRight">
+        <transformation>
+          <translate x="1" y="2.1" z="-1" />
+          <rotate axis="y" angle="90" />
+          <scale x="1" y="3" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="TorsoBack">
+        <transformation>
+          <translate x="0" y="2.1" z="-1.5" />
+          <rotate axis="y" angle="180" />
+          <scale x="2" y="3" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="TorsoLeft">
+        <transformation>
+          <translate x="-1" y="2.1" z="-1" />
+          <rotate axis="y" angle="-90" />
+          <scale x="1" y="3" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="HeadFront">
+        <transformation>
+          <translate x="0" y="4.0" z="0" />
+          <scale x="2.2" y="2.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="HeadTop">
+        <transformation>
+          <translate x="0" y="5.1" z="-1.1" />
+          <rotate axis="x" angle="-90" />
+          <scale x="2.2" y="2.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="HeadRight">
+        <transformation>
+          <translate x="1.1" y="4.0" z="-1.1" />
+          <rotate axis="y" angle="90" />
+          <scale x="2.2" y="2.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="HeadBack">
+        <transformation>
+          <translate x="0" y="4.0" z="-2.2" />
+          <rotate axis="y" angle="180" />
+          <scale x="2.2" y="2.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+      <component id="HeadLeft">
+        <transformation>
+          <translate x="-1.1" y="4.0" z="-1.1" />
+          <rotate axis="y" angle="-90" />
+          <scale x="2.2" y="2.2" z="1" />
+        </transformation>
+        <children>
+          <primitiveref id="mineSquare" />
+        </children>
+      </component>
+
+    </components>
+
+</lxs>

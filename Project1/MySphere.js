@@ -38,15 +38,15 @@ class MySphere extends CGFobject {
                 );
 
                 this.normals.push(
-                    Math.cos(i * theta) * Math.cos(j * fi),
-                    Math.cos(i * theta) * Math.sin(j * fi),
-                    Math.sin(i * theta)
+                    Math.cos((i-this.stacks) * theta) * Math.cos(j * fi),
+                    Math.cos((i-this.stacks) * theta) * Math.sin(j * fi),
+                    Math.sin((i-this.stacks) * theta)
                 );
 
                 // Currently being tested
                 this.texCoords.push(
-                    i / this.slices,
-                    j / this.stacks
+                    j / this.slices,
+                    1 - (i / (this.stacks * 2))
                 );
             }
         }

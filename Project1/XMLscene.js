@@ -32,13 +32,18 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
-        //Checkbox element to display Textures
-        //this.gui.add(this, 'displayTex').name('Enable Texture');
+        this.lights2 = true;
+        this.lights3 = true;
 
+   /* this.selectedView = 0;
+        //this.modes = [this.graph.defaultCameraID, this.graph.beheindCameraID, this.graph.upCameraID];
+
+		// Labels and ID's for object selection on MyInterface
+		this.modeIds = { 'Front': 0, 'Beheind': 1, 'Up': 2 };*/
 
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(100);
-        
+        this.setUpdatePeriod(100);     
+             
     }
 
     /**
@@ -52,6 +57,11 @@ class XMLscene extends CGFscene {
         this.camera = this.graph.views[this.graph.defaultCameraID];
         this.interface.setActiveCamera(this.camera);
     }
+
+  /*  updateAppliedMode() {
+		this.camera = this.graph.views[this.graph.beheindCameraID];
+        this.interface.setActiveCamera(this.camera);
+	}*/
 
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -136,10 +146,30 @@ class XMLscene extends CGFscene {
         this.axis.display();
 
         for (var i = 0; i < this.lights.length; i++) {
-            this.lights[i].setVisible(true);
-            this.lights[i].enable();
+            if(i == 2 & this.lights2){
+                this.lights[i].setVisible(true);
+                this.lights[i].enable();
+            }
+            if(i == 2 & !this.lights2){
+                this.lights[i].setVisible(true);
+                this.lights[i].disable();
+            } 
+            if(i == 3 & this.lights3){
+                this.lights[i].setVisible(true);
+                this.lights[i].enable();
+            }
+            if(i == 3 & !this.lights3){
+                this.lights[i].setVisible(true);
+                this.lights[i].disable();
+            } 
+            if( i !=2 && i!=3) {
+                this.lights[i].setVisible(true);
+                this.lights[i].enable();
+            }
+            
         }
 
+        
         if (this.sceneInited) {
             // Draw axis
             this.setDefaultAppearance();

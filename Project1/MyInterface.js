@@ -20,6 +20,14 @@ class MyInterface extends CGFinterface {
 
         this.gui = new dat.GUI();
 
+        //Checkbox element to display Textures
+        this.gui.add(this.scene, 'lights2').name('Light 2');
+        this.gui.add(this.scene, 'lights3').name('Light 3');
+        
+
+        //Dropdown for environment
+      //  this.gui.add(this.scene, 'selectView', this.scene.modeIds).name('Selected View').onChange(this.scene.updateAppliedMode.bind(this.scene));
+
         // add a group of controls (and open/expand by defult)
 
         this.initKeys();

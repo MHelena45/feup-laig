@@ -33,6 +33,7 @@ class MySceneGraph {
         this.axisCoords['x'] = [1, 0, 0];
         this.axisCoords['y'] = [0, 1, 0];
         this.axisCoords['z'] = [0, 0, 1];
+        
 
         // File reading 
         this.reader = new CGFXMLreader();
@@ -249,24 +250,24 @@ class MySceneGraph {
             // Get id of the current view
             var viewID = this.reader.getString(children[i], 'id');
             if (viewID == null)
-                return "no ID defined for view";
+                this.onXMLMinorError("no ID defined for view");
 
             // Checks for repeated IDs
             if (this.views[viewID] != null)
-                return "ID must be unique for each view (conflict: ID = " + transformationID + ")";
+                this.onXMLMinorError("ID must be unique for each view (conflict: ID = " + transformationID + ")");
 
-            // perspective
-            if (children[i].nodeName == "perspective") {
                 // near
                 var near = this.reader.getFloat(children[i], 'near');
                 if (!(near != null && !isNaN(near)))
                     return "unable to parse 'near' of view ID = " + viewId;
-
-                // far
+                
+                 // far
                 var far = this.reader.getFloat(children[i], 'far');
                 if (!(far != null && !isNaN(far)))
                     return "unable to parse 'far' of view ID = " + viewId;
 
+            // perspective
+            if (children[i].nodeName == "perspective") {               
                 // angle
                 var angle = this.reader.getFloat(children[i], 'angle');
                 if (!(angle != null && !isNaN(angle)))
@@ -308,15 +309,6 @@ class MySceneGraph {
             }
             // ortho
             else if (children[i].nodeName == "ortho") {
-                // near
-                var near = this.reader.getFloat(children[i], 'near');
-                if (!(near != null && !isNaN(near)))
-                    return "unable to parse 'near' of view ID = " + viewId;
-
-                // far
-                var far = this.reader.getFloat(children[i], 'far');
-                if (!(far != null && !isNaN(far)))
-                    return "unable to parse 'far' of view ID = " + viewId;
 
                 // left
                 var left = this.reader.getFloat(children[i], 'left');
@@ -377,7 +369,7 @@ class MySceneGraph {
                     var x = this.reader.getFloat(upXML, "x");
                     var y = this.reader.getFloat(upXML, "y");
                     var z = this.reader.getFloat(upXML, "z");
-
+                    console.log(x);
                     if (!(x != null && !isNaN(x)))
                         return "unable to parse 'x' of 'up' tag from view ID = " + viewId;
                     if (!(y != null && !isNaN(y)))
@@ -643,7 +635,9 @@ class MySceneGraph {
             if (textureFile.fileSize == undefined && textureFile.size == undefined)
                 return "no file defined for texture ID" + textureID + " - " + textureFileString + " does not exist";
 
-            this.textures[textureID] = new CGFtexture(this.scene, textureFileString);
+            
+
+            this.textures[textureID] = new CGFtexture(this.scene, textureFileString);                     
             numTextures++;
         }
 
@@ -723,7 +717,7 @@ class MySceneGraph {
                     parsedMaterial.setSpecular(color[0], color[1], color[2], color[3]);
                 }
             }
-
+            
             this.materials[materialID] = parsedMaterial;
         }
 
@@ -1422,11 +1416,11 @@ class MySceneGraph {
             return;
         }
 
-        // get material
+       // get material
         var materials = component.materialIDs;
         var appliedMaterial;
         var childMaterial;
-        /*
+       
         if (materials[clickM % materials.length] == "inherit") {
             childMaterial = parentMaterialID;
             appliedMaterial = this.materials[parentMaterialID];
@@ -1440,13 +1434,14 @@ class MySceneGraph {
 
         // get texture
         var textureID = component.textureID;
-        if (this.textures[textureID] == "inherit")
+
+       if (this.textures[textureID] == "inherit")
             appliedMaterial.setTexture(this.textures[parentTextureID]);
         else if (this.textures[textureID] == "none")
             appliedMaterial.setTexture(null);
         else
             appliedMaterial.setTexture(this.textures[textureID]);
-        */
+        
         // get matrix
         var matrix = component.transformationMatrix;
         this.scene.pushMatrix();
@@ -1465,6 +1460,7 @@ class MySceneGraph {
                     component.length_t);
         }
 
+        
         this.scene.popMatrix();
 
 

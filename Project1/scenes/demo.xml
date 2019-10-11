@@ -2,10 +2,25 @@
     <scene root="myRoot" axis_length="5"/>
 
     <views default="defaultCamera">
-        <perspective id="defaultCamera" near="0.1" far="500" angle="40">
-            <from x="50" y="50" z="50" />
-            <to x="0" y="10" z="0" />
-        </perspective>
+        <!-- view from the center -->
+        <perspective id="defaultCamera" near="0.1" far="100" angle="47">
+            <from x="-5" y="12" z="60" />
+            <to x="0" y="15" z="0" />
+        </perspective> 
+
+        <!-- view from beheind -->
+        <perspective id="beheindCamera" near="0.1" far="100" angle="45">
+            <from x="-5" y="10" z="-60" />
+            <to x="0" y="15" z="0" />
+        </perspective> 
+
+        <!-- view of an upper position -->
+       <ortho id="upCamera" near="0.1" far="100" left="-20" right="20" top="40" bottom="-30" >
+            <from x="10" y="60" z="0" />
+            <to x="0" y="15" z="00" />
+            <up x="0" y="1" z="0" /> 
+        </ortho> 
+        
     </views>
 
     <globals>
@@ -79,7 +94,7 @@
             <emission r="1.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="1.0" g="0.5" b="0.5" a="1.0" />
-            <specular r="1.0" g="0.5" b="0.5" a="1.0" />
+            <specular r="0" g="0" b="0" a="0" />
         </material>
 
         <material id="moonMaterial" shininess="10">
@@ -101,6 +116,13 @@
             <ambient r="0.7" g="0.7" b="0.7" a="0.7" />
             <diffuse r="0.2" g="0.2" b="0.2" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </material>
+
+        <material id="legMaterial" shininess="10">
+            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
+            <ambient r="0" g="0" b="0" a="0" />
+            <diffuse r="0" g="0" b="0" a="0" />
+            <specular r="0" g="0" b="0" a="0" />
         </material>
 
     </materials>
@@ -173,6 +195,7 @@
             <children>
                 <componentref id="shootingStar" /> 
                 <componentref id="star" />
+                 <componentref id="star1" />
                 <componentref id="solarSystem" />
                 <componentref id="telescope" />
             </children>
@@ -264,7 +287,7 @@
         </component>
 
         <component id="leg1">
-            <transformation>
+            <transformation>  
                 <rotate axis="y" angle="90" />    
                 <rotate axis="x" angle="45" />             
             </transformation>
@@ -327,9 +350,9 @@
                 <scale x="0.19" y="0.19" z="0.19"/>
             </transformation>
             <materials>
-                <material id="inherit"/>
+                <material id="legMaterial"/>
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="torus2" />
             </children>
@@ -337,7 +360,21 @@
 
         <component id="star">
             <transformation>
-                <translate x="-20" y="10" z="7.6" />
+                <translate x="20" y="20" z="27.6" />
+            </transformation>
+            <materials>
+                <material id="sunMaterial" />
+            </materials>
+            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <componentref id="halfStarabove" />
+                <componentref id="halfStardown" />
+            </children>
+        </component>
+
+        <component id="star1">
+            <transformation>
+                <translate x="15" y="17" z="25" />
             </transformation>
             <materials>
                 <material id="sunMaterial" />
@@ -645,7 +682,7 @@
 
         <component id="jupiterPlanet">
             <transformation>
-                <translate x="0" y="20" z="9" />
+                <translate x="-7" y="26" z="6.7" />
                 <rotate axis="x" angle="45" />  
                 <scale x="2.3" y="2.3" z="2.3" />
             </transformation>
@@ -683,7 +720,7 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="torus0" />
+                <primitiveref id="torus" />
             </children>
         </component>
 

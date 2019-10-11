@@ -76,11 +76,15 @@ class MyTriangle extends CGFobject {
 
 	/**
 	 * @method updateTexCoords
-	 * Updates the list of texture coordinates of the rectangle
-	 * @param {Array} coords - Array of texture coordinates
+	 * Updates the list of texture coordinates of the triangle
+	 * @param {Array} scaleFactor - Array of texture coordinates
 	 */
-	updateTexCoords(coords) {
-		this.texCoords = [...coords];
+	updateTexCoords(scaleFactor) {		
+		this.texCoords = [			
+			0, 0,
+			this.a/scaleFactor[0], 0,
+			(this.c * this.cosb)/scaleFactor[0] , (this.c* Math.sin(this.ang))/scaleFactor[1]
+		];	
 		this.updateTexCoordsGLBuffers();
 	}
 }

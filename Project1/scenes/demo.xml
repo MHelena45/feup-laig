@@ -145,7 +145,19 @@
         </primitive>
 
         <primitive id="torus">
-            <torus inner="0.02" outer="1" slices="15" loops="15" />
+            <torus inner="0.02" outer="1" slices="17" loops="17" />
+        </primitive>
+
+        <primitive id="torus0">
+            <torus inner="0.01" outer="1" slices="17" loops="17" />
+        </primitive>
+
+        <primitive id="torus1">
+            <torus inner="0.15" outer="1" slices="17" loops="17" />
+        </primitive>
+
+        <primitive id="torus2">
+            <torus inner="0.25" outer="1" slices="17" loops="17" />
         </primitive>
     </primitives>
 
@@ -189,7 +201,6 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="outerEyeglass" />
                 <componentref id="eyeglasssdetail1" />
                 <componentref id="eyeglasssdetail2" />
                 <componentref id="innerEyeglass" />
@@ -209,43 +220,30 @@
             </children>
         </component>
 
-        <component id="outerEyeglass">
-            <transformation>
-                <scale x="2.3" y="2.3" z="2.3" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <primitiveref id="cylinder" />
-            </children>
-        </component>
-
         <component id="eyeglasssdetail1"> <!-- detail with torus -->
             <transformation>
-                <scale x="0.88" y="0.88" z="0.4" />
+                <scale x="0.73" y="0.73" z="0.4" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus2" />
             </children>
         </component>
 
         <component id="eyeglasssdetail2"> <!-- detail with torus -->
             <transformation>
-                <translate x="0" y="0" z="4.6" />
-                <scale x="0.45" y="0.45" z="0.2" />
+                <translate x="0" y="0" z="4.4" />
+                <scale x="0.38" y="0.38" z="0.2" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus2" />
             </children>
         </component>
 
@@ -645,14 +643,14 @@
 
         <component id="jupiterRing">
             <transformation>
-                <scale x="1.2" y="1.2" z="1" />
+                <scale x="1.3" y="1.3" z="0.1" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus1" />
             </children>
         </component>
 
@@ -667,7 +665,7 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus0" />
             </children>
         </component>
 
@@ -709,7 +707,7 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus0" />
             </children>
         </component>
 
@@ -752,7 +750,7 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus0" />
             </children>
         </component>
        
@@ -795,7 +793,7 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus0" />
             </children>
         </component>
        

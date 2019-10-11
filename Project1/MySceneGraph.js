@@ -966,17 +966,17 @@ class MySceneGraph {
 
                 // outerRadius
                 var outer = this.reader.getFloat(grandChildren[0], 'outer');
-                if (!(outer != null && !isNaN(outer)) && (outer > 0) && inner < outer)
+                if (!(outer != null && !isNaN(outer)) && (outer > 0) && !(inner > outer))
                     return "unable to parse outerRadius of the primitive coordinates for ID = " + primitiveId;
 
                 // slices
                 var slices = this.reader.getFloat(grandChildren[0], 'slices');
-                if (!(slices != null && !isNaN(slices)) && (slices > 0))
+                if (!(slices != null && !isNaN(slices)) && (slices > 1))
                     return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
 
                 // loops
                 var loops = this.reader.getFloat(grandChildren[0], 'loops');
-                if (!(loops != null && !isNaN(loops)) && (loops > 0))
+                if (!(loops != null && !isNaN(loops)) && (loops > 1))
                     return "unable to parse loops of the primitive coordinates for ID = " + primitiveId;
 
                 var torus = new MyTorus(this.scene, primitiveId, inner, outer, slices, loops);
@@ -1267,12 +1267,12 @@ class MySceneGraph {
         var x = this.reader.getFloat(node, 'x');
         if (!(x != null && !isNaN(x)))
             return "unable to parse x-coordinate of the " + messageError;
-
+        
         // y
         var y = this.reader.getFloat(node, 'y');
         if (!(y != null && !isNaN(y)))
-            return "unable to parse y-coordinate of the " + messageError;
-
+            return "unable to parse y-coordinate of the " + messageError;       
+        
         // z
         var z = this.reader.getFloat(node, 'z');
         if (!(z != null && !isNaN(z)))

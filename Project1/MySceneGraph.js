@@ -977,17 +977,17 @@ class MySceneGraph {
 
                 // outerRadius
                 var outer = this.reader.getFloat(grandChildren[0], 'outer');
-                if (!(outer != null && !isNaN(outer)) && (outer > 0) && inner < outer)
+                if (!(outer != null && !isNaN(outer)) && (outer > 0) && !(inner > outer))
                     return "unable to parse outerRadius of the primitive coordinates for ID = " + primitiveId;
 
                 // slices
                 var slices = this.reader.getFloat(grandChildren[0], 'slices');
-                if (!(slices != null && !isNaN(slices)) && (slices > 0))
+                if (!(slices != null && !isNaN(slices)) && (slices > 1))
                     return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
 
                 // loops
                 var loops = this.reader.getFloat(grandChildren[0], 'loops');
-                if (!(loops != null && !isNaN(loops)) && (loops > 0))
+                if (!(loops != null && !isNaN(loops)) && (loops > 1))
                     return "unable to parse loops of the primitive coordinates for ID = " + primitiveId;
 
                 var torus = new MyTorus(this.scene, primitiveId, inner, outer, slices, loops);
@@ -1204,27 +1204,30 @@ class MySceneGraph {
             return "no ID defined for texture";
 
         // SEE IF TEXTURE EXISTS
+        if( textureID != "none" && textureID != "inherit" ){
+            // Get s of the current texture.
+            var length_s = this.reader.getFloat(textureNode, 'length_s');
+            if (length_s == null) {
+                return "no length_s defined for texture ";
+            }
+            else if (isNaN(length_s)) {
+                return "length_s is not a number ";
+            }
 
-        // Get s of the current texture.
-        var length_s = this.reader.getFloat(textureNode, 'length_s');
-        if (length_s == null) {
-            return "no length_s defined for texture ";
-        }
-        else if (isNaN(length_s)) {
-            return "length_s is not a number ";
-        }
+            // Get t of the current texture.
+            var length_t = this.reader.getFloat(textureNode, 'length_t');
+            if (length_t == null)
+                return "no length_t defined for texture";
+            else if (isNaN(length_t)) {
+                return "length_s is not a number ";
+            }
 
-        // Get t of the current texture.
-        var length_t = this.reader.getFloat(textureNode, 'length_t');
-        if (length_t == null)
-            return "no length_t defined for texture";
-        else if (isNaN(length_t)) {
-            return "length_s is not a number ";
-        }
-
-        component.textureID = textureID;
-        component.length_s = length_s;
-        component.length_t = length_t;
+            component.textureID = textureID;
+            component.length_s = length_s;
+            component.length_t = length_t;
+        } 
+        /*  if a length_s ou length_t is apply to a inherit ou none, it's ignore */
+       
     }
 
     /**
@@ -1275,12 +1278,12 @@ class MySceneGraph {
         var x = this.reader.getFloat(node, 'x');
         if (!(x != null && !isNaN(x)))
             return "unable to parse x-coordinate of the " + messageError;
-
+        
         // y
         var y = this.reader.getFloat(node, 'y');
         if (!(y != null && !isNaN(y)))
-            return "unable to parse y-coordinate of the " + messageError;
-
+            return "unable to parse y-coordinate of the " + messageError;       
+        
         // z
         var z = this.reader.getFloat(node, 'z');
         if (!(z != null && !isNaN(z)))

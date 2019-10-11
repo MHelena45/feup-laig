@@ -24,7 +24,15 @@ class MyTriangle extends CGFobject {
 		this.z1 = z1;
 		this.z2 = z2;
 		this.z3 = z3;
+		this.a = Math.sqrt(Math.pow((this.x2 - this.x1)) + Math.pow((this.y2 - this.y1)) + Math.pow((this.z2 - this.z1)));
+		this.b = Math.sqrt(Math.pow((this.x3 - this.x2)) + Math.pow((this.y3 - this.y2)) + Math.pow((this.z3 - this.z2)));
+		this.c = Math.sqrt(Math.pow((this.x1 - this.x3)) + Math.pow((this.y1 - this.y3)) + Math.pow((this.z1 - this.z3)));	
+		this.cosb = (Math.pow(this.a) - Math.pow(this.b) + Math.pow(this.c)) / (2 * this.a * this.c);
+		this.ang = Math.acos(this.cosb);
 
+		this.nX = (this.y2 - this.y1) * (this.z3 - this.z1) - (this.z2 - this.z1) * (this.y3 - this.y1);
+		this.nY = (this.z2 - this.z1) * (this.x3 - this.x1) - (this.x2 - this.x1) * (this.z3 - this.z1);
+		this.nZ = (this.x2 - this.x1) * (this.y3 - this.y1) - (this.y2 - this.y1) * (this.x3 - this.x1);
 		this.initBuffers();
 	}
 
@@ -40,30 +48,11 @@ class MyTriangle extends CGFobject {
 			0, 1, 2
 		];
 
-		var a = Math.sqrt(Math.pow((this.x1 - this.x3)) + Math.pow((this.y1 - this.y3)) + Math.pow((this.z1 - this.z3)));
-		var b = Math.sqrt(Math.pow((this.x2 - this.x1)) + Math.pow((this.y2 - this.y1)) + Math.pow((this.z2 - this.z1)));
-		var c = Math.sqrt(Math.pow((this.x3 - this.x2)) + Math.pow((this.y3 - this.y2)) + Math.pow((this.z3 - this.z2)));
-
-		var cosb = (Math.pow(a) - Math.pow(b) - Math.pow(c)) / (2 * a * c);
-		var ang = Math.acos(cosb);
-
-		var xU = this.x2 - this.x1;
-		var yU = this.y2 - this.y1;
-		var zU = this.z2 - this.z1;
-
-		var xV = this.x3 - this.x1;
-		var yV = this.y3 - this.y1;
-		var zV = this.z3 - this.z1;
-
-		var nX = yU * zV - zU * yV;
-		var nY = zU * xV - xU * zV;
-		var nZ = xU * yV - yU * xV;
-
 		//Facing Z positive
 		this.normals = [
-			nX, nY, nZ,
-			nX, nY, nZ,
-			nX, nY, nZ
+			this.nX, this.nY, this.nZ,
+			this.nX, this.nY, this.nZ,
+			this.nX, this.nY, this.nZ
 		];
 
 		/*
@@ -75,11 +64,11 @@ class MyTriangle extends CGFobject {
 		v
         t
         */
-		this.texCoords = [
-			c - a * cosb, 1 - a * Math.sin(ang),
+		this.texCoords = [			
 			0, 0,
-			0, 1
-		];
+			this.a, 0,
+			(this.c * this.cosb) , this.c* Math.sin(this.ang)
+		];		
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
@@ -87,11 +76,15 @@ class MyTriangle extends CGFobject {
 
 	/**
 	 * @method updateTexCoords
-	 * Updates the list of texture coordinates of the rectangle
-	 * @param {Array} coords - Array of texture coordinates
+	 * Updates the list of texture coordinates of the triangle
+	 * @param {Array} scaleFactor - Array of texture coordinates
 	 */
-	updateTexCoords(coords) {
-		this.texCoords = [...coords];
+	updateTexCoords(scaleFactor) {		
+		this.texCoords = [			
+			0, 0,
+			this.a/scaleFactor[0], 0,
+			(this.c * this.cosb)/scaleFactor[0] , (this.c* Math.sin(this.ang))/scaleFactor[1]
+		];	
 		this.updateTexCoordsGLBuffers();
 	}
 }

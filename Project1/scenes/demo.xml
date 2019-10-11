@@ -145,7 +145,19 @@
         </primitive>
 
         <primitive id="torus">
-            <torus inner="0.04" outer="1" slices="15" loops="15" />
+            <torus inner="0.02" outer="1" slices="17" loops="17" />
+        </primitive>
+
+        <primitive id="torus0">
+            <torus inner="0.01" outer="1" slices="17" loops="17" />
+        </primitive>
+
+        <primitive id="torus1">
+            <torus inner="0.15" outer="1" slices="17" loops="17" />
+        </primitive>
+
+        <primitive id="torus2">
+            <torus inner="0.25" outer="1" slices="17" loops="17" />
         </primitive>
     </primitives>
 
@@ -187,9 +199,8 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit" />
             <children>
-                <componentref id="outerEyeglass" />
                 <componentref id="eyeglasssdetail1" />
                 <componentref id="eyeglasssdetail2" />
                 <componentref id="innerEyeglass" />
@@ -203,20 +214,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
-            <children>
-                <primitiveref id="cylinder" />
-            </children>
-        </component>
-
-        <component id="outerEyeglass">
-            <transformation>
-                <scale x="2.3" y="2.3" z="2.3" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="cylinder" />
             </children>
@@ -224,28 +222,28 @@
 
         <component id="eyeglasssdetail1"> <!-- detail with torus -->
             <transformation>
-                <scale x="0.88" y="0.88" z="0.4" />
+                <scale x="0.73" y="0.73" z="0.4" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus2" />
             </children>
         </component>
 
         <component id="eyeglasssdetail2"> <!-- detail with torus -->
             <transformation>
-                <translate x="0" y="0" z="4.6" />
-                <scale x="0.45" y="0.45" z="0.2" />
+                <translate x="0" y="0" z="4.4" />
+                <scale x="0.38" y="0.38" z="0.2" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus2" />
             </children>
         </component>
 
@@ -256,7 +254,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="leg1" />
                 <componentref id="leg2" />
@@ -273,7 +271,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="cylinder" />
             </children>
@@ -286,7 +284,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="cylinder" />
             </children>
@@ -299,7 +297,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="cylinder" />
             </children>
@@ -313,7 +311,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="cylinder" />
             </children>
@@ -356,7 +354,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -370,7 +368,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle" />
             </children>
@@ -383,7 +381,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle" />
             </children>
@@ -431,7 +429,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit" />
             <children>
                 <componentref id="mercuryPlanet" />
                 <componentref id="mercuryOrbit" />
@@ -447,7 +445,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -462,7 +460,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -475,7 +473,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="venusPlanet"/>
                 <componentref id="venusOrbit" />
@@ -491,7 +489,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -506,7 +504,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -519,7 +517,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="earthPlanet" />
                 <componentref id="earthOrbit" />
@@ -563,7 +561,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -576,7 +574,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="marsPlanet" />
                 <componentref id="marsOrbit" />
@@ -592,7 +590,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -607,7 +605,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -620,7 +618,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="jupiterPlanet" />
                 <componentref id="jupiterOrbit" />
@@ -636,10 +634,23 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
-                <primitiveref id="torus" /> <!-- Ring of Jupiter -->
+                <componentref id="jupiterRing" />
+            </children>
+        </component>
+
+        <component id="jupiterRing">
+            <transformation>
+                <scale x="1.3" y="1.3" z="0.1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="torus1" />
             </children>
         </component>
 
@@ -652,9 +663,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus0" />
             </children>
         </component>
 
@@ -665,7 +676,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="saturnPlanet" />
                 <componentref id="saturnOrbit" />
@@ -674,13 +685,13 @@
 
         <component id="saturnPlanet">
             <transformation>
-                <translate x="0" y="34" z="0" />
+                <translate x="2" y="6" z="0" />
                 <scale x="3" y="3" z="3" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -694,9 +705,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus0" />
             </children>
         </component>
 
@@ -707,7 +718,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="uranusPlanet" />
                 <componentref id="uranusOrbit" />
@@ -722,7 +733,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -737,9 +748,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus0" />
             </children>
         </component>
        
@@ -750,7 +761,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="neptunePlanet" />
                 <componentref id="neptuneOrbit" />
@@ -759,13 +770,13 @@
 
         <component id="neptunePlanet">
             <transformation>
-                <translate x="-20" y="20" z="0" />                
+                <translate x="8" y="6.7" z="-12" />                
                 <scale x="2" y="2" z="2" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -780,9 +791,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus0" />
             </children>
         </component>
        

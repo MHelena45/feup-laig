@@ -112,7 +112,7 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = true;
 
-        // this.initDefaultCamera();
+        this.initDefaultCamera();
     }
 
     /**

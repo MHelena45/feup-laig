@@ -1193,27 +1193,30 @@ class MySceneGraph {
             return "no ID defined for texture";
 
         // SEE IF TEXTURE EXISTS
+        if( textureID != "none" && textureID != "inherit" ){
+            // Get s of the current texture.
+            var length_s = this.reader.getFloat(textureNode, 'length_s');
+            if (length_s == null) {
+                return "no length_s defined for texture ";
+            }
+            else if (isNaN(length_s)) {
+                return "length_s is not a number ";
+            }
 
-        // Get s of the current texture.
-        var length_s = this.reader.getFloat(textureNode, 'length_s');
-        if (length_s == null) {
-            return "no length_s defined for texture ";
-        }
-        else if (isNaN(length_s)) {
-            return "length_s is not a number ";
-        }
+            // Get t of the current texture.
+            var length_t = this.reader.getFloat(textureNode, 'length_t');
+            if (length_t == null)
+                return "no length_t defined for texture";
+            else if (isNaN(length_t)) {
+                return "length_s is not a number ";
+            }
 
-        // Get t of the current texture.
-        var length_t = this.reader.getFloat(textureNode, 'length_t');
-        if (length_t == null)
-            return "no length_t defined for texture";
-        else if (isNaN(length_t)) {
-            return "length_s is not a number ";
-        }
-
-        component.textureID = textureID;
-        component.length_s = length_s;
-        component.length_t = length_t;
+            component.textureID = textureID;
+            component.length_s = length_s;
+            component.length_t = length_t;
+        } 
+        /*  if a length_s ou length_t is apply to a inherit ou none, it's ignore */
+       
     }
 
     /**

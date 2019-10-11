@@ -681,11 +681,13 @@ class MySceneGraph {
             if (this.materials[materialID] != null)
                 return "ID must be unique for each material (conflict: ID = " + materialID + ")";
 
-            var shininess = this.reader.getString(children[i], 'shininess');
+            var shininess = this.reader.getFloat(children[i], 'shininess');
             if (!(shininess != null && !isNaN(shininess)))
                 return "unable to parse 'shininess' of the material for ID = " + materialID;
 
             grandChildren = children[i].children;
+
+            var parsedMaterial = new CGFappearance(this.scene);
 
             for (var j = 0; j < grandChildren.length; j++) {
                 //emission
@@ -693,26 +695,35 @@ class MySceneGraph {
                     var color = this.parseColor(grandChildren[j], "'emission' of material for ID = " + materialID);
                     if (!Array.isArray(color))
                         return color;
+                    parsedMaterial.setEmission(color[0], color[1], color[2], color[3]);
                 }
                 //ambient
                 if (grandChildren[j].nodeName == "ambient") {
                     var color = this.parseColor(grandChildren[j], "'ambient' of material for ID = " + materialID);
                     if (!Array.isArray(color))
                         return color;
+
+                    parsedMaterial.setAmbient(color[0], color[1], color[2], color[3]);
                 }
                 //diffuse
                 if (grandChildren[j].nodeName == "diffuse") {
                     var color = this.parseColor(grandChildren[j], "'diffuse' of material for ID = " + materialID);
                     if (!Array.isArray(color))
                         return color;
+
+                    parsedMaterial.setDiffuse(color[0], color[1], color[2], color[3]);
                 }
                 //specular
                 if (grandChildren[j].nodeName == "specular") {
                     var color = this.parseColor(grandChildren[j], "'specular' of material for ID = " + materialID);
                     if (!Array.isArray(color))
                         return color;
+
+                    parsedMaterial.setSpecular(color[0], color[1], color[2], color[3]);
                 }
             }
+
+            this.materials[materialID] = parsedMaterial;
         }
 
         this.log("Parsed materials");
@@ -1388,15 +1399,18 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        //debugger;
-        this.processNode(this.idRoot);
+        var root = this.components[this.idRoot];
+        this.processNode(root.componentID, root.materialIDs[0], root.textureID, root.length_s, root.length_t);
 
     }
 
     /**
      * 
      */
-    processNode(id) {
+    processNode(id, parentMaterialID, parentTextureID, length_s, length_t) {
+
+        var clickM = 0;
+
         // Check if id exists
         var component = this.components[id];
         if (component == null) {
@@ -1406,10 +1420,27 @@ class MySceneGraph {
 
         // get material
         var materials = component.materialIDs;
-        //this.materials[materials[0]].apply();
+        var appliedMaterial;
+        var childMaterial;
+        if (materials[clickM % materials.length] == "inherit") {
+            childMaterial = parentMaterialID;
+            appliedMaterial = this.materials[parentMaterialID];
+            appliedMaterial.apply();
+        }
+        else {
+            childMaterial = materials[clickM % materials.length];
+            appliedMaterial = this.materials[materials[clickM % materials.length]];
+            appliedMaterial.apply();
+        }
 
         // get texture
-        var texture = component.textureID;
+        var textureID = component.textureID;
+        if (this.textures[textureID] == "inherit")
+            appliedMaterial.setTexture(this.textures[parentTextureID]);
+        else if (this.textures[textureID] == "none")
+            appliedMaterial.setTexture(null);
+        else
+            appliedMaterial.setTexture(this.textures[textureID]);
 
         // get matrix
         var matrix = component.transformationMatrix;
@@ -1422,7 +1453,11 @@ class MySceneGraph {
                 this.primitives[component.childrenIDs[i]].display();
             }
             else
-                this.processNode(component.childrenIDs[i]);
+                this.processNode(component.childrenIDs[i],
+                    childMaterial,
+                    component.textureID,
+                    component.length_s,
+                    component.length_t);
         }
 
         this.scene.popMatrix();

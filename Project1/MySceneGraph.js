@@ -304,7 +304,7 @@ class MySceneGraph {
 
                 var target = vec3.fromValues(x, y, z);
 
-                this.views[viewID] = new CGFcamera(DEGREE_TO_RAD * angle, near, far, position, target)
+                this.views[viewID] = new CGFcamera(DEGREE_TO_RAD * angle, near, far, position, target);
             }
             // ortho
             else if (children[i].nodeName == "ortho") {
@@ -390,6 +390,7 @@ class MySceneGraph {
                 else
                     up = vec3.fromValues(0, 1, 0);
 
+                
                 this.views[viewID] = new CGFcameraOrtho(left, right, bottom, top, near, far, position, target, up);
             }
         }
@@ -1425,6 +1426,7 @@ class MySceneGraph {
         var materials = component.materialIDs;
         var appliedMaterial;
         var childMaterial;
+        /*
         if (materials[clickM % materials.length] == "inherit") {
             childMaterial = parentMaterialID;
             appliedMaterial = this.materials[parentMaterialID];
@@ -1444,7 +1446,7 @@ class MySceneGraph {
             appliedMaterial.setTexture(null);
         else
             appliedMaterial.setTexture(this.textures[textureID]);
-
+        */
         // get matrix
         var matrix = component.transformationMatrix;
         this.scene.pushMatrix();

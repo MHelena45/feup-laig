@@ -274,6 +274,7 @@
             <texture id="inherit"/>
             <children>
                 <primitiveref id="cylinder" />
+                <componentref id="endOfLeg"/>
             </children>
         </component>
 
@@ -287,6 +288,7 @@
             <texture id="inherit"/>
             <children>
                 <primitiveref id="cylinder" />
+                <componentref id="endOfLeg"/>
             </children>
         </component>
 
@@ -300,6 +302,7 @@
             <texture id="inherit"/>
             <children>
                 <primitiveref id="cylinder" />
+                <componentref id="endOfLeg"/>
             </children>
         </component>
 
@@ -313,7 +316,22 @@
             </materials>
             <texture id="inherit"/>
             <children>
-                <primitiveref id="cylinder" />
+                <componentref id="endOfLeg"/>
+                <primitiveref id="cylinder" />                
+            </children>
+        </component>
+
+        <component id="endOfLeg">
+            <transformation>
+                <translate x="0" y="0" z="2" />      
+                <scale x="0.19" y="0.19" z="0.19"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="torus2" />
             </children>
         </component>
 

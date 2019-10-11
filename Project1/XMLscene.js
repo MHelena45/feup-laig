@@ -21,7 +21,7 @@ class XMLscene extends CGFscene {
     init(application) {
         super.init(application);
 
-        this.sceneInited = false;
+        this.sceneInited = false;        
 
         this.initCameras();
 
@@ -31,6 +31,10 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
+
+        //Checkbox element to display Textures
+        //this.gui.add(this, 'displayTex').name('Enable Texture');
+
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);

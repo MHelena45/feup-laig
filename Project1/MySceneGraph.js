@@ -233,6 +233,7 @@ class MySceneGraph {
         this.defaultCameraID = this.reader.getString(viewsNode, "default");
 
         this.views = [];
+        this.views_ID = [];
 
         // Check if there are any views
         if (children.length == 0)
@@ -253,18 +254,21 @@ class MySceneGraph {
                 this.onXMLMinorError("no ID defined for view");
 
             // Checks for repeated IDs
-            if (this.views[viewID] != null)
+            else if (this.views[viewID] != null)
                 this.onXMLMinorError("ID must be unique for each view (conflict: ID = " + transformationID + ")");
 
-                // near
-                var near = this.reader.getFloat(children[i], 'near');
-                if (!(near != null && !isNaN(near)))
-                    return "unable to parse 'near' of view ID = " + viewId;
+            // if viewID is not null and not repeat, store him in the view_ID vector
+            else this.views_ID[this.views_ID.length] = viewID;
+
+            // near
+            var near = this.reader.getFloat(children[i], 'near');
+            if (!(near != null && !isNaN(near)))
+                return "unable to parse 'near' of view ID = " + viewId;
                 
-                 // far
-                var far = this.reader.getFloat(children[i], 'far');
-                if (!(far != null && !isNaN(far)))
-                    return "unable to parse 'far' of view ID = " + viewId;
+            // far
+            var far = this.reader.getFloat(children[i], 'far');
+            if (!(far != null && !isNaN(far)))
+                return "unable to parse 'far' of view ID = " + viewId;
 
             // perspective
             if (children[i].nodeName == "perspective") {               
@@ -389,6 +393,14 @@ class MySceneGraph {
 
         this.log("Parsed views");
         return null;
+    }
+
+    getViews(){
+        return this.views;
+    }
+
+    getViewsID(){
+        return this.views_ID;
     }
 
     /**
@@ -1418,7 +1430,7 @@ class MySceneGraph {
         var materials = component.materialIDs;
         var appliedMaterial;
         var childMaterial;
-      // console.log(this.scene.getM());
+      
         if (materials[this.scene.getM() % materials.length] == "inherit") {
             childMaterial = parentMaterialID;
             appliedMaterial = this.materials[parentMaterialID];

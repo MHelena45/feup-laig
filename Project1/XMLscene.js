@@ -35,11 +35,13 @@ class XMLscene extends CGFscene {
         this.lights2 = true;
         this.lights3 = true;
 
-   /* this.selectedView = 0;
-        //this.modes = [this.graph.defaultCameraID, this.graph.beheindCameraID, this.graph.upCameraID];
+        this.selectedView = 0;
+
+      //  console.log(this.graph.getViews());
+       // this.mode = [this.graph.views["defaultCamera"], this.graph.views["behindCamera"], this.graph.views["upCamera"]];
 
 		// Labels and ID's for object selection on MyInterface
-		this.modeIds = { 'Front': 0, 'Beheind': 1, 'Up': 2 };*/
+		this.modeIds = { 'Front': 0, 'Behind': 1, 'Up': 2 };
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);   
@@ -60,10 +62,12 @@ class XMLscene extends CGFscene {
         this.interface.setActiveCamera(this.camera);
     }
 
-  /*  updateAppliedMode() {
-		this.camera = this.graph.views[this.graph.beheindCameraID];
+    updateAppliedMode() {
+        this.views = this.graph.getViews();
+        this.views_ID = this.graph.getViewsID();
+        this.camera = this.views[this.views_ID[this.selectedView]];       
         this.interface.setActiveCamera(this.camera);
-	}*/
+	}
 
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -128,24 +132,18 @@ class XMLscene extends CGFscene {
     
     // controls animation
 	checkKeys() {
-		var text = "Keys pressed: ";
-        var keysPressed = false;        
-
 		// Check for key codes e.g. in ​https://keycode.info/
 		if (this.gui.isKeyPressed("KeyM")) {
-            text += " M "; 
             this.mClick = true;        
-			keysPressed = true;
 		} else if(this.mClick) { /*increments when button is released */
             this.mClick = false;
             CLICK_M++;
+            console.log("M was released");
         }
-
-
-		if (keysPressed)
-			console.log(text);
     }
-    //return de number of M click releases
+    /**
+     * return de number of M click releases
+     */
     getM(){
         return CLICK_M;
     }
@@ -171,31 +169,8 @@ class XMLscene extends CGFscene {
 
         this.checkKeys();
 
-        for (var i = 0; i < this.lights.length; i++) {
-            if(i == 2 & this.lights2){
-                this.lights[i].setVisible(true);
-                this.lights[i].enable();
-            }
-            if(i == 2 & !this.lights2){
-                this.lights[i].setVisible(true);
-                this.lights[i].disable();
-            } 
-            if(i == 3 & this.lights3){
-                this.lights[i].setVisible(true);
-                this.lights[i].enable();
-            }
-            if(i == 3 & !this.lights3){
-                this.lights[i].setVisible(true);
-                this.lights[i].disable();
-            } 
-            if( i !=2 && i!=3) {
-                this.lights[i].setVisible(true);
-                this.lights[i].enable();
-            }
-            
-        }
+        this.displayLights();
 
-        
         if (this.sceneInited) {
             // Draw axis
             this.setDefaultAppearance();
@@ -207,4 +182,27 @@ class XMLscene extends CGFscene {
         this.popMatrix();
         // ---- END Background, camera and axis setup
     }
+    displayLights(){
+        for (var i = 0; i < this.lights.length; i++) {
+            this.lights[i].setVisible(true);
+            switch(i)
+            {
+                case(2):
+                    if(this.lights2)
+                        this.lights[i].enable();
+                    else this.lights[i].disable();
+                break;
+                case(3):
+                    if(this.lights3)
+                        this.lights[i].enable();
+                    else this.lights[i].disable();
+                break;
+                default:
+                    this.lights[i].enable();
+                break;
+            }
+            
+        }
+    }
 }
+

@@ -8,14 +8,14 @@
             <to x="0" y="15" z="0" />
         </perspective> 
 
-        <!-- view from beheind -->
-        <perspective id="beheindCamera" near="0.1" far="100" angle="45">
+        <!-- view from behind -->
+        <perspective id="behindCamera" near="0.1" far="100" angle="45">
             <from x="-5" y="10" z="-60" />
             <to x="0" y="15" z="0" />
         </perspective> 
 
         <!-- view of an upper position -->
-       <ortho id="upCamera" near="0.1" far="100" left="-20" right="20" top="40" bottom="-30" >
+       <ortho id="upCamera" near="0.1" far="100" left="-50" right="50" top="40" bottom="-30" >
             <from x="10" y="60" z="0" />
             <to x="0" y="15" z="00" />
             <up x="0" y="1" z="0" /> 

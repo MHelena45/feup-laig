@@ -1,5 +1,5 @@
 var DEGREE_TO_RAD = Math.PI / 180;
-
+var CLICK_M = 0;
 /**
  * XMLscene class, representing the scene that is to be rendered.
  */
@@ -42,7 +42,9 @@ class XMLscene extends CGFscene {
 		this.modeIds = { 'Front': 0, 'Beheind': 1, 'Up': 2 };*/
 
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(100);     
+        this.setUpdatePeriod(100);   
+        
+        this.mClick = false;
              
     }
 
@@ -96,7 +98,6 @@ class XMLscene extends CGFscene {
                     this.lights[i].disable();
 
                 this.lights[i].update();
-
                 i++;
             }
         }
@@ -124,7 +125,30 @@ class XMLscene extends CGFscene {
 
         this.initDefaultCamera();
     }
+    
+    // controls animation
+	checkKeys() {
+		var text = "Keys pressed: ";
+        var keysPressed = false;        
 
+		// Check for key codes e.g. in ​https://keycode.info/
+		if (this.gui.isKeyPressed("KeyM")) {
+            text += " M "; 
+            this.mClick = true;        
+			keysPressed = true;
+		} else if(this.mClick) { /*increments when button is released */
+            this.mClick = false;
+            CLICK_M++;
+        }
+
+
+		if (keysPressed)
+			console.log(text);
+    }
+    //return de number of M click releases
+    getM(){
+        return CLICK_M;
+    }
     /**
      * Displays the scene.
      */
@@ -144,6 +168,8 @@ class XMLscene extends CGFscene {
 
         this.pushMatrix();
         this.axis.display();
+
+        this.checkKeys();
 
         for (var i = 0; i < this.lights.length; i++) {
             if(i == 2 & this.lights2){

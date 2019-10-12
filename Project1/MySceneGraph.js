@@ -369,7 +369,7 @@ class MySceneGraph {
                     var x = this.reader.getFloat(upXML, "x");
                     var y = this.reader.getFloat(upXML, "y");
                     var z = this.reader.getFloat(upXML, "z");
-                    console.log(x);
+               
                     if (!(x != null && !isNaN(x)))
                         return "unable to parse 'x' of 'up' tag from view ID = " + viewId;
                     if (!(y != null && !isNaN(y)))
@@ -1407,8 +1407,6 @@ class MySceneGraph {
      */
     processNode(id, parentMaterialID, parentTextureID, length_s, length_t) {
 
-        var clickM = 0;
-
         // Check if id exists
         var component = this.components[id];
         if (component == null) {
@@ -1420,15 +1418,15 @@ class MySceneGraph {
         var materials = component.materialIDs;
         var appliedMaterial;
         var childMaterial;
-       
-        if (materials[clickM % materials.length] == "inherit") {
+      // console.log(this.scene.getM());
+        if (materials[this.scene.getM() % materials.length] == "inherit") {
             childMaterial = parentMaterialID;
             appliedMaterial = this.materials[parentMaterialID];
             appliedMaterial.apply();
         }
         else {
-            childMaterial = materials[clickM % materials.length];
-            appliedMaterial = this.materials[materials[clickM % materials.length]];
+            childMaterial = materials[this.scene.getM() % materials.length];
+            appliedMaterial = this.materials[materials[this.scene.getM() % materials.length]];
             appliedMaterial.apply();
         }
 
@@ -1464,5 +1462,10 @@ class MySceneGraph {
         this.scene.popMatrix();
 
 
+    }
+
+    incrementM(){
+        clickM++;
+        console.log("came");
     }
 }

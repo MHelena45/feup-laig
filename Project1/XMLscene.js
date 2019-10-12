@@ -37,11 +37,8 @@ class XMLscene extends CGFscene {
 
         this.selectedView = 0;
 
-      //  console.log(this.graph.getViews());
-       // this.mode = [this.graph.views["defaultCamera"], this.graph.views["behindCamera"], this.graph.views["upCamera"]];
-
 		// Labels and ID's for object selection on MyInterface
-		this.modeIds = { 'Front': 0, 'Behind': 1, 'Up': 2 };
+		this.modeIds = { 'Front': 0, 'Behind': 1, 'Up': 2, 'Earth' : 3 };
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);   

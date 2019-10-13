@@ -79,6 +79,7 @@
         <texture id="earthTexture" file="scenes/images/earth.jpg" />
         <texture id="moonTexture" file="scenes/images/moon.jpg" />
         <texture id="planetTexture" file="scenes/images/planet.jpg" />
+        <texture id="ringJupiterTexture" file="scenes/images/ring_jupiter.jpg" />
     </textures>
 
     <materials>
@@ -111,11 +112,11 @@
             <specular r="0.2" g="0.2" b="0.2" a="1.0" />
         </material>
 
-        <material id="OrbitMaterial" shininess="10">
-            <emission r="0.4" g="0.4" b="0.4" a="1.0" />
-            <ambient r="0.2" g="0.2" b="1.0" a="1.0" />
-            <diffuse r="0.1" g="0.1" b="1.0" a="1.0" />
-            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+        <material id="orbitMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.05" g="0.05" b="0.3" a="0.05" />
+            <diffuse r="0" g="0" b="0" a="0" />
+            <specular r="0" g="0" b="0" a="0" />
         </material>
 
         <!-- difuse and shiny material to simulate black metal -->
@@ -525,12 +526,12 @@
             <transformation>
                 <translate x="0" y="20" z="0" />
                 <rotate axis="x" angle="-20" />  
-                <scale x="3" y="3" z="1" />
+                <scale x="3" y="3" z="3" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="orbitMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -569,12 +570,12 @@
             <transformation>
                 <translate x="0" y="20" z="0" />
                 <rotate axis="x" angle="20" />  
-                <scale x="4.5" y="4.5" z="1" />
+                <scale x="4.5" y="4.5" z="4.5" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="orbitMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -626,12 +627,12 @@
         <component id="earthOrbit">
             <transformation>
                 <translate x="0" y="20" z="0" />
-                <scale x="7" y="7" z="1" />
+                <scale x="7" y="7" z="7" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="orbitMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -670,12 +671,12 @@
             <transformation>
                 <translate x="0" y="20" z="0" />
                 <rotate axis="x" angle="90" />  
-                <scale x="9" y="9" z="1" />
+                <scale x="9" y="9" z="9" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="orbitMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -718,7 +719,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="ringJupiterTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="torus1" />
             </children>
@@ -728,12 +729,12 @@
             <transformation>
                 <translate x="0" y="20" z="0" />
                 <rotate axis="x" angle="45" />  
-                <scale x="11" y="11" z="1" />
+                <scale x="11" y="11" z="11" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="orbitMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -770,12 +771,12 @@
         <component id="saturnOrbit">
             <transformation>
                 <translate x="0" y="20" z="0" />
-                <scale x="14" y="14" z="1" />
+                <scale x="14" y="14" z="14" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="orbitMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="torus0" />
             </children>
@@ -813,10 +814,10 @@
             <transformation>
                 <translate x="0" y="20" z="0" />
                 <rotate axis="x" angle="-50" /> 
-                <scale x="17" y="17" z="1" />
+                <scale x="17" y="17" z="17" />
             </transformation>
             <materials>
-                <material id="OrbitMaterial" />
+                <material id="orbitMaterial" />
             </materials>
             <texture id="none"/>
             <children>
@@ -831,7 +832,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="neptunePlanet" />
                 <componentref id="neptuneOrbit" />
@@ -856,10 +857,10 @@
             <transformation>
                 <translate x="0" y="20" z="0" />
                 <rotate axis="x" angle="40" /> 
-                <scale x="20" y="20" z="1" />
+                <scale x="20" y="20" z="20" />
             </transformation>
             <materials>
-                <material id="OrbitMaterial" />
+                <material id="orbitMaterial" />
             </materials>
             <texture id="none"/>
             <children>

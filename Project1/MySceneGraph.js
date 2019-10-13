@@ -1430,6 +1430,7 @@ class MySceneGraph {
 
     }
 
+
     /**
      * 
      */
@@ -1461,18 +1462,18 @@ class MySceneGraph {
 
         // get texture
         var textureID = component.textureID;
-
-        console.log(textureID);
+        //console.log(textureID);
        if (textureID == "inherit"){
            textureID = parentTextureID;
-           console.log(this.textures[textureID]);
            appliedMaterial.setTexture(this.textures[textureID]);
        }            
         else if (textureID == "none"){
             appliedMaterial.setTexture(null);
         }            
-        else
+        else{
             appliedMaterial.setTexture(this.textures[textureID]);
+        }
+            
         
         // get matrix
         var matrix = component.transformationMatrix;
@@ -1480,6 +1481,7 @@ class MySceneGraph {
         this.scene.multMatrix(matrix);
         // loop children
         for (var i = 0; i < component.childrenIDs.length; i++) {
+
             // if primitive
             if (this.primitives[component.childrenIDs[i]] != null) {
                 var scaleFactor = [length_s, length_t ];
@@ -1492,15 +1494,14 @@ class MySceneGraph {
                     component.textureID,
                     component.length_s,
                     component.length_t);
+            //console.log(component.childrenIDs.length);
         }
         
         this.scene.popMatrix();
-
 
     }
 
     incrementM(){
         clickM++;
-        console.log("came");
     }
 }

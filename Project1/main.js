@@ -40,6 +40,7 @@ main=function()
 	// or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
 	
     var filename=getUrlVars()['file'] || "LAIG_TP1_XML_T6_G02_V01.xml";
+    //var filename=getUrlVars()['file'] || "pois.xml";
 
 	// create and load graph, and associate it to scene. 
 	// Check console for loading errors

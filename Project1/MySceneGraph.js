@@ -395,10 +395,12 @@ class MySceneGraph {
         return null;
     }
 
+    //used for the dropbox
     getViews(){
         return this.views;
     }
 
+    //used for the dropbox
     getViewsID(){
         return this.views_ID;
     }
@@ -645,9 +647,7 @@ class MySceneGraph {
             var textureFile = new File([""], textureFileString);
 
             if (textureFile.fileSize == undefined && textureFile.size == undefined)
-                return "no file defined for texture ID" + textureID + " - " + textureFileString + " does not exist";
-
-            
+                return "no file defined for texture ID" + textureID + " - " + textureFileString + " does not exist";            
 
             this.textures[textureID] = new CGFtexture(this.scene, textureFileString);                     
             numTextures++;
@@ -773,10 +773,11 @@ class MySceneGraph {
             for (var j = 0; j < grandChildren.length; j++) {
                 switch (grandChildren[j].nodeName) {
                     case 'rotate':
-                        var axisVector = this.parseRotation(grandChildren[j], "scale transformation for ID = " + transformationID);
-                        if(!Array.isArray(axisVector))
-                            return axisVector;
-                        
+                        var axisVector = this.parseRotation(grandChildren[j], "rotate transformation for ID = " + transformationID);
+                        if(!Array.isArray(axisVector)){
+                            this.onXMLMinorError(axisVector);
+                            continue; //ignore that wrong transformation
+                        }                      
                         if (axisVector[0] == "x")
                             transfMatrix = mat4.rotateX(transfMatrix, transfMatrix, DEGREE_TO_RAD * axisVector[1]);
                         else if (axisVector[0] == "y")
@@ -787,16 +788,21 @@ class MySceneGraph {
                         break;
                     case 'translate':
                         var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
-                        if (!Array.isArray(coordinates))
-                            return coordinates;
+                        if (!Array.isArray(coordinates)){
+                            this.onXMLMinorError(coordinates);
+                            continue; //ignore that wrong transformation
+                        }                            
                         transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'scale':
-                        var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
-                        if (!Array.isArray(coordinates))
-                            return coordinates;
-
+                        var coordinates = this.parseCoordinates3D(grandChildren[j], "scale transformation for ID " + transformationID);
+                        if (!Array.isArray(coordinates)){
+                            this.onXMLMinorError(coordinates);
+                            continue; //ignore that wrong transformation
+                        }                            
                         transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
+                        break;
+                    default:
                         break;
 
                 }
@@ -829,12 +835,16 @@ class MySceneGraph {
 
             // Get id of the current primitive.
             var primitiveId = this.reader.getString(children[i], 'id');
-            if (primitiveId == null)
-                return "no ID defined for texture";
+            if (primitiveId == null){
+                this.onXMLMinorError("no ID defined for texture" + children[i]);
+                continue; //object with no id is ignore
+            }
 
             // Checks for repeated IDs.
-            if (this.primitives[primitiveId] != null)
-                return "ID must be unique for each primitive (conflict: ID = " + primitiveId + ")";
+            if (this.primitives[primitiveId] != null){
+                this.onXMLMinorError("ID must be unique for each primitive (conflict: ID = " + primitiveId + ")");
+                continue; //ignore the repeated primitive
+            }
 
             grandChildren = children[i].children;
 
@@ -1134,30 +1144,34 @@ class MySceneGraph {
                 switch (children[i].nodeName) {
                     case 'translate':
                         var coordinates = this.parseCoordinates3D(children[i], "translate transformation for Component with ID = " + component.componentID);
-                        if (!Array.isArray(coordinates))
-                            return coordinates;
-
+                        if (!Array.isArray(coordinates)){
+                            this.onXMLMinorError(coordinates);
+                            continue; //ignore that wrong transformation
+                        }
                         transformationMatrix = mat4.translate(transformationMatrix, transformationMatrix, coordinates);
                         break;
                     case 'scale':
                         var coordinates = this.parseCoordinates3D(children[i], "scale transformation for Component with ID = " + component.componentID);
-                        if (!Array.isArray(coordinates))
-                            return coordinates;
-
+                        if (!Array.isArray(coordinates)){
+                            this.onXMLMinorError(coordinates);
+                            continue; //ignore that wrong transformation
+                        }
                         transformationMatrix = mat4.scale(transformationMatrix, transformationMatrix, coordinates);
                         break;
                     case 'rotate':
-                        var axisVector = this.parseRotation(children[i], "scale transformation for Component with ID = " + component.componentID);
-                        if(!Array.isArray(axisVector))
-                            return axisVector;
-                        
+                        var axisVector = this.parseRotation(children[i], "rotate transformation for Component with ID = " + component.componentID);
+                        if(!Array.isArray(axisVector)){
+                            this.onXMLMinorError(axisVector);
+                            continue; //ignore that wrong transformation
+                        }                        
                         if (axisVector[0] == "x")
                             transformationMatrix = mat4.rotateX(transformationMatrix, transformationMatrix, DEGREE_TO_RAD * axisVector[1]);
                         else if (axisVector[0] == "y")
                             transformationMatrix = mat4.rotateY(transformationMatrix, transformationMatrix, DEGREE_TO_RAD * axisVector[1]);
                         else if (axisVector[0] == "z")
                             transformationMatrix = mat4.rotateZ(transformationMatrix, transformationMatrix, DEGREE_TO_RAD * axisVector[1]);
-
+                        break;
+                    default:
                         break;
                 }
             }
@@ -1215,24 +1229,26 @@ class MySceneGraph {
             // Get s of the current texture.
             var length_s = this.reader.getFloat(textureNode, 'length_s');
             if (length_s == null) {
-                return "no length_s defined for texture ";
+                return "no length_s defined for texture " + textureID;
             }
             else if (isNaN(length_s)) {
-                return "length_s is not a number ";
+                return "length_s is not a number " + textureID;
             }
 
             // Get t of the current texture.
             var length_t = this.reader.getFloat(textureNode, 'length_t');
             if (length_t == null)
-                return "no length_t defined for texture";
+                return "no length_t defined for texture" + textureID;
             else if (isNaN(length_t)) {
-                return "length_s is not a number ";
+                return "length_s is not a number " + textureID;
             }
 
             component.textureID = textureID;
             component.length_s = length_s;
             component.length_t = length_t;
-        } 
+        } else {
+            component.textureID = textureID;
+        }
         /*  if a length_s ou length_t is apply to a inherit ou none, it's ignore */
        
     }
@@ -1429,15 +1445,16 @@ class MySceneGraph {
        // get material
         var materials = component.materialIDs;
         var appliedMaterial;
-        var childMaterial;
+        var childMaterialID;
       
         if (materials[this.scene.getM() % materials.length] == "inherit") {
-            childMaterial = parentMaterialID;
-            appliedMaterial = this.materials[parentMaterialID];
+            
+            childMaterialID = parentMaterialID;
+            appliedMaterial = this.materials[parentMaterialID];            
             appliedMaterial.apply();
         }
         else {
-            childMaterial = materials[this.scene.getM() % materials.length];
+            childMaterialID = materials[this.scene.getM() % materials.length];
             appliedMaterial = this.materials[materials[this.scene.getM() % materials.length]];
             appliedMaterial.apply();
         }
@@ -1445,10 +1462,15 @@ class MySceneGraph {
         // get texture
         var textureID = component.textureID;
 
-       if (this.textures[textureID] == "inherit")
-            appliedMaterial.setTexture(this.textures[parentTextureID]);
-        else if (this.textures[textureID] == "none")
+        console.log(textureID);
+       if (textureID == "inherit"){
+           textureID = parentTextureID;
+           console.log(this.textures[textureID]);
+           appliedMaterial.setTexture(this.textures[textureID]);
+       }            
+        else if (textureID == "none"){
             appliedMaterial.setTexture(null);
+        }            
         else
             appliedMaterial.setTexture(this.textures[textureID]);
         
@@ -1460,16 +1482,17 @@ class MySceneGraph {
         for (var i = 0; i < component.childrenIDs.length; i++) {
             // if primitive
             if (this.primitives[component.childrenIDs[i]] != null) {
+                var scaleFactor = [length_s, length_t ];
+                //updateTexCoords(scaleFactor);
                 this.primitives[component.childrenIDs[i]].display();
             }
             else
                 this.processNode(component.childrenIDs[i],
-                    childMaterial,
+                    childMaterialID,
                     component.textureID,
                     component.length_s,
                     component.length_t);
         }
-
         
         this.scene.popMatrix();
 

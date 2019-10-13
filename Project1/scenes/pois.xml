@@ -235,7 +235,7 @@
                 <translate x="0" y="0.6" z="-2" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="telescopeMaterial" />
             </materials>
             <texture id="none" />
             <children>
@@ -250,7 +250,7 @@
                 <scale x="2.2" y="2.2" z="2.2" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="telescopeMaterial"/>
             </materials>
             <texture id="none" />
             <children>
@@ -263,7 +263,7 @@
                 <scale x="0.73" y="0.73" z="0.4" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="telescopeMaterial"/>
             </materials>
             <texture id="none"/>
             <children>
@@ -277,7 +277,7 @@
                 <scale x="0.38" y="0.38" z="0.2" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="telescopeMaterial" />
             </materials>
             <texture id="none"/>
             <children>
@@ -307,7 +307,7 @@
                 <rotate axis="x" angle="45" />             
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="legMaterial"  />
             </materials>
             <texture id="none" />
             <children>
@@ -321,7 +321,7 @@
                 <rotate axis="x" angle="120" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="legMaterial"  />
             </materials>
             <texture id="none" />
             <children>            
@@ -335,7 +335,7 @@
                 <rotate axis="x" angle="45" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="legMaterial"  />
             </materials>
             <texture id="none" />
             <children>
@@ -350,7 +350,7 @@
                 <rotate axis="x" angle="120" />             
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="legMaterial"  />
             </materials>
             <texture id="none"/>
             <children>

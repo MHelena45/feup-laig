@@ -213,7 +213,7 @@
             <children>
                 <componentref id="shootingStar" /> 
                 <componentref id="star" />
-                 <componentref id="star1" />
+                <componentref id="star1" />
                 <componentref id="solarSystem" />
                 <componentref id="telescope" />
             </children>

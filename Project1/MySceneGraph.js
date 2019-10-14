@@ -1428,6 +1428,7 @@ class MySceneGraph {
      */
     displayScene() {
         var root = this.components[this.idRoot];
+        //var root = this.components["jupiter"];
         this.processNode(root.componentID, root.materialIDs[0], root.textureID, root.length_s, root.length_t);
 
     }
@@ -1437,7 +1438,6 @@ class MySceneGraph {
      * 
      */
     processNode(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t) {
-
         // Check if id exists
         var component = this.components[id];
         if (component == null) {
@@ -1445,69 +1445,72 @@ class MySceneGraph {
             return;
         }
 
-       // get material
+        // get material
         var materials = component.materialIDs;
         var appliedMaterial;
         var childMaterialID;
       
         if (materials[this.scene.getM() % materials.length] == "inherit") {
-            
             childMaterialID = parentMaterialID;
             appliedMaterial = this.materials[parentMaterialID];            
             appliedMaterial.apply();
         }
         else {
             childMaterialID = materials[this.scene.getM() % materials.length];
-            appliedMaterial = this.materials[materials[this.scene.getM() % materials.length]];
+            appliedMaterial = this.materials[childMaterialID];
             appliedMaterial.apply();
         }
 
         // get texture
-        var textureID = component.textureID;
+        var childTextureID;
         var length_s;
         var length_t;
         //console.log(textureID);
-       if (textureID == "inherit"){
-           if(parentTextureID == "none"){ //only if root doesn't have texture
-            appliedMaterial.setTexture(null);
-           }
+        if (component.textureID == "inherit") {
+            if(parentTextureID == "none") { //only if root doesn't have texture
+                childTextureID = "none";
+                appliedMaterial.setTexture(null);
+            }
+            else {
+                childTextureID = parentTextureID;
+                appliedMaterial.setTexture(this.textures[parentTextureID]);
+            }
             length_s = parentLength_s;
             length_t = parentLength_t;
-            textureID = parentTextureID;
-            
-            appliedMaterial.setTexture(this.textures[textureID]);
-       }            
-        else if (textureID == "none"){
-            //the texture apply is none but passes de ancestor texture to the son
+        }            
+        else if (component.textureID == "none"){
+            // the texture apply is none but passes de ancestor texture to the son
             length_s = parentLength_s;
             length_t = parentLength_t;
-            textureID = parentTextureID;
+            childTextureID = "none";
             appliedMaterial.setTexture(null);
         }            
-        else{
-            appliedMaterial.setTexture(this.textures[textureID]);
+        else {
+            childTextureID = component.textureID;
+            appliedMaterial.setTexture(this.textures[component.textureID]);
         }
-            
         
         // get matrix
         var matrix = component.transformationMatrix;
         this.scene.pushMatrix();
         this.scene.multMatrix(matrix);
+
         // loop children
         for (var i = 0; i < component.childrenIDs.length; i++) {
-
             // if primitive
             if (this.primitives[component.childrenIDs[i]] != null) {
-                var scaleFactor = [length_s, length_t ];
+                var scaleFactor = [length_s, length_t];
                 //updateTexCoords(scaleFactor);
                 this.primitives[component.childrenIDs[i]].display();
             }
             else
-                this.processNode(component.childrenIDs[i],
+                this.processNode(
+                    component.childrenIDs[i],
                     childMaterialID,
-                    component.textureID,
+                    childTextureID,
                     component.length_s,
-                    component.length_t);
+                    component.length_t
+                );
             //console.log(component.childrenIDs.length);
         }
         

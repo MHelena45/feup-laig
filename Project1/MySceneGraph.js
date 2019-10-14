@@ -836,7 +836,7 @@ class MySceneGraph {
             // Get id of the current primitive.
             var primitiveId = this.reader.getString(children[i], 'id');
             if (primitiveId == null){
-                this.onXMLMinorError("no ID defined for texture" + children[i]);
+                this.onXMLError("no ID defined for texture" + children[i]);
                 continue; //object with no id is ignore
             }
 
@@ -1027,7 +1027,7 @@ class MySceneGraph {
     parseComponents(componentsNode) {
         var children = componentsNode.children;
         var error;
-        this.components = [];
+        this.components = [];        
 
         var grandChildren = [];
         var nodeNames = [];
@@ -1046,8 +1046,10 @@ class MySceneGraph {
                 return "no ID defined for componentID";
 
             // Checks for repeated IDs.
-            if (this.components[componentID] != null)
-                return "ID must be unique for each component (conflict: ID = " + componentID + ")";
+            if (this.components[componentID] != null){
+                this.onXMLMinorError("ID must be unique for each component (conflict: ID = " + componentID + ")");
+                continue;
+            }
 
             grandChildren = children[i].children;
 
@@ -1434,7 +1436,7 @@ class MySceneGraph {
     /**
      * 
      */
-    processNode(id, parentMaterialID, parentTextureID, length_s, length_t) {
+    processNode(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t) {
 
         // Check if id exists
         var component = this.components[id];
@@ -1462,12 +1464,24 @@ class MySceneGraph {
 
         // get texture
         var textureID = component.textureID;
+        var length_s;
+        var length_t;
         //console.log(textureID);
        if (textureID == "inherit"){
-           textureID = parentTextureID;
-           appliedMaterial.setTexture(this.textures[textureID]);
+           if(parentTextureID == "none"){ //only if root doesn't have texture
+            appliedMaterial.setTexture(null);
+           }
+            length_s = parentLength_s;
+            length_t = parentLength_t;
+            textureID = parentTextureID;
+            
+            appliedMaterial.setTexture(this.textures[textureID]);
        }            
         else if (textureID == "none"){
+            //the texture apply is none but passes de ancestor texture to the son
+            length_s = parentLength_s;
+            length_t = parentLength_t;
+            textureID = parentTextureID;
             appliedMaterial.setTexture(null);
         }            
         else{

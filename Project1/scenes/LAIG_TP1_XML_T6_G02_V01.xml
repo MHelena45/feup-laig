@@ -80,6 +80,8 @@
         <texture id="moonTexture" file="scenes/images/moon.jpg" />
         <texture id="planetTexture" file="scenes/images/planet.jpg" />
         <texture id="ringJupiterTexture" file="scenes/images/ring_jupiter.jpg" />
+        <texture id="jupiterTexture" file="scenes/images/jupiter.jpg" />
+        <texture id="uranusTexture" file="scenes/images/uranus.jpg" />
     </textures>
 
     <materials>
@@ -689,7 +691,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="jupiterTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <componentref id="jupiterPlanet" />
                 <componentref id="jupiterOrbit" />
@@ -705,8 +707,8 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
-            <children>
+            <texture id="inherit" />
+            <children>            
                 <primitiveref id="sphere" />
                 <componentref id="jupiterRing" />
             </children>
@@ -789,7 +791,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="uranusTexture" length_s="1.0" length_t="1.0"/>/>
             <children>
                 <componentref id="uranusPlanet" />
                 <componentref id="uranusOrbit" />

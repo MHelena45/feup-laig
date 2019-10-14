@@ -514,7 +514,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="mercuryTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <componentref id="mercuryPlanet" />
                 <componentref id="mercuryOrbit" />

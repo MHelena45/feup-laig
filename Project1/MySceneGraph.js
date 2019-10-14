@@ -1437,7 +1437,7 @@ class MySceneGraph {
      * 
      */
     processNode(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t) {
-        //console.log(id);
+        console.log(id);
         // Check if id exists
         var component = this.components[id];
         if (component == null) {
@@ -1467,9 +1467,9 @@ class MySceneGraph {
         var length_t;
         //console.log(textureID);
        if (textureID == "inherit"){
-           if(parentTextureID == "none"){ //only if root doesn't have texture
+          /* if(parentTextureID == "none"){ //only if root doesn't have texture
             appliedMaterial.setTexture(null);
-           }
+           }*/
             length_s = parentLength_s;
             length_t = parentLength_t;
             textureID = parentTextureID;
@@ -1486,7 +1486,6 @@ class MySceneGraph {
             appliedMaterial.apply();
         }            
         else{
-            console.log(textureID);
             appliedMaterial.setTexture(this.textures[textureID]);
             appliedMaterial.apply();
         }

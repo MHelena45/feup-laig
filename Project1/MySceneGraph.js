@@ -1467,9 +1467,9 @@ class MySceneGraph {
         var length_t;
       
        if (textureID == "inherit"){
-          /* if(parentTextureID == "none"){ //only if root doesn't have texture
+           if(parentTextureID == "none"){ //only if root doesn't have texture
             appliedMaterial.setTexture(null);
-           }*/
+           }
             length_s = parentLength_s;
             length_t = parentLength_t;
             textureID = parentTextureID;

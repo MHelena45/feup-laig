@@ -443,7 +443,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-        </component>
+        </component> 
 
         <component id="halfStardown">
             <transformation>
@@ -453,7 +453,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <primitiveref id="triangle" />
             </children>
@@ -466,7 +466,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <primitiveref id="triangle" />
             </children>

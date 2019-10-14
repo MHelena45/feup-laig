@@ -32,8 +32,8 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
+        this.lights1 = true;
         this.lights2 = true;
-        this.lights3 = true;
 
         this.selectedView = 0;
 
@@ -184,13 +184,13 @@ class XMLscene extends CGFscene {
             this.lights[i].setVisible(true);
             switch(i)
             {
-                case(2):
-                    if(this.lights2)
+                case(1):
+                    if(this.lights1)
                         this.lights[i].enable();
                     else this.lights[i].disable();
                 break;
-                case(3):
-                    if(this.lights3)
+                case(2):
+                    if(this.lights2)
                         this.lights[i].enable();
                     else this.lights[i].disable();
                 break;

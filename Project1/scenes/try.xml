@@ -76,10 +76,17 @@
 
     <textures>
         <texture id="sunTexture" file="scenes/images/sun.jpg" />
+        <texture id="shootingStar" file="scenes/images/shootingStar.jgp" />
+        <texture id="mercuryTexture" file="scenes/images/mercury.jpg" />
+        <texture id="venusTexture" file="scenes/images/venus.jpg" />
         <texture id="earthTexture" file="scenes/images/earth.jpg" />
         <texture id="moonTexture" file="scenes/images/moon.jpg" />
-        <texture id="planetTexture" file="scenes/images/planet.jpg" />
-        <texture id="ringJupiterTexture" file="scenes/images/ring_jupiter.jpg" />
+        <texture id="marsTexture" file="scenes/images/mars.jpg" />
+        <texture id="jupiterTexture" file="scenes/images/jupiter.jpg" />
+        <texture id="saturnTexture" file="scenes/images/saturn.jpg" />
+        <texture id="ringSaturnTexture" file="scenes/images/ring_saturn.jpg" />              
+        <texture id="uranusTexture" file="scenes/images/uranus.jpg" />
+        <texture id="neptuneTexture" file="scenes/images/neptune.jpg" />
     </textures>
 
     <materials>
@@ -207,11 +214,12 @@
             <materials>
                 <material id="backgroundMaterial" />
             </materials>
-            <texture id="none" />
+            <texture id="earthTexture" length_s="1.0" length_t="1.0" />
             <children>
+                <primitiveref id="cylinder" />
                 <componentref id="shootingStar" /> 
                 <componentref id="star" />
-                 <componentref id="star1" />
+                <componentref id="star1" />
                 <componentref id="solarSystem" />
                 <componentref id="telescope" />
             </children>
@@ -252,6 +260,7 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="legMaterial" />
             </materials>
             <texture id="none" />
             <children>
@@ -265,6 +274,7 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="legMaterial" />
             </materials>
             <texture id="none"/>
             <children>
@@ -279,6 +289,7 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="legMaterial" />
             </materials>
             <texture id="none"/>
             <children>
@@ -309,6 +320,7 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="telescopeMaterial" />
             </materials>
             <texture id="none" />
             <children>
@@ -323,6 +335,7 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="telescopeMaterial" />
             </materials>
             <texture id="none" />
             <children>            
@@ -337,11 +350,12 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="telescopeMaterial" />
             </materials>
             <texture id="none" />
-            <children>               
+            <children>
+                <componentref id="endOfLeg"/>
                 <primitiveref id="telescopeLegPrim" />                
-                 <componentref id="endOfLeg"/>
             </children>
         </component>
 
@@ -352,6 +366,7 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="telescopeMaterial" />
             </materials>
             <texture id="none"/>
             <children>
@@ -409,23 +424,23 @@
             <materials>
                 <material id="sunMaterial" />
             </materials>
-            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="shootingStar" length_s="1.0" length_t="1.0"/>
             <children>
-                <componentref id="halfStarabove" />
-                <componentref id="halfStardown" />
                 <componentref id="shootingStarPart" />
+                <componentref id="halfStarabove" />
+                <componentref id="halfStardown" />            
             </children>
         </component>
 
         <component id="shootingStarPart">
             <transformation>
-                <translate x="0" y="0.25" z="0" />
-                <scale x="0.5" y="0.4" z="0" />
+                <translate x="-0.1" y="0.28" z="0" />
+                <scale x="0.6" y="0.3" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -439,7 +454,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle" />
             </children>
@@ -452,7 +467,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle" />
             </children>
@@ -465,7 +480,7 @@
             <materials>
                 <material id="planetMaterial" />
             </materials>
-            <texture id="planetTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="mercuryTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <componentref id="sun" />
                 <componentref id="mercury" />                
@@ -500,7 +515,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="planetTexture" length_s="1.0" length_t="1.0" />
+            <texture id="none"/>
             <children>
                 <componentref id="mercuryPlanet" />
                 <componentref id="mercuryOrbit" />
@@ -516,7 +531,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="planetTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="mercuryTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -544,7 +559,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="planetTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="venusTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <componentref id="venusPlanet"/>
                 <componentref id="venusOrbit" />
@@ -553,14 +568,14 @@
 
         <component id="venusPlanet">
             <transformation>                
-                <translate x="0" y="15.5" z="-2" />
+                <translate x="0" y="15.7" z="-2" />
                 <rotate axis="x" angle="20" />  
                 <scale x="1.2" y="1.2" z="1.2" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="planetTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -645,7 +660,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="planetTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="marsTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <componentref id="marsPlanet" />
                 <componentref id="marsOrbit" />
@@ -661,7 +676,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="planetTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -689,7 +704,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="jupiterTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <componentref id="jupiterPlanet" />
                 <componentref id="jupiterOrbit" />
@@ -705,23 +720,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="planetTexture" length_s="1.0" length_t="1.0"/>
-            <children>
-                <primitiveref id="sphere" />
-                <componentref id="jupiterRing" />
-            </children>
-        </component>
-
-        <component id="jupiterRing">
-            <transformation>
-                <scale x="1.3" y="1.3" z="0.1" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="ringJupiterTexture" length_s="1.0" length_t="1.0" />
-            <children>
-                <primitiveref id="torus1" />
+            <texture id="inherit" />
+            <children>            
+                <primitiveref id="sphere" />                
             </children>
         </component>
 
@@ -747,7 +748,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="saturnTexture" length_s="1.0" length_t="1.0"/>/>
             <children>
                 <componentref id="saturnPlanet" />
                 <componentref id="saturnOrbit" />
@@ -762,9 +763,24 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="planetTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
+                <componentref id="saturnRing" />
+            </children>
+        </component>
+
+        <component id="saturnRing">
+            <transformation>
+                <rotate axis="x" angle="-40" /> 
+                <scale x="1.3" y="1.3" z="0.1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="ringSaturnTexture" length_s="1.0" length_t="1.0" />
+            <children>
+                <primitiveref id="torus1" />
             </children>
         </component>
 
@@ -789,7 +805,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="uranusTexture" length_s="1.0" length_t="1.0"/>/>
             <children>
                 <componentref id="uranusPlanet" />
                 <componentref id="uranusOrbit" />
@@ -804,7 +820,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="planetTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -832,7 +848,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none"/>
+            <texture id="neptuneTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="neptunePlanet" />
                 <componentref id="neptuneOrbit" />
@@ -847,7 +863,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="planetTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="sphere" />
             </children>

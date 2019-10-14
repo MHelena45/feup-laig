@@ -1437,12 +1437,12 @@ class MySceneGraph {
      * 
      */
     processNode(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t) {
-
+        //console.log(id);
         // Check if id exists
         var component = this.components[id];
         if (component == null) {
-            //this.log("ID DOES NOT EXIST!");
-            return;
+            this.onXMLMinorError("element without id! ");
+            return; //jumps that element
         }
 
        // get material
@@ -1450,8 +1450,7 @@ class MySceneGraph {
         var appliedMaterial;
         var childMaterialID;
       
-        if (materials[this.scene.getM() % materials.length] == "inherit") {
-            
+        if (materials[this.scene.getM() % materials.length] == "inherit") {            
             childMaterialID = parentMaterialID;
             appliedMaterial = this.materials[parentMaterialID];            
             appliedMaterial.apply();
@@ -1476,6 +1475,7 @@ class MySceneGraph {
             textureID = parentTextureID;
             
             appliedMaterial.setTexture(this.textures[textureID]);
+            appliedMaterial.apply();
        }            
         else if (textureID == "none"){
             //the texture apply is none but passes de ancestor texture to the son
@@ -1483,9 +1483,12 @@ class MySceneGraph {
             length_t = parentLength_t;
             textureID = parentTextureID;
             appliedMaterial.setTexture(null);
+            appliedMaterial.apply();
         }            
         else{
+            console.log(textureID);
             appliedMaterial.setTexture(this.textures[textureID]);
+            appliedMaterial.apply();
         }
             
         
@@ -1495,20 +1498,20 @@ class MySceneGraph {
         this.scene.multMatrix(matrix);
         // loop children
         for (var i = 0; i < component.childrenIDs.length; i++) {
-
             // if primitive
             if (this.primitives[component.childrenIDs[i]] != null) {
                 var scaleFactor = [length_s, length_t ];
-                //updateTexCoords(scaleFactor);
+                //this.primitives[component.childrenIDs[i]].updateTexCoords(scaleFactor);
                 this.primitives[component.childrenIDs[i]].display();
             }
-            else
+            else{
+               // console.log( childMaterialID);
                 this.processNode(component.childrenIDs[i],
                     childMaterialID,
                     component.textureID,
                     component.length_s,
                     component.length_t);
-            //console.log(component.childrenIDs.length);
+            }               
         }
         
         this.scene.popMatrix();

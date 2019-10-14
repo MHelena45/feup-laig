@@ -21,8 +21,8 @@ class MyInterface extends CGFinterface {
         this.gui = new dat.GUI();
 
         //Checkbox element to display Textures
-        this.gui.add(this.scene, 'lights2').name('Light of the Star');
-        this.gui.add(this.scene, 'lights3').name('Light of the Sun');
+        this.gui.add(this.scene, 'lights1').name('Light of the Star');
+        this.gui.add(this.scene, 'lights2').name('Light of the Sun');
         
 
         //Dropdown for environment

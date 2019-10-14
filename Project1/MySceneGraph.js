@@ -1465,7 +1465,7 @@ class MySceneGraph {
         var textureID = component.textureID;
         var length_s;
         var length_t;
-        //console.log(textureID);
+      
        if (textureID == "inherit"){
           /* if(parentTextureID == "none"){ //only if root doesn't have texture
             appliedMaterial.setTexture(null);
@@ -1500,14 +1500,12 @@ class MySceneGraph {
             // if primitive
             if (this.primitives[component.childrenIDs[i]] != null) {
                 var scaleFactor = [length_s, length_t ];
-                //this.primitives[component.childrenIDs[i]].updateTexCoords(scaleFactor);
                 this.primitives[component.childrenIDs[i]].display();
             }
             else{
-               // console.log( childMaterialID);
                 this.processNode(component.childrenIDs[i],
                     childMaterialID,
-                    component.textureID,
+                    textureID,
                     component.length_s,
                     component.length_t);
             }               

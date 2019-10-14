@@ -34,6 +34,7 @@ class XMLscene extends CGFscene {
 
         this.lights1 = true;
         this.lights2 = true;
+        this.lights3 = true;
 
         this.selectedView = 0;
 
@@ -194,11 +195,16 @@ class XMLscene extends CGFscene {
                         this.lights[i].enable();
                     else this.lights[i].disable();
                 break;
+                case(3):
+                    if(this.lights3)
+                        this.lights[i].enable();
+                    else this.lights[i].disable();
+                break;
                 default:
                     this.lights[i].enable();
                 break;
             }
-            
+            this.lights[i].update();
         }
     }
 }

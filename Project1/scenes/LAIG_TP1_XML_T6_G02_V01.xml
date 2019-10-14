@@ -3,8 +3,8 @@
 
     <views default="defaultCamera">
         <!-- view from the center -->
-        <perspective id="defaultCamera" near="0.1" far="100" angle="47">
-            <from x="-5" y="12" z="60" />
+        <perspective id="defaultCamera" near="0.1" far="100" angle="50">
+            <from x="-5" y="13" z="60" />
             <to x="0" y="15" z="0" />
         </perspective> 
 
@@ -46,37 +46,36 @@
 
         <!-- ligth coming for the shooting star -->
         <spot id="starLight" enabled="1" angle="40" exponent="1">        
-            <location x="-30" y="20" z="12" w="1.0" />
+            <location x="-30" y="20" z="10.5" w="1.0" />
             <target x="-30" y="20" z="10" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="0" linear="1.0" quadratic="0" /> 
         </spot>
+
+        <!-- ligth near the telescope  -->
+        <omni id="telescopeLight" enabled="1">
+            <location x="-34" y="1.2" z="12" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0" quadratic="0" /> 
+        </omni>
         
-        <!-- ligth coming for the sun -->
+        <!-- ligth coming for the sun --> 
         <omni id="sunLight" enabled="1">
             <location x="0" y="20" z="2.1" w="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="1.0" quadratic="0" /> 
-        </omni>
-
-        <!-- ligth near the telescope  -->
-        <omni id="telescopeLight" enabled="1">
-            <location x="-26" y="1.2" z="12" w="1.0" />
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="1" linear="0" quadratic="0" /> 
-        </omni>
+            <attenuation constant="1.0" linear="0" quadratic="0" /> 
+        </omni>       
         
     </lights>
 
     <textures>
         <texture id="sunTexture" file="scenes/images/sun.jpg" />
-        <texture id="shootingStar" file="scenes/images/shootingStar.jgp" />
         <texture id="mercuryTexture" file="scenes/images/mercury.jpg" />
         <texture id="venusTexture" file="scenes/images/venus.jpg" />
         <texture id="earthTexture" file="scenes/images/earth.jpg" />
@@ -126,6 +125,13 @@
             <specular r="0" g="0" b="0" a="0" />
         </material>
 
+        <material id="orbitMaterial1" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.01" g="0.01" b="0.1" a="0.05" />
+            <diffuse r="0" g="0" b="0" a="0" />
+            <specular r="0" g="0" b="0" a="0" />
+        </material>
+
         <!-- difuse and shiny material to simulate black metal -->
         <material id="telescopeMaterial" shininess="10">
             <emission r="0.1" g="0.1" b="0.1" a="1.0" />
@@ -146,6 +152,13 @@
             <emission r="0" g="0" b="0" a="1.0" />
             <ambient r="0.05" g="0.05" b="0.05" a="0.05" />
             <diffuse r="0" g="0" b="0" a="0" />
+            <specular r="0" g="0" b="0" a="0" />
+        </material>
+
+        <material id="whiteMaterial" shininess="20">
+            <emission r="1.0" g="1.0" b="1.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0" g="0" b="0" a="0" />
         </material>
 
@@ -353,8 +366,8 @@
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="endOfLeg"/>
-                <primitiveref id="telescopeLegPrim" />                
+                <primitiveref id="telescopeLegPrim" />              
+                <componentref id="endOfLeg"/>             
             </children>
         </component>
 
@@ -433,13 +446,14 @@
 
         <component id="shootingStarPart">
             <transformation>
-                <translate x="-0.1" y="0.28" z="0" />
+                <translate x="-0.1" y="0.28" z="-0.01" />
                 <scale x="0.6" y="0.3" z="0" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="whiteMaterial" />
+                <material id="sunMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -544,6 +558,8 @@
             </transformation>
             <materials>
                 <material id="orbitMaterial" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
@@ -588,6 +604,8 @@
             </transformation>
             <materials>
                 <material id="orbitMaterial" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
@@ -645,6 +663,8 @@
             </transformation>
             <materials>
                 <material id="orbitMaterial" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
@@ -689,10 +709,13 @@
             </transformation>
             <materials>
                 <material id="orbitMaterial" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
                 <primitiveref id="torus" />
+                <material id="whiteMaterial" />
             </children>
         </component>
 
@@ -733,10 +756,12 @@
             </transformation>
             <materials>
                 <material id="orbitMaterial" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="torus" />                
             </children>
         </component>
 
@@ -790,6 +815,8 @@
             </transformation>
             <materials>
                 <material id="orbitMaterial" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
@@ -833,6 +860,8 @@
             </transformation>
             <materials>
                 <material id="orbitMaterial" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
@@ -876,6 +905,8 @@
             </transformation>
             <materials>
                 <material id="orbitMaterial" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>

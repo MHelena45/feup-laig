@@ -1432,12 +1432,11 @@ class MySceneGraph {
 
     }
 
-
     /**
      * 
      */
     processNode(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t) {
-        console.log(id);
+        
         // Check if id exists
         var component = this.components[id];
         if (component == null) {
@@ -1453,12 +1452,10 @@ class MySceneGraph {
         if (materials[this.scene.getM() % materials.length] == "inherit") {            
             childMaterialID = parentMaterialID;
             appliedMaterial = this.materials[parentMaterialID];            
-            appliedMaterial.apply();
         }
         else {
             childMaterialID = materials[this.scene.getM() % materials.length];
             appliedMaterial = this.materials[materials[this.scene.getM() % materials.length]];
-            appliedMaterial.apply();
         }
 
         // get texture
@@ -1472,24 +1469,19 @@ class MySceneGraph {
            }
             length_s = parentLength_s;
             length_t = parentLength_t;
-            textureID = parentTextureID;
-            
+            textureID = parentTextureID;            
             appliedMaterial.setTexture(this.textures[textureID]);
-            appliedMaterial.apply();
        }            
         else if (textureID == "none"){
-            //the texture apply is none but passes de ancestor texture to the son
+            //the texture apply is none but passes de closest ancestor texture defined to the son
             length_s = parentLength_s;
             length_t = parentLength_t;
             textureID = parentTextureID;
             appliedMaterial.setTexture(null);
-            appliedMaterial.apply();
         }            
-        else{
-            appliedMaterial.setTexture(this.textures[textureID]);
-            appliedMaterial.apply();
-        }
-            
+        else appliedMaterial.setTexture(this.textures[textureID]);           
+        
+        appliedMaterial.apply();
         
         // get matrix
         var matrix = component.transformationMatrix;

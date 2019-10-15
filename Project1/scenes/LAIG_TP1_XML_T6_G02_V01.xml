@@ -125,6 +125,7 @@
             <specular r="0" g="0" b="0" a="0" />
         </material>
 
+        <!-- different blue -->
         <material id="orbitMaterial1" shininess="10">
             <emission r="0" g="0" b="0" a="1.0" />
             <ambient r="0.01" g="0.01" b="0.1" a="0.05" />
@@ -350,9 +351,9 @@
                 <material id="telescopeMaterial" />
             </materials>
             <texture id="none" />
-            <children>            
-                <primitiveref id="telescopeLegPrim" />
+            <children>        
                 <componentref id="endOfLeg"/>
+                <primitiveref id="telescopeLegPrim" />
             </children>
         </component>
 
@@ -406,7 +407,7 @@
                 <translate x="20" y="20" z="27.6" />
             </transformation>
             <materials>
-                <material id="sunMaterial" />
+                <material id="whiteMaterial" />
             </materials>
             <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
             <children>
@@ -420,7 +421,7 @@
                 <translate x="15" y="17" z="25" />
             </transformation>
             <materials>
-                <material id="sunMaterial" />
+                <material id="whiteMaterial" />
             </materials>
             <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
             <children>
@@ -434,9 +435,9 @@
                 <transformationref id="starTransform" />
             </transformation>
             <materials>
-                <material id="sunMaterial" />
+                <material id="whiteMaterial" />
             </materials>
-            <texture id="shootingStar" length_s="1.0" length_t="1.0"/>
+            <texture id="none"/>
             <children>
                 <componentref id="shootingStarPart" />
                 <componentref id="halfStarabove" />
@@ -478,7 +479,7 @@
                 <transformationref id="identityTransform"/>
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="whiteMaterial" />
             </materials>
             <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
             <children>
@@ -689,8 +690,6 @@
             </transformation>
             <materials>
                 <material id="orbitMaterial" />
-                <material id="whiteMaterial" />
-                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
@@ -713,6 +712,8 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
@@ -728,6 +729,8 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
@@ -742,6 +745,8 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />                
             </materials>
             <texture id="none"/>
             <children>
@@ -757,11 +762,12 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />                
             </materials>
             <texture id="none"/>
             <children>
                 <primitiveref id="torus" />
-                <material id="whiteMaterial" />
             </children>
         </component>
 
@@ -773,6 +779,8 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
@@ -787,6 +795,8 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
@@ -802,6 +812,8 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>
@@ -817,6 +829,8 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
             </materials>
             <texture id="none"/>
             <children>

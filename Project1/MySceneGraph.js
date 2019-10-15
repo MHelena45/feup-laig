@@ -691,7 +691,8 @@ class MySceneGraph {
             var shininess = this.reader.getFloat(children[i], 'shininess');
             if (!(shininess != null && !isNaN(shininess)))
                 return "unable to parse 'shininess' of the material for ID = " + materialID;
-
+            if(shininess <= 0)
+                return "'shininess' is not positive for the material with ID = " + materialID;
             grandChildren = children[i].children;
 
             var parsedMaterial = new CGFappearance(this.scene);
@@ -1439,17 +1440,53 @@ class MySceneGraph {
         
         // Check if id exists
         var component = this.components[id];
-        if (component == null) {
+        if (this.components[id] == null) {
             this.onXMLMinorError("element without id! ");
             return; //jumps that element
         }
+        var childAndTextureID = this.getTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
+      
+        var childMaterialID = childAndTextureID[0];
+        var textureID = childAndTextureID[1];    
+      
+        // get matrix
+        var matrix = component.transformationMatrix;
+        this.scene.pushMatrix();
+        this.scene.multMatrix(matrix);
+        // loop children
+        for (var i = 0; i < component.childrenIDs.length; i++) {
+            // if primitive
+            if (this.primitives[component.childrenIDs[i]] != null) {
+                //var scaleFactor = [length_s, length_t ];
+                //the line down deals with nodes with components and primitives
+                this.getTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
+                this.primitives[component.childrenIDs[i]].display();
+            }
+            else{
+                this.processNode(component.childrenIDs[i],
+                    childMaterialID,
+                    textureID,
+                    component.length_s,
+                    component.length_t);
+            }               
+        }
+        
+        this.scene.popMatrix();
 
-       // get material
+    }
+
+    getTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t){
+        var component = this.components[id];
+        if(component == null)
+            component = this.primitives[id];
         var materials = component.materialIDs;
         var appliedMaterial;
         var childMaterialID;
       
-        if (materials[this.scene.getM() % materials.length] == "inherit") {            
+        if (materials[this.scene.getM() % materials.length] == "inherit") {    
+            if(parentMaterialID == "inherit")    {
+                console.log(dam);
+            }    
             childMaterialID = parentMaterialID;
             appliedMaterial = this.materials[parentMaterialID];            
         }
@@ -1471,6 +1508,7 @@ class MySceneGraph {
             length_t = parentLength_t;
             textureID = parentTextureID;            
             appliedMaterial.setTexture(this.textures[textureID]);
+            //appliedMaterial.setTextureWrap('REPEAT', 'REPEAT');
        }            
         else if (textureID == "none"){
             //the texture apply is none but passes de closest ancestor texture defined to the son
@@ -1479,32 +1517,14 @@ class MySceneGraph {
             textureID = parentTextureID;
             appliedMaterial.setTexture(null);
         }            
-        else appliedMaterial.setTexture(this.textures[textureID]);           
+        else{
+           // appliedMaterial.setTextureWrap('REPEAT', 'REPEAT');
+            appliedMaterial.setTexture(this.textures[textureID]);              
+        }         
         
         appliedMaterial.apply();
-        
-        // get matrix
-        var matrix = component.transformationMatrix;
-        this.scene.pushMatrix();
-        this.scene.multMatrix(matrix);
-        // loop children
-        for (var i = 0; i < component.childrenIDs.length; i++) {
-            // if primitive
-            if (this.primitives[component.childrenIDs[i]] != null) {
-                var scaleFactor = [length_s, length_t ];
-                this.primitives[component.childrenIDs[i]].display();
-            }
-            else{
-                this.processNode(component.childrenIDs[i],
-                    childMaterialID,
-                    textureID,
-                    component.length_s,
-                    component.length_t);
-            }               
-        }
-        
-        this.scene.popMatrix();
 
+        return [childMaterialID, textureID];
     }
 
     incrementM(){

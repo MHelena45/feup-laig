@@ -10,7 +10,6 @@ class XMLscene extends CGFscene {
      */
     constructor(myinterface) {
         super();
-
         this.interface = myinterface;
     }
 
@@ -32,7 +31,7 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
-        this.lights1 = true;
+        this.lights1 = true; //checkbox
         this.lights2 = true;
         this.lights3 = true;
 
@@ -44,8 +43,7 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);   
         
-        this.mClick = false;
-             
+        this.mClick = false; //used to now when M/m is being press           
     }
 
     /**
@@ -60,7 +58,8 @@ class XMLscene extends CGFscene {
         this.interface.setActiveCamera(this.camera);
     }
 
-    updateAppliedMode() {
+    //used for the dropbox
+    updateView() {
         this.views = this.graph.getViews();
         this.views_ID = this.graph.getViewsID();
         this.camera = this.views[this.views_ID[this.selectedView]];       
@@ -71,7 +70,7 @@ class XMLscene extends CGFscene {
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
-        var i = 0;
+        var i = 0; 
         // Lights index.
 
         // Reads the lights from the scene graph.
@@ -81,16 +80,23 @@ class XMLscene extends CGFscene {
 
             if (this.graph.lights.hasOwnProperty(key)) {
                 var light = this.graph.lights[key];
-
+  
                 this.lights[i].setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
                 this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
                 this.lights[i].setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
                 this.lights[i].setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
 
-                if (light[1] == "spot") {
-                    this.lights[i].setSpotCutOff(light[6]);
-                    this.lights[i].setSpotExponent(light[7]);
-                    this.lights[i].setSpotDirection(light[8][0], light[8][1], light[8][2]);
+                if(light[6][0] == 1)
+                    this.lights[i].setConstantAttenuation(1);
+                if(light[6][1] == 1)
+                    this.lights[i].setLinearAttenuation(1);
+                if(light[6][2] == 1)
+                    this.lights[i].setQuadraticAttenuation(1);
+  
+                if (light[1] == "spot") {              
+                    this.lights[i].setSpotCutOff(light[7]);
+                    this.lights[i].setSpotExponent(light[8]);
+                    this.lights[i].setSpotDirection(light[9][0], light[9][1], light[9][2]);
                 }
 
                 this.lights[i].setVisible(true);
@@ -111,6 +117,7 @@ class XMLscene extends CGFscene {
         this.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.setShininess(10.0);
     }
+
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
@@ -180,6 +187,7 @@ class XMLscene extends CGFscene {
         this.popMatrix();
         // ---- END Background, camera and axis setup
     }
+
     displayLights(){
         for (var i = 0; i < this.lights.length; i++) {
             this.lights[i].setVisible(true);

@@ -23,10 +23,10 @@ class MyInterface extends CGFinterface {
         //Checkbox element to display Textures
         this.gui.add(this.scene, 'lights1').name('Light of the star');
         this.gui.add(this.scene, 'lights2').name('Light telescope');
-        this.gui.add(this.scene, 'lights1').name('Light of the sun');
+        this.gui.add(this.scene, 'lights3').name('Light of the sun');
 
         //Dropdown for environment
-        this.gui.add(this.scene, 'selectedView', this.scene.modeIds).name('Selected View').onChange(this.scene.updateAppliedMode.bind(this.scene));
+        this.gui.add(this.scene, 'selectedView', this.scene.modeIds).name('Selected View').onChange(this.scene.updateView.bind(this.scene));
 
         // add a group of controls (and open/expand by defult)
 

@@ -136,6 +136,7 @@ class MySceneGraph {
             if ((error = this.parseLights(nodes[index])) != null)
                 return error;
         }
+
         // <textures>
         if ((index = nodeNames.indexOf("textures")) == -1)
             return "tag <textures> missing";
@@ -503,72 +504,27 @@ class MySceneGraph {
 
             for (var j = 0; j < attributeNames.length; j++) {
                 var attributeIndex = nodeNames.indexOf(attributeNames[j]);
+                var values;
 
                 if (attributeIndex != -1) {
                     if (attributeTypes[j] == "position") {
-                        var aux = this.parseCoordinates4D(grandChildren[attributeIndex], "light position for ID" + lightId);
-
+                        values = this.parseCoordinates4D(grandChildren[attributeIndex], "light position for ID" + lightId);
                     }
                     else if (attributeTypes[j] == "numbers") {         //check if attribute attenuation is 0 or greater, not null and numbers               
-                        var constant = this.reader.getFloat(grandChildren[attributeIndex], 'constant');
-                        var OneAttenuation = false;
-                        if (constant != null) {
-                            if (isNaN(constant))
-                                return "constant in attenuation is a non numeric value on the light block for ID = " + lightId;
-                            else if (!(constant == 0 || constant == 1))
-                                return "constant attenuation is a valid numeric value on the light block for ID = " + lightId;
-                            else if (constant == 1)
-                                OneAttenuation = true;
-                        }
-                        else
-                            return "unable to parse attenuation constant of the light position for ID = " + lightId;
-
-                        var linear = this.reader.getFloat(grandChildren[attributeIndex], 'linear');
-                        if (linear != null) {
-                            if (isNaN(linear))
-                                return "linear in attenuation is a non numeric value on the light block for ID = " + lightId;
-                            else if (!(linear == 0 || linear == 1))
-                                return "linear attenuation is a valid numeric value on the light block for ID = " + lightId;
-                            else if (OneAttenuation && linear == 1)
-                                return "more than one attenuation is define on the light block for ID = " + lightId;
-                            else if (linear == 1)
-                                OneAttenuation = true;
-                        }
-                        else
-                            return "unable to parse attenuation linear of the light position for ID = " + lightId;
-
-                        var quadratic = this.reader.getFloat(grandChildren[attributeIndex], 'quadratic');
-                        if (quadratic != null) {
-                            if (isNaN(quadratic))
-                                return "quadratic in attenuation is a non numeric value on the light block for ID = " + lightId;
-                            else if (!(quadratic == 0 || quadratic == 1))
-                                return "quadratic attenuation is a negative numeric value on the light block for ID = " + lightId;
-                            else if (OneAttenuation && quadratic == 1)
-                                return "more than one attenuation is define on the light block for ID = " + lightId;
-                            else if (quadratic == 1)
-                                OneAttenuation = true;
-                        }
-                        else
-                            return "unable to parse attenuation quadratic of the light position for ID = " + lightId;
-
-                        if (!OneAttenuation)
-                            return "no attenuation is define on the light block for ID = " + lightId;
-
-                        global.push(...[constant, linear, quadratic]);
+                        values = this.parseAttenuation(grandChildren[attributeIndex], lightId);                      
                     }
                     else {
-                        var aux = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID" + lightId);
+                        values = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID" + lightId);
                     }
 
-                    if (!Array.isArray(aux))
-                        return aux;
+                    if (!Array.isArray(values)) //error in the values
+                        return values;
 
-                    global.push(aux);
+                    global.push(values);
                 }
                 else
                     return "light " + attributeNames[i] + " undefined for ID = " + lightId;
             }
-
 
             // Gets the additional attributes of the spot light
             if (children[i].nodeName == "spot") {
@@ -608,6 +564,59 @@ class MySceneGraph {
 
         this.log("Parsed lights");
         return null;
+    }
+
+    /**
+     * Parse the attenuation of a light
+     * @param {block element} node
+     * @param {id of the ligth in case of error} lightId
+     */
+    parseAttenuation(node, lightId){
+        var constant = this.reader.getFloat( node, 'constant');
+        var OneAttenuation = false;
+        if (constant != null) {
+            if (isNaN(constant))
+                return "constant in attenuation is a non numeric value 0n the light block for ID = " + lightId;
+            else if (!(constant == 0 || constant == 1))
+                return "constant attenuation is a valid numeric value on the light block for ID = " + lightId;
+            else if (constant == 1)
+                OneAttenuation = true;
+        }
+        else
+            return "unable to parse attenuation constant of the light position for ID = " + lightId;
+
+        var linear = this.reader.getFloat( node, 'linear');
+        if (linear != null) {
+            if (isNaN(linear))
+                return "linear in attenuation is a non numeric value on the light block for ID = " + lightId;
+            else if (!(linear == 0 || linear == 1))
+                return "linear attenuation is a valid numeric value on the light block for ID = " + lightId;
+            else if (OneAttenuation && linear == 1)
+                return "more than one attenuation is define on the light block for ID = " + lightId;
+            else if (linear == 1)
+                OneAttenuation = true;
+        }
+        else
+            return "unable to parse attenuation linear of the light position for ID = " + lightId;
+
+        var quadratic = this.reader.getFloat(node, 'quadratic');
+        if (quadratic != null) {
+            if (isNaN(quadratic))
+                return "quadratic in attenuation is a non numeric value on the light block for ID = " + lightId;
+            else if (!(quadratic == 0 || quadratic == 1))
+                return "quadratic attenuation is a negative numeric value on the light block for ID = " + lightId;
+            else if (OneAttenuation && quadratic == 1)
+                return "more than one attenuation is define on the light block for ID = " + lightId;
+            else if (quadratic == 1)
+                OneAttenuation = true;                            
+        }
+        else
+            return "unable to parse attenuation quadratic of the light position for ID = " + lightId;
+
+        if (!OneAttenuation)
+            return "no attenuation is define on the light block for ID = " + lightId;
+        
+        return [constant, linear, quadratic];        
     }
 
     /**
@@ -1126,7 +1135,6 @@ class MySceneGraph {
         var transformationMatrix = mat4.create(); // creates identity matrix
 
         // Any number of transformations
-        //debugger;
         for (var i = 0; i < children.length; i++) {
 
             if (children[i].nodeName != "transformationref" && children[i].nodeName != "translate" &&
@@ -1444,10 +1452,12 @@ class MySceneGraph {
             this.onXMLMinorError("element without id! ");
             return; //jumps that element
         }
-        var childAndTextureID = this.getTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
+        var childAndTextureID = this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
       
         var childMaterialID = childAndTextureID[0];
-        var textureID = childAndTextureID[1];    
+        var textureID = childAndTextureID[1];  
+        var length_s = childAndTextureID[2];
+        var length_t = childAndTextureID[3];
       
         // get matrix
         var matrix = component.transformationMatrix;
@@ -1457,17 +1467,18 @@ class MySceneGraph {
         for (var i = 0; i < component.childrenIDs.length; i++) {
             // if primitive
             if (this.primitives[component.childrenIDs[i]] != null) {
-                //var scaleFactor = [length_s, length_t ];
                 //the line down deals with nodes with components and primitives
-                this.getTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
+                this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
+                //TODO: updateTexCoords(length_s, length_t )
                 this.primitives[component.childrenIDs[i]].display();
             }
-            else{
+            else //if component
+            { 
                 this.processNode(component.childrenIDs[i],
                     childMaterialID,
                     textureID,
-                    component.length_s,
-                    component.length_t);
+                    length_s,
+                    length_t);
             }               
         }
         
@@ -1475,18 +1486,15 @@ class MySceneGraph {
 
     }
 
-    getTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t){
+    setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t){
         var component = this.components[id];
-        if(component == null)
+        if(component == null) //check if is primitive, if doesn't exits does gets this far (checked before)
             component = this.primitives[id];
         var materials = component.materialIDs;
         var appliedMaterial;
         var childMaterialID;
       
         if (materials[this.scene.getM() % materials.length] == "inherit") {    
-            if(parentMaterialID == "inherit")    {
-                console.log(dam);
-            }    
             childMaterialID = parentMaterialID;
             appliedMaterial = this.materials[parentMaterialID];            
         }
@@ -1497,11 +1505,12 @@ class MySceneGraph {
 
         // get texture
         var textureID = component.textureID;
-        var length_s;
-        var length_t;
+        var length_s = component.length_s;
+        var length_t = component.length_t;
       
        if (textureID == "inherit"){
-           if(parentTextureID == "none"){ //only if root doesn't have texture
+           if(parentTextureID == "none"){ //only if any ancestor has a texture
+            this.onXMLMinorError("inherit a texture not defined on " + component);
             appliedMaterial.setTexture(null);
            }
             length_s = parentLength_s;
@@ -1511,7 +1520,7 @@ class MySceneGraph {
             //appliedMaterial.setTextureWrap('REPEAT', 'REPEAT');
        }            
         else if (textureID == "none"){
-            //the texture apply is none but passes de closest ancestor texture defined to the son
+            //the texture apply is none but passes the closest ancestor texture defined to the son
             length_s = parentLength_s;
             length_t = parentLength_t;
             textureID = parentTextureID;
@@ -1524,7 +1533,7 @@ class MySceneGraph {
         
         appliedMaterial.apply();
 
-        return [childMaterialID, textureID];
+        return [childMaterialID, textureID, length_s, length_t];
     }
 
     incrementM(){

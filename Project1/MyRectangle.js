@@ -63,12 +63,12 @@ class MyRectangle extends CGFobject {
 	 * Updates the list of texture coordinates of the rectangle
 	 * @param {Array} scaleFactor - Array of texture coordinates
 	 */
-	updateTexCoords(scaleFactor) {		
+	updateTexCoords(length_u, length_v) {		
 		this.texCoords = [		
-			0, 1/scaleFactor[1],
-			1/scaleFactor[0], 1/scaleFactor[1],
+			0, 1/length_v,
+			1/length_u, 1/length_v,
 			0, 0,
-			1/scaleFactor[0],0
+			1/length_u,0
 		];	
 		this.updateTexCoordsGLBuffers();
 	}

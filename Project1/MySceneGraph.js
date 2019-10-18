@@ -1469,7 +1469,7 @@ class MySceneGraph {
             if (this.primitives[component.childrenIDs[i]] != null) {
                 //the line down deals with nodes with components and primitives
                 this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
-                //TODO: updateTexCoords(length_s, length_t )
+                this.primitives[component.childrenIDs[i]].updateTexCoords(length_s, length_t);
                 this.primitives[component.childrenIDs[i]].display();
             }
             else //if component
@@ -1517,7 +1517,6 @@ class MySceneGraph {
             length_t = parentLength_t;
             textureID = parentTextureID;            
             appliedMaterial.setTexture(this.textures[textureID]);
-            //appliedMaterial.setTextureWrap('REPEAT', 'REPEAT');
        }            
         else if (textureID == "none"){
             //the texture apply is none but passes the closest ancestor texture defined to the son
@@ -1526,10 +1525,9 @@ class MySceneGraph {
             textureID = parentTextureID;
             appliedMaterial.setTexture(null);
         }            
-        else{
-           // appliedMaterial.setTextureWrap('REPEAT', 'REPEAT');
+        else
             appliedMaterial.setTexture(this.textures[textureID]);              
-        }         
+        
         
         appliedMaterial.apply();
 

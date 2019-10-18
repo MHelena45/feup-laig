@@ -143,7 +143,6 @@ class XMLscene extends CGFscene {
 		} else if(this.mClick) { /*increments when button is released */
             this.mClick = false;
             CLICK_M++;
-            console.log("M was released");
         }
     }
     /**

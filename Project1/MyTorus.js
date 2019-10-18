@@ -3,8 +3,8 @@
  * @constructor
  * @param scene - Reference to MyScene object
  * @param id - Objects id
- * @param innerRadius - radius of the base (Z=0)
- * @param outerRadius - radius of the top (Z = height)
+ * @param inner - radius of the base (Z=0)
+ * @param outer - radius of the top (Z = height)
  * @param slices - number of divisions around the circumference
  * @param loops - number of divisions along the Z direction
  *
@@ -44,7 +44,6 @@ class MyTorus extends CGFobject {
                     Math.sin(i * theta)
                 );
 
-                // Not yet tested
                 this.texCoords.push(
                     i * 1 / this.slices,
                     j * 1 / this.loops
@@ -71,13 +70,13 @@ class MyTorus extends CGFobject {
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
-    
-    updateBuffers(complexity){
-        // this.slices = 3 + Math.round(9 * complexity); //complexity varies 0-1, so slices varies 3-12
-        // reinitialize buffers
-        this.initBuffers();
-        this.initNormalVizBuffers();
-    }
+          
+    /**
+     * In this work doesn't have to be implemented
+     * @param {value of the length_u in texture} length_u 
+     * @param {value of the length_v in texture} length_v 
+     */
+    updateTexCoords(length_u, length_v) {	   }
 }
 
 

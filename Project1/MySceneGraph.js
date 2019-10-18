@@ -590,8 +590,12 @@ class MySceneGraph {
         if (constant != null) {
             if (isNaN(constant))
                 return "constant in attenuation is a non numeric value 0n the light block for ID = " + lightId;
-            else if (!(constant == 0 || constant == 1))
-                return "constant attenuation is a valid numeric value on the light block for ID = " + lightId;
+            else if (!(constant == 0 || constant == 1)){
+                this.onXMLMinorError("constant attenuation must be 0 or 1 on the light block for ID = " + lightId);
+                if(constant < 0)
+                    constant = 0; //value of constant attenuation can't be negative
+                    //if constant is greater than 0 the value used is the value given
+            }
             else if (constant == 1)
                 OneAttenuation = true;
         }
@@ -602,10 +606,14 @@ class MySceneGraph {
         if (linear != null) {
             if (isNaN(linear))
                 return "linear in attenuation is a non numeric value on the light block for ID = " + lightId;
-            else if (!(linear == 0 || linear == 1))
-                return "linear attenuation is a valid numeric value on the light block for ID = " + lightId;
+            else if (!(linear == 0 || linear == 1)){
+                this.onXMLMinorError("linear attenuation must be 0 or 1 on the light block for ID = " + lightId);
+                if(linear < 0)
+                    linear = 0; //value of attenuation can't be negative
+                //if linear is greater than 0 the value used is the value given
+            }                
             else if (OneAttenuation && linear == 1)
-                return "more than one attenuation is define on the light block for ID = " + lightId;
+                this.onXMLMinorError("more than one attenuation is define on the light block for ID = " + lightId);
             else if (linear == 1)
                 OneAttenuation = true;
         }
@@ -617,9 +625,12 @@ class MySceneGraph {
             if (isNaN(quadratic))
                 return "quadratic in attenuation is a non numeric value on the light block for ID = " + lightId;
             else if (!(quadratic == 0 || quadratic == 1))
-                return "quadratic attenuation is a negative numeric value on the light block for ID = " + lightId;
+                this.onXMLMinorError("quadratic attenuation must be 0 or 1 on the light block for ID = " + lightId);
+                if(quadratic < 0)
+                    quadratic = 0; //value of attenuation can't be negative
+                //if quadratic is greater than 0 the value used is the value given
             else if (OneAttenuation && quadratic == 1)
-                return "more than one attenuation is define on the light block for ID = " + lightId;
+                this.onXMLMinorError("more than one attenuation is define on the light block for ID = " + lightId);
             else if (quadratic == 1)
                 OneAttenuation = true;                            
         }
@@ -1597,6 +1608,11 @@ class MySceneGraph {
 
     /**
      * 
+     * @param {component} id 
+     * @param {Material of the closest ancestor defined } parentMaterialID 
+     * @param {Texture of the closest ancestor defined} parentTextureID 
+     * @param {length_s of the closest ancestor defined} parentLength_s 
+     * @param {length_t of the closest ancestor defined} parentLength_t 
      */
     processNode(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t) {
         
@@ -1621,9 +1637,9 @@ class MySceneGraph {
         for (var i = 0; i < component.childrenIDs.length; i++) {
             // if primitive
             if (this.primitives[component.childrenIDs[i]] != null) {
-                //the line down deals with nodes with components and primitives
+                //the line below deals with nodes with components and primitives
                 this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
-                //TODO: updateTexCoords(length_s, length_t )
+                this.primitives[component.childrenIDs[i]].updateTexCoords(length_s, length_t);
                 this.primitives[component.childrenIDs[i]].display();
             }
             else //if component
@@ -1670,9 +1686,12 @@ class MySceneGraph {
            }
             length_s = parentLength_s;
             length_t = parentLength_t;
-            textureID = parentTextureID;            
+            textureID = parentTextureID;   
+            /*the line below is useful when (length_s || length_t) < 1
+            if length_s and length_t are greater than 1, the texture won't repeat
+            */  
+            appliedMaterial.setTextureWrap('REPEAT','REPEAT' );     
             appliedMaterial.setTexture(this.textures[textureID]);
-            //appliedMaterial.setTextureWrap('REPEAT', 'REPEAT');
        }            
         else if (textureID == "none"){
             //the texture apply is none but passes the closest ancestor texture defined to the son
@@ -1682,16 +1701,13 @@ class MySceneGraph {
             appliedMaterial.setTexture(null);
         }            
         else{
-           // appliedMaterial.setTextureWrap('REPEAT', 'REPEAT');
-            appliedMaterial.setTexture(this.textures[textureID]);              
-        }         
-        
+            appliedMaterial.setTextureWrap('REPEAT','REPEAT' );
+            appliedMaterial.setTexture(this.textures[textureID]);   
+        }
+                               
         appliedMaterial.apply();
 
         return [childMaterialID, textureID, length_s, length_t];
     }
 
-    incrementM(){
-        clickM++;
-    }
 }

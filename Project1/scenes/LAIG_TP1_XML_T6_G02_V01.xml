@@ -41,7 +41,7 @@
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="1" quadratic="0" /> 
+            <attenuation constant="0" linear="0" quadratic="1.0" /> 
         </omni>
 
         <!-- ligth coming for the shooting star -->
@@ -69,7 +69,7 @@
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="1.0" linear="0" quadratic="0" /> 
+            <attenuation constant="0" linear="1.0" quadratic="0" /> 
         </omni>       
        
     </lights>
@@ -188,7 +188,7 @@
         </primitive>
 
         <primitive id="triangle">
-            <triangle x1="0.5" y1="0.8" z1="0" x2="0" y2="0" z2="0" x3="1" y3="0" z3="0" />
+            <triangle x1="0" y1="0" z1="0" x2="1" y2="0" z2="0" x3="0.5" y3="0.8" z3="0"/>
         </primitive>
         
         <primitive id="cylinder">
@@ -228,7 +228,7 @@
             <materials>
                 <material id="backgroundMaterial" />
             </materials>
-            <texture id="none" />
+            <texture id="none"/>
             <children>
                 <componentref id="shootingStar" /> 
                 <componentref id="star" />

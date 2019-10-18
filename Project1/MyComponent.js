@@ -4,7 +4,6 @@
 class MyComponent {
 	constructor(componentID) {
                 this.componentID = componentID;
-
                 this.transformationMatrix;
                 this.materialIDs = [];
                 this.textureID;

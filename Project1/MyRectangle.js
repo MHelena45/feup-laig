@@ -13,6 +13,9 @@ class MyRectangle extends CGFobject {
 		this.y1 = y1;
 		this.y2 = y2;
 
+		this.v = x2 - x1;
+		this.u = y2 - y1;
+
 		this.initBuffers();
 	}
 	
@@ -47,7 +50,6 @@ class MyRectangle extends CGFobject {
 		v
         t
         */
-
 		this.texCoords = [
 			0, 1,
 			1, 1,
@@ -61,14 +63,15 @@ class MyRectangle extends CGFobject {
 	/**
 	 * @method updateTexCoords
 	 * Updates the list of texture coordinates of the rectangle
-	 * @param {Array} scaleFactor - Array of texture coordinates
-	 */
-	updateTexCoords(scaleFactor) {		
+     * @param {value of the length_u in texture} length_u 
+     * @param {value of the length_v in texture} length_v 
+     */
+	updateTexCoords(length_u, length_v) {
 		this.texCoords = [		
-			0, 1/scaleFactor[1],
-			1/scaleFactor[0], 1/scaleFactor[1],
+			0, this.v/length_v,
+			this.u/length_u, this.v/length_v,
 			0, 0,
-			1/scaleFactor[0],0
+			this.u/length_u,0
 		];	
 		this.updateTexCoordsGLBuffers();
 	}

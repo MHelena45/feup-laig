@@ -589,7 +589,7 @@
                 <scale x="0.4" y="0.4" z="0.4" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="moonMaterial" />
             </materials>
             <texture id="moonTexture" length_s="1.0" length_t="1.0"/>
             <children>

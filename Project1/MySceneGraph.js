@@ -195,6 +195,15 @@ class MySceneGraph {
             //Parse components block
             if ((error = this.parseComponents(nodes[index])) != null)
                 return error;
+            
+            this.verifyComponents();
+
+            // detect for cyclical graphs
+            if (this.detectRecursion()) {
+                error = "recursion detected";
+                return error;
+            }
+
         }
 
         // check for unused materials and textures
@@ -651,6 +660,9 @@ class MySceneGraph {
             if (textureID == null)
                 return "no ID defined for texture";
 
+            if (textureID == "")
+                return "no ID defined for texture";
+
             // Checks for repeated IDs.
             if (this.textures[textureID] != null)
                 return "ID must be unique for each texture (conflict: ID = " + textureID + ")";
@@ -693,6 +705,9 @@ class MySceneGraph {
             // Get id of the current material.
             var materialID = this.reader.getString(children[i], 'id');
             if (materialID == null)
+                return "no ID defined for material";
+
+            if (materialID == "")
                 return "no ID defined for material";
 
             // Checks for repeated IDs.
@@ -1102,25 +1117,25 @@ class MySceneGraph {
             var transformationsNode = grandChildren[transformationIndex];
             error = this.parseComponentTransformation(component, transformationsNode);
             if (error != null)
-                return error;
+                return error + " for component with ID " + componentID;
 
             // Materials
             var materialsNode = grandChildren[materialsIndex];
             error = this.parseComponentMaterials(component, materialsNode);
             if (error != null)
-                return error;
+                return error + " for component with ID " + componentID;
 
             // Texture
             var textureNode = grandChildren[textureIndex];
             error = this.parseComponentTextures(component, textureNode);
             if (error != null)
-                return error;
+                return error + " for component with ID " + componentID;
 
             // Children
             var childrenNode = grandChildren[childrenIndex];
             error = this.parseComponentChildren(component, childrenNode);
             if (error != null)
-                return error;
+                return error + " for component with ID " + componentID;
 
             // Set component
             this.components[componentID] = component;
@@ -1149,7 +1164,6 @@ class MySceneGraph {
             if (children[i].nodeName == "transformationref") {
                 var transformationID = this.reader.getString(children[i], "id");
                 transformationMatrix = mat4.multiply(transformationMatrix, this.transformations[transformationID], transformationMatrix);
-                //debugger;
                 if (transformationMatrix == null)
                     return "No tranformation set with id " + transformationID;
             }
@@ -1215,6 +1229,14 @@ class MySceneGraph {
             if (materialID == null)
                 return "no ID defined for material";
 
+            if (materialID == "")
+                return "no ID defined for material";
+
+            // check if materials exists
+            if(materialID != "inherit" && this.materials[materialID] == null)
+                return "Material with ID " + materialID + " not defined";
+            
+
             materials.push(...[materialID]);
         }
         component.materialIDs = materials;
@@ -1237,8 +1259,14 @@ class MySceneGraph {
         if (textureID == null)
             return "no ID defined for texture";
 
-        // SEE IF TEXTURE EXISTS
-        if( textureID != "none" && textureID != "inherit" ){
+        if (textureID == "")
+            return "no ID defined for texture";
+
+        if( textureID != "none" && textureID != "inherit" ) {
+            // check if textures exists
+            if(this.textures[textureID] == null)
+                return "Texture with ID " + textureID + " not defined";
+
             // Get s of the current texture.
             var length_s = this.reader.getFloat(textureNode, 'length_s');
             if (length_s == null) {
@@ -1262,8 +1290,7 @@ class MySceneGraph {
         } else {
             component.textureID = textureID;
         }
-        /*  if a length_s ou length_t is apply to a inherit ou none, it's ignore */
-       
+        // length_s and length_t applied inherit or none are ignored
     }
 
     /**
@@ -1283,24 +1310,25 @@ class MySceneGraph {
                 continue;
             }
 
-            // NOT NECESSARY TO DO IF (DELET THIS LATER)
-
             // primitiveref
             if (grandChildren[i].nodeName == "primitiveref") {
                 var primitiveID = this.reader.getString(grandChildren[i], "id");
-                // TEST IF ID EXISTS
+                
+                // check if primitive exists
+                if(this.primitives[primitiveID] == null)
+                    return "Primitive with ID " + primitiveID + " not defined";
+
                 componentChildren.push(...[primitiveID]);
             }
             // componentref
             else if (grandChildren[i].nodeName == "componentref") {
                 var componentID = this.reader.getString(grandChildren[i], "id");
-                // TEST IF ID EXISTS
+                // Assumi ID exists, test it in the end
                 componentChildren.push(...[componentID]);
             }
         }
         component.childrenIDs = componentChildren;
     }
-
 
     /**
      * Parse the coordinates from a node with ID = id
@@ -1430,7 +1458,7 @@ class MySceneGraph {
                     found = true;
             }
             if (!found)
-                this.log("Texture with ID " + key + " never used!");
+                this.onXMLMinorError("Texture with ID " + key + " never used!");
         }
     }
 
@@ -1455,8 +1483,82 @@ class MySceneGraph {
                     found = true;
             }
             if (!found)
-                this.log("Material with ID " + key + " never used!");
+                this.onXMLMinorError("Material with ID " + key + " never used!");
         }
+    }
+
+    /**
+     * 
+     */
+    verifyComponents() {
+        var usedComponents = [];
+        var usedPrimitives = [];
+
+        // get primitives
+        for (const key in this.primitives)
+            usedPrimitives.push(...[key]);
+
+        // get used materials
+        for (const key in this.components) {
+            usedComponents.push(...this.components[key].childrenIDs);
+        }
+
+        // removing duplicates
+        var uniqueUsedComponents = [...new Set(usedComponents)];
+
+        // removing primitives
+        var uniqueUsedComponents = uniqueUsedComponents.filter(x => !usedPrimitives.includes(x));
+
+        for (const componentID of uniqueUsedComponents) {
+            if(this.components[componentID] == null)
+                this.onXMLError("Component with ID " + componentID + " is not defined!");
+        }
+    }
+
+    /**
+     * Returns true if the scene graph contains a cycle, else false.
+     */
+    detectRecursion() {
+        var visited = [];
+        var recursionStack = [];
+
+        for (const componentID in this.components) {
+            visited[componentID] = false;
+            recursionStack[componentID] = false;
+        }
+
+        for (const componentID in this.components) {
+            if (this.isCyclic(componentID, visited, recursionStack))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Auxiliar function to help detect cyclical graphs
+     * @param {string} componentID
+     * @param {array with visited components marked as true} visited
+     * @param {array with components in the recursion stack} recursionStack
+     * @returns true if a cycle is detected
+     */
+    isCyclic(componentID, visited, recursionStack) {
+        
+        if(visited[componentID] == false) {
+            // Mark the current node as visited and part of recursion stack 
+            visited[componentID] = true;
+            recursionStack[componentID] = true;
+
+             // Recur for all the vertices adjacent to this vertex 
+            for (const childID of this.components[componentID].childrenIDs) {
+                if (!visited[childID] && this.isCyclic(childID, visited, recursionStack))
+                    return true;
+                else if (recursionStack[childID])
+                    return true;
+            }
+        }
+        recursionStack[componentID] = false; // remove vertex from recursion stack
+        return false;
     }
 
     /*

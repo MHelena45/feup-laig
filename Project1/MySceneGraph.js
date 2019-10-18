@@ -196,6 +196,10 @@ class MySceneGraph {
             if ((error = this.parseComponents(nodes[index])) != null)
                 return error;
         }
+
+        // check for unused materials and textures
+        this.checkUnusedMaterials();
+        this.checkUnusedTextures();
         this.log("all parsed");
     }
 
@@ -676,9 +680,7 @@ class MySceneGraph {
         var children = materialsNode.children;
 
         this.materials = [];
-
         var grandChildren = [];
-        var nodeNames = [];
 
         // Any number of materials.
         for (var i = 0; i < children.length; i++) {
@@ -1407,6 +1409,56 @@ class MySceneGraph {
         return axisVector;
     }
 
+    /**
+     * 
+     */
+    checkUnusedTextures() {
+        var usedTextures = [];
+
+        // get used textures
+        for (const key in this.components) {
+            usedTextures.push(...[this.components[key].textureID]);
+        }
+
+        // removing duplicates
+        var uniqueUsedTextures = [...new Set(usedTextures)];
+
+        for (const key in this.textures) {
+            var found = false;
+            for (const textureID of uniqueUsedTextures) {
+                if (key == textureID)
+                    found = true;
+            }
+            if (!found)
+                this.log("Texture with ID " + key + " never used!");
+        }
+    }
+
+    /**
+     * 
+     */
+    checkUnusedMaterials() {
+        var usedMaterials = [];
+
+        // get used materials
+        for (const key in this.components) {
+            usedMaterials.push(...this.components[key].materialIDs);
+        }
+
+        // removing duplicates
+        var uniqueUsedMaterials = [...new Set(usedMaterials)];
+
+        for (const key in this.materials) {
+            var found = false;
+            for (const materialID of uniqueUsedMaterials) {
+                if (key == materialID)
+                    found = true;
+            }
+            if (!found)
+                this.log("Material with ID " + key + " never used!");
+        }
+    }
+
     /*
      * Callback to be executed on any read error, showing an error on the console.
      * @param {string} message
@@ -1483,13 +1535,14 @@ class MySceneGraph {
         }
         
         this.scene.popMatrix();
-
     }
 
     setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t){
         var component = this.components[id];
         if(component == null) //check if is primitive, if doesn't exits does gets this far (checked before)
             component = this.primitives[id];
+        
+        // get materials
         var materials = component.materialIDs;
         var appliedMaterial;
         var childMaterialID;

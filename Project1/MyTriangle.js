@@ -85,8 +85,8 @@ class MyTriangle extends CGFobject {
 	 */
 	updateTexCoords(length_u, length_v) {		
 		this.texCoords = [			
-			0, 1/length_v,
-			1/length_u, 1 /length_v,
+			0, 1,
+			1/length_u, 1,
 			(this.c * this.cosb)/length_u , 0
 		];	
 		this.updateTexCoordsGLBuffers();

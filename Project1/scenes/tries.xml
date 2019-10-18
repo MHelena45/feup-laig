@@ -228,7 +228,7 @@
             <materials>
                 <material id="whiteMaterial" />
             </materials>
-            <texture id="starTexture" length_s="2" length_t="2"/>
+            <texture id="earthTexture" length_s="3" length_t="2"/>
             <children>
                 <primitiveref id="triangle"/>
             </children>

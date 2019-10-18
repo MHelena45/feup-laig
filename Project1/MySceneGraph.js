@@ -192,20 +192,18 @@ class MySceneGraph {
             if (index != COMPONENTS_INDEX)
                 this.onXMLMinorError("tag <components> out of order");
 
-            //Parse components block
+            // Parse components block
             if ((error = this.parseComponents(nodes[index])) != null)
                 return error;
-            
-            this.verifyComponents();
-
-            // detect for cyclical graphs
-            if (this.detectRecursion()) {
-                error = "recursion detected";
-                return error;
             }
+        
+        // error detection after parsing
+        if((error = this.verifyComponents()) != null)
+            return error;
 
-        }
-
+        if ((error = this.detectRecursion()) != null)
+            return error;
+        
         // check for unused materials and textures
         this.checkUnusedMaterials();
         this.checkUnusedTextures();
@@ -1449,7 +1447,7 @@ class MySceneGraph {
     }
 
     /**
-     * 
+     * Warns the user when a parsed texture is not used by any component
      */
     checkUnusedTextures() {
         var usedTextures = [];
@@ -1474,7 +1472,7 @@ class MySceneGraph {
     }
 
     /**
-     * 
+     * Warns the user when a parsed material is not used by any component
      */
     checkUnusedMaterials() {
         var usedMaterials = [];
@@ -1499,7 +1497,7 @@ class MySceneGraph {
     }
 
     /**
-     * 
+     * Returns a string containing an error message when a referenced component does not exist
      */
     verifyComponents() {
         var usedComponents = [];
@@ -1522,12 +1520,12 @@ class MySceneGraph {
 
         for (const componentID of uniqueUsedComponents) {
             if(this.components[componentID] == null)
-                this.onXMLError("Component with ID " + componentID + " is not defined!");
+                return "Component with ID " + componentID + " is not defined!";
         }
     }
 
     /**
-     * Returns true if the scene graph contains a cycle, else false.
+     * Returns string with error message if the scene graph contains a cycle
      */
     detectRecursion() {
         var visited = [];
@@ -1540,10 +1538,8 @@ class MySceneGraph {
 
         for (const componentID in this.components) {
             if (this.isCyclic(componentID, visited, recursionStack))
-                return true;
+                return "Recursion detected!";
         }
-
-        return false;
     }
 
     /**

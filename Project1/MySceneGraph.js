@@ -1599,7 +1599,6 @@ class MySceneGraph {
     displayScene() {
         var root = this.components[this.idRoot];
         this.processNode(root.componentID, root.materialIDs[0], root.textureID, root.length_s, root.length_t);
-        //this.primitives['sphere'].enableNormalViz(); 
     }
 
     /**

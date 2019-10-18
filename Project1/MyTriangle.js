@@ -28,6 +28,7 @@ class MyTriangle extends CGFobject {
 		this.b = Math.sqrt(Math.pow((this.x3 - this.x2),2) + Math.pow((this.y3 - this.y2),2) + Math.pow((this.z3 - this.z2), 2));
 		this.c = Math.sqrt(Math.pow((this.x1 - this.x3), 2) + Math.pow((this.y1 - this.y3),2) + Math.pow((this.z1 - this.z3), 2));	
 		this.cosb = (Math.pow(this.a, 2) - Math.pow(this.b, 2) + Math.pow(this.c,2)) / (2 * this.a * this.c);
+		this.sinb = Math.sqrt( 1 - Math.pow(this.cosb,2));
 
 		this.nX = (this.y2 - this.y1) * (this.z3 - this.z1) - (this.z2 - this.z1) * (this.y3 - this.y1);
 		this.nY = (this.z2 - this.z1) * (this.x3 - this.x1) - (this.x2 - this.x1) * (this.z3 - this.z1);
@@ -55,7 +56,6 @@ class MyTriangle extends CGFobject {
 			this.nX/this.nSize, this.nY/this.nSize, this.nZ/this.nSize
 		];
 
-		var tC = (this.a + this.c -this.b)/ (2 * this.a);
 		/*
 		Texture coords (s,t)
 		+----------> s
@@ -65,7 +65,7 @@ class MyTriangle extends CGFobject {
 		v
         t
         */
-		this.texCoords = [		
+		this.texCoords = [	//the texture scales if necessary	
 			0, 1,
 			1,1,
 			this.c * this.cosb, 0
@@ -83,10 +83,9 @@ class MyTriangle extends CGFobject {
      */
 	updateTexCoords(length_u, length_v) {		
 		this.texCoords = [					
-			0, 1/length_v,
-			1/length_u, 1 /length_v,
-			(this.c * this.cosb)/length_u, 0
-
+			0, this.c*this.sinb /length_v,
+			this.a/length_u, this.c*this.sinb /length_v,
+			this.c * this.cosb /length_u, 0
 		];	
 		this.updateTexCoordsGLBuffers();
 	}

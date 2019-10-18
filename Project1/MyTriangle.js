@@ -32,7 +32,7 @@ class MyTriangle extends CGFobject {
 		this.nX = (this.y2 - this.y1) * (this.z3 - this.z1) - (this.z2 - this.z1) * (this.y3 - this.y1);
 		this.nY = (this.z2 - this.z1) * (this.x3 - this.x1) - (this.x2 - this.x1) * (this.z3 - this.z1);
 		this.nZ = (this.x2 - this.x1) * (this.y3 - this.y1) - (this.y2 - this.y1) * (this.x3 - this.x1);
-		
+		this.nSize = Math.sqrt(Math.pow(this.nX,2) + Math.pow(this.nY,2) + Math.pow(this.nZ,2) ); //to normalize normals
 		this.initBuffers();
 	}
 
@@ -47,12 +47,12 @@ class MyTriangle extends CGFobject {
 		this.indices = [
 			0, 1, 2
 		];
-
 		//Facing Z positive
+		
 		this.normals = [
-			this.nX, this.nY, this.nZ,
-			this.nX, this.nY, this.nZ,
-			this.nX, this.nY, this.nZ
+			this.nX/this.nSize, this.nY/this.nSize, this.nZ/this.nSize,
+			this.nX/this.nSize, this.nY/this.nSize, this.nZ/this.nSize,
+			this.nX/this.nSize, this.nY/this.nSize, this.nZ/this.nSize
 		];
 
 		var tC = (this.a + this.c -this.b)/ (2 * this.a);

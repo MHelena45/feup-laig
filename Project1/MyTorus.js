@@ -29,7 +29,6 @@ class MyTorus extends CGFobject {
         var theta = (2 * Math.PI) / this.slices;
         var fi = (2 * Math.PI) / this.loops;
 
-
         for(var i = 0; i <= this.slices; i++) {
             for(var j = 0; j <= this.loops; j++) {
                 this.vertices.push(
@@ -38,10 +37,15 @@ class MyTorus extends CGFobject {
                     this.innerRadius * Math.sin(i * theta)
                 );
 
+                var size = Math.sqrt(Math.pow(Math.cos(i * theta) * Math.cos(j * fi),2) +
+                    Math.pow(Math.cos(i * theta) * Math.sin(j * fi), 2) +
+                    Math.pow(Math.sin(i * theta) , 2));
+
+                //normalized normals
                 this.normals.push(
-                    Math.cos(i * theta) * Math.cos(j * fi),
-                    Math.cos(i * theta) * Math.sin(j * fi),
-                    Math.sin(i * theta)
+                    Math.cos(i * theta) * Math.cos(j * fi) / size,
+                    Math.cos(i * theta) * Math.sin(j * fi) / size,
+                    Math.sin(i * theta) /size
                 );
 
                 this.texCoords.push(

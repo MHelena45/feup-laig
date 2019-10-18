@@ -35,11 +35,15 @@ class MySphere extends CGFobject {
                     this.radius * Math.cos((i-this.stacks) * theta) * Math.sin(j * fi),
                     this.radius * Math.sin((i-this.stacks) * theta)
                 );
+                //size is used to normalize the normals
+                var size = Math.sqrt( Math.pow(Math.cos((i-this.stacks) * theta) * Math.cos(j * fi), 2) +
+                Math.pow(Math.cos((i-this.stacks) * theta) * Math.sin(j * fi),2) +
+                Math.pow(Math.sin((i-this.stacks) * theta),2));
 
                 this.normals.push(
-                    Math.cos((i-this.stacks) * theta) * Math.cos(j * fi),
-                    Math.cos((i-this.stacks) * theta) * Math.sin(j * fi),
-                    Math.sin((i-this.stacks) * theta)
+                    (Math.cos((i-this.stacks) * theta) * Math.cos(j * fi) )/size,
+                    (Math.cos((i-this.stacks) * theta) * Math.sin(j * fi)) / size,
+                    Math.sin((i-this.stacks) * theta) /size
                 );
 
                 this.texCoords.push(

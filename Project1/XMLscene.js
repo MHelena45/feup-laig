@@ -53,12 +53,18 @@ class XMLscene extends CGFscene {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
 
+    /**
+     * Initializes the scene camera with id="defaultCamera"
+     */
     initDefaultCamera() {
         this.camera = this.graph.views[this.graph.defaultCameraID];
         this.interface.setActiveCamera(this.camera);
     }
 
-    //used for the dropbox
+    /**
+     * used for the dropbox
+     * updates the view according to the selected view
+     */
     updateView() {
         this.views = this.graph.getViews();
         this.views_ID = this.graph.getViewsID();
@@ -86,12 +92,9 @@ class XMLscene extends CGFscene {
                 this.lights[i].setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
                 this.lights[i].setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
 
-                if(light[6][0] == 1)
-                    this.lights[i].setConstantAttenuation(1);
-                if(light[6][1] == 1)
-                    this.lights[i].setLinearAttenuation(1);
-                if(light[6][2] == 1)
-                    this.lights[i].setQuadraticAttenuation(1);
+                this.lights[i].setConstantAttenuation(light[6][0]);
+                this.lights[i].setLinearAttenuation(light[6][1]);
+                this.lights[i].setQuadraticAttenuation(light[6][2]);
   
                 if (light[1] == "spot") {              
                     this.lights[i].setSpotCutOff(light[7]);
@@ -135,9 +138,8 @@ class XMLscene extends CGFscene {
         this.initDefaultCamera();
     }
     
-    // controls animation
+    // controls if M/m is release
 	checkKeys() {
-		// Check for key codes e.g. in ​https://keycode.info/
 		if (this.gui.isKeyPressed("KeyM")) {
             this.mClick = true;        
 		} else if(this.mClick) { /*increments when button is released */
@@ -145,12 +147,14 @@ class XMLscene extends CGFscene {
             CLICK_M++;
         }
     }
+    
     /**
      * return de number of M click releases
      */
     getM(){
         return CLICK_M;
     }
+    
     /**
      * Displays the scene.
      */
@@ -187,6 +191,9 @@ class XMLscene extends CGFscene {
         // ---- END Background, camera and axis setup
     }
 
+    /**
+     * Displays the lights according to the checkbox and the xml
+     */
     displayLights(){
         for (var i = 0; i < this.lights.length; i++) {
             this.lights[i].setVisible(true);

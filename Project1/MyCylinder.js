@@ -65,7 +65,12 @@ class MyCylinder extends CGFobject {
         this.initGLBuffers();
     }
     
-
+    /**
+     * In this work doesn't have to be implemented
+     * @param {value of the length_u in texture} length_u 
+     * @param {value of the length_v in texture} length_v 
+     */
+    updateTexCoords(length_u, length_v) {	   }
 }
 
 

@@ -50,7 +50,6 @@ class MyRectangle extends CGFobject {
 		v
         t
         */
-
 		this.texCoords = [
 			0, 1,
 			1, 1,
@@ -64,8 +63,9 @@ class MyRectangle extends CGFobject {
 	/**
 	 * @method updateTexCoords
 	 * Updates the list of texture coordinates of the rectangle
-	 * @param {Array} scaleFactor - Array of texture coordinates
-	 */
+     * @param {value of the length_u in texture} length_u 
+     * @param {value of the length_v in texture} length_v 
+     */
 	updateTexCoords(length_u, length_v) {
 		this.texCoords = [		
 			0, this.v/length_v,

@@ -55,6 +55,7 @@ class MyTriangle extends CGFobject {
 			this.nX, this.nY, this.nZ
 		];
 
+		var tC = (this.a + this.c -this.b)/ (2 * this.a);
 		/*
 		Texture coords (s,t)
 		+----------> s
@@ -81,10 +82,11 @@ class MyTriangle extends CGFobject {
      * @param {value of the length_v in texture} length_v 
      */
 	updateTexCoords(length_u, length_v) {		
-		this.texCoords = [			
+		this.texCoords = [					
 			0, 1/length_v,
 			1/length_u, 1 /length_v,
 			(this.c * this.cosb)/length_u, 0
+
 		];	
 		this.updateTexCoordsGLBuffers();
 	}

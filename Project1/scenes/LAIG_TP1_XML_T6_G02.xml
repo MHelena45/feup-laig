@@ -2,27 +2,27 @@
     <scene root="myRoot" axis_length="5"/>
 
     <views default="defaultCamera">
-        <!-- view from the center -->
-        <perspective id="defaultCamera" near="0.1" far="100" angle="50">
+        <!-- view from the front to the all scene -->
+        <perspective id="defaultCamera" near="0.1" far="300" angle="50"> <!-- value of far is big to see skybox -->
             <from x="-5" y="13" z="60" />
             <to x="0" y="15" z="0" />
         </perspective> 
 
         <!-- view from behind -->
-        <perspective id="behindCamera" near="0.1" far="100" angle="40">
+        <perspective id="behindCamera" near="0.1" far="300" angle="40">
             <from x="-5" y="13" z="-60" />
             <to x="0" y="15" z="0" />
         </perspective> 
 
         <!-- view of an upper position -->
-       <ortho id="upCamera" near="0.1" far="100" left="-40" right="40" top="18" bottom="-16" >
+       <ortho id="upCamera" near="0.1" far="300" left="-40" right="45" top="18" bottom="-16" >
             <from x="0" y="80" z="0" />
             <to x="0" y="15" z="00" />
             <up x="0" y="0" z="1" /> 
         </ortho> 
 
         <!-- view of the earth and it's moon -->
-       <ortho id="earthCamera" near="0.1" far="100" left="-20" right="20" top="10" bottom="-10" >
+       <ortho id="earthCamera" near="0.1" far="300" left="-20" right="20" top="10" bottom="-10" >
             <from x="5.4" y="20" z="6" />
             <to x="6.2" y="20" z="0" />
             <up x="0" y="1" z="0" /> 
@@ -87,10 +87,10 @@
         <texture id="ringSaturnTexture" file="scenes/images/ring_saturn.jpg" />              
         <texture id="uranusTexture" file="scenes/images/uranus.jpg" />
         <texture id="neptuneTexture" file="scenes/images/neptune.jpg" />
+        <texture id="starsTexture" file="scenes/images/stars.jpg" />
     </textures>
 
     <materials>
-
         <material id="backgroundMaterial" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
@@ -103,13 +103,6 @@
             <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="1.0" g="0.5" b="0.5" a="1.0" />
             <specular r="0" g="0" b="0" a="1.0" />
-        </material>
-
-        <material id="moonMaterial" shininess="10">
-            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
-            <ambient r="0.5" g="0.5" b="0.5" a="0.5" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </material>
 
         <material id="planetMaterial" shininess="10">
@@ -150,6 +143,7 @@
             <specular r="0.5" g="0.5" b="0.5" a="0" />
         </material>
 
+        <!-- black to simulate rubber -->
         <material id="endLegMaterial" shininess="1">
             <emission r="0" g="0" b="0" a="1.0" />
             <ambient r="0.05" g="0.05" b="0.05" a="0.05" />
@@ -157,6 +151,7 @@
             <specular r="0" g="0" b="0" a="0" />
         </material>
 
+        <!-- shinny object to simulate the shine of a shootingStar track -->
         <material id="whiteMaterial" shininess="20">
             <emission r="1.0" g="1.0" b="1.0" a="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -213,19 +208,21 @@
             <sphere radius="1" slices="18" stacks="18" />
         </primitive>
 
-        <primitive id="torus">
+        <primitive id="thickOrbit">
             <torus inner="0.02" outer="1" slices="18" loops="18" />
         </primitive>
 
-        <primitive id="torus0">
+        <!-- orbits far from the sun need to be thinier because of big scales-->
+        <primitive id="thinOrbit">
             <torus inner="0.01" outer="1" slices="18" loops="18" />
         </primitive>
 
-        <primitive id="torus1">
+        <!-- for ring of saturn -->
+        <primitive id="ring">
             <torus inner="0.15" outer="1" slices="18" loops="18" />
         </primitive>
 
-        <primitive id="torus2">
+        <primitive id="torus">
             <torus inner="0.25" outer="1" slices="18" loops="18" />
         </primitive>
     </primitives>
@@ -245,9 +242,11 @@
                 <componentref id="star1" />
                 <componentref id="solarSystem" />
                 <componentref id="telescope" />
+                <componentref id="starSkybox" />
             </children>
         </component> 
 
+        <!-- telescope components below -->
         <component id="telescope">
             <transformation>
                 <transformationref id="telescopeTransform" />
@@ -291,7 +290,7 @@
             </children>
         </component>
 
-        <component id="eyeglasssdetail1"> <!-- detail with torus -->
+        <component id="eyeglasssdetail1"> <!-- detail with torus on the eyeglass -->
             <transformation>
                 <scale x="0.73" y="0.73" z="0.4" />
             </transformation>
@@ -301,11 +300,11 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="torus2" />
+                <primitiveref id="torus" />
             </children>
         </component>
 
-        <component id="eyeglasssdetail2"> <!-- detail with torus -->
+        <component id="eyeglasssdetail2"> <!-- detail with torus on the eyeglass -->
             <transformation>
                 <translate x="0" y="0" z="4.4" />
                 <scale x="0.38" y="0.38" z="0.2" />
@@ -316,7 +315,7 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="torus2" />
+                <primitiveref id="torus" />
             </children>
         </component>
 
@@ -408,10 +407,11 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="torus2" />
+                <primitiveref id="torus" />
             </children>
         </component>
 
+        <!-- the 3 stars defined below -->
         <component id="star">
             <transformation>
                 <transformationref id="starTransform" />
@@ -481,15 +481,46 @@
             <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <primitiveref id="triangle" />
+                <componentref id="backHalfStardown" />
+            </children>
+        </component>
+
+        <!-- stars can be seen from both sides -->
+        <component id="backHalfStardown">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="triangle" />
             </children>
         </component>
 
         <component id="halfStarabove">
             <transformation>
-                <transformationref id="identityTransform"/>
+                <transformationref id="identityTransform"/>              
             </transformation>
             <materials>
                 <material id="whiteMaterial" />
+            </materials>
+            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="triangle" />
+                <componentref id="backHalfStarAbove" />
+            </children>
+        </component>
+
+        <component id="backHalfStarAbove">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="180" />                
+            </transformation>
+            <materials>
+                <material id="inherit" />
             </materials>
             <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
             <children>
@@ -526,7 +557,6 @@
             </children>
         </component>
 
-
         <component id="planets">
             <transformation>
                 <transformationref id="identityTransform"/>
@@ -548,6 +578,7 @@
             </children>
         </component>
 
+        <!-- all planets below -->
         <component id="mercury">
             <transformation>
                 <translate x="0" y="23" z="-1.1" />
@@ -598,7 +629,7 @@
                 <scale x="0.4" y="0.4" z="0.4" />
             </transformation>
             <materials>
-                <material id="moonMaterial" />
+                <material id="inherit" />
             </materials>
             <texture id="moonTexture" length_s="1.0" length_t="1.0"/>
             <children>
@@ -660,7 +691,7 @@
             </materials>
             <texture id="ringSaturnTexture" length_s="1.0" length_t="1.0" />
             <children>
-                <primitiveref id="torus1" />
+                <primitiveref id="ring" />
             </children>
         </component>
 
@@ -712,6 +743,7 @@
             </children>
         </component>
 
+        <!-- All orbits below with 3 materials applied -->
         <component id="mercuryOrbit">
             <transformation>
                 <translate x="0" y="20" z="0" />
@@ -725,7 +757,7 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="thickOrbit" />
             </children>
         </component>
 
@@ -742,7 +774,7 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="thickOrbit" />
             </children>
         </component>
 
@@ -758,7 +790,7 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="thickOrbit" />
             </children>
         </component>
 
@@ -775,7 +807,7 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="torus" />
+                <primitiveref id="thickOrbit" />
             </children>
         </component>
 
@@ -792,7 +824,7 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="torus" />                
+                <primitiveref id="thickOrbit" />                
             </children>
         </component>
 
@@ -808,7 +840,7 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="torus0" />
+                <primitiveref id="thinOrbit" />
             </children>
         </component>
 
@@ -825,7 +857,7 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="torus0" />
+                <primitiveref id="thinOrbit" />
             </children>
         </component>
 
@@ -842,9 +874,112 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="torus0" />
+                <primitiveref id="thinOrbit" />
             </children>
         </component>
-       
+
+        <!-- skybox of stars below --> 
+        <component id="starSkybox">
+            <transformation>
+                <translate x="0" y="10" z="0"/>
+                <scale x="180" y="180" z="180" /> 
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+                <!-- length is so small for texture to repeat over and over -->
+                <texture id="starsTexture" length_s="0.15" length_t="0.15"/>
+            <children>
+                <componentref id="frontSkybox" />
+                <componentref id="topSkybox" />
+                <componentref id="bottomSkybox" />
+                <componentref id="backSkybox" />                
+                <componentref id="rightSkybox" />
+                <componentref id="leftSkybox" />
+            </children>
+        </component>
+
+        <component id="frontSkybox">
+            <transformation>
+                <translate x="0" y="0" z="0.5" />
+                <rotate axis="y" angle="180" /> 
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component> 
+
+        <component id="topSkybox">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component> 
+
+       <component id="backSkybox">
+            <transformation>
+                <translate x="0" y="0" z="-0.5" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>    
+
+        <component id="rightSkybox">
+            <transformation>
+                <translate x="-0.5" y="0" z="0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>     
+
+        <component id="bottomSkybox">
+            <transformation>
+                <translate x="0" y="-0.5" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>  
+
+        <component id="leftSkybox">
+            <transformation>
+                <translate x="0.5" y="0" z="0" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle"  />
+            </children>
+        </component>
     </components>
 </lxs>

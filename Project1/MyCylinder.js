@@ -46,7 +46,7 @@ class MyCylinder extends CGFobject {
                 //size is calculated to normalize the normals
                 var size = Math.sqrt(Math.pow(Math.cos(j * ang),2) + Math.pow(Math.sin(j * ang),2) + Math.pow( Math.atan((this.base - this.top) / this.height),2));
                 this.normals.push(Math.cos(j * ang)/size, Math.sin(j * ang)/size, Math.atan((this.base - this.top) / this.height))/size;
-                console.log(Math.cos(j * ang)/size, Math.sin(j * ang)/size, Math.atan((this.base - this.top) / this.height))/size;
+                
                 this.texCoords.push(tx, ty);
                 tx += lengthx;
             }

@@ -840,7 +840,6 @@ class MySceneGraph {
                         break;
                     default:
                         break;
-
                 }
             }
             this.transformations[transformationID] = transfMatrix;
@@ -989,12 +988,12 @@ class MySceneGraph {
 
                 // slices
                 var slices = this.reader.getFloat(grandChildren[0], 'slices');
-                if (!(slices != null && !isNaN(slices) && slices > 0))
+                if (!(slices != null && !isNaN(slices) && slices > 2))
                     return "unable to parse y2 of the primitive coordinates for ID = " + primitiveId;
 
                 //stacks
                 var stacks = this.reader.getFloat(grandChildren[0], 'stacks');
-                if (!(stacks != null && !isNaN(stacks) && stacks > 0))
+                if (!(stacks != null && !isNaN(stacks) && stacks > 2))
                     return "unable to parse y2 of the primitive coordinates for ID = " + primitiveId;
 
 
@@ -1299,7 +1298,7 @@ class MySceneGraph {
         } else {
             component.textureID = textureID;
         }
-        // length_s and length_t applied inherit or none are ignored
+        // length_s and length_t of texture with id inherit or none are ignored
     }
 
     /**
@@ -1332,7 +1331,7 @@ class MySceneGraph {
             // componentref
             else if (grandChildren[i].nodeName == "componentref") {
                 var componentID = this.reader.getString(grandChildren[i], "id");
-                // Assumi ID exists, test it in the end
+                // Assuming ID exists, test it in the end
                 componentChildren.push(...[componentID]);
             }
         }
@@ -1568,7 +1567,7 @@ class MySceneGraph {
         return false;
     }
 
-    /*
+    /**
      * Callback to be executed on any read error, showing an error on the console.
      * @param {string} message
      */
@@ -1628,6 +1627,7 @@ class MySceneGraph {
         var matrix = component.transformationMatrix;
         this.scene.pushMatrix();
         this.scene.multMatrix(matrix);
+
         // loop children
         for (var i = 0; i < component.childrenIDs.length; i++) {
             // if primitive
@@ -1652,7 +1652,7 @@ class MySceneGraph {
 
     setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t){
         var component = this.components[id];
-        if(component == null) //check if is primitive, if doesn't exits does gets this far (checked before)
+        if(component == null) //check if is primitive, null components don't get this far (checked before)
             component = this.primitives[id];
         
         // get materials
@@ -1675,15 +1675,16 @@ class MySceneGraph {
         var length_t = component.length_t;
       
        if (textureID == "inherit"){
-           if(parentTextureID == "none"){ //only if any ancestor has a texture
+           if(parentTextureID == "none" || parentTextureID == "inherit"){ //only if any ancestor has a texture define before
             this.onXMLMinorError("inherit a texture not defined on " + component);
             appliedMaterial.setTexture(null);
            }
             length_s = parentLength_s;
             length_t = parentLength_t;
             textureID = parentTextureID;   
-            /*the line below is useful when (length_s || length_t) < 1
-            if length_s and length_t are greater than 1, the texture won't repeat
+            /*
+            the line below is useful when (length_s || length_t) are lower than the size of the triangle/rectangle
+            if length_s and length_t are greater than the size of the rectangle, then the texture won't repeat
             */  
             appliedMaterial.setTextureWrap('REPEAT','REPEAT' );     
             appliedMaterial.setTexture(this.textures[textureID]);

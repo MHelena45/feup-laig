@@ -15,8 +15,8 @@
         </perspective> 
 
         <!-- view of an upper position -->
-       <ortho id="upCamera" near="0.1" far="100" left="-40" right="50" top="18" bottom="-16" >
-            <from x="0" y="70" z="0" />
+       <ortho id="upCamera" near="0.1" far="100" left="-40" right="40" top="18" bottom="-16" >
+            <from x="0" y="80" z="0" />
             <to x="0" y="15" z="00" />
             <up x="0" y="0" z="1" /> 
         </ortho> 
@@ -36,34 +36,35 @@
     </globals>
 
     <lights>
+        <!-- ligth used to inligth the scene, with constant attenuatuan to get everywhere (expect back faces because of back face culling) -->
         <omni id="firstLight" enabled="1">
             <location x="9.8" y="11.9" z="10" w="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="1" quadratic="0" /> 
+            <attenuation constant="1.0" linear="0" quadratic="0" /> 
         </omni>
 
-        <!-- ligth coming for the shooting star -->
+        <!-- ligth coming for the shooting star, linear attenuation because stars give ligth but not as must as the sun -->
         <spot id="starLight" enabled="1" angle="70" exponent="50">        
             <location x="-30" y="20" z="10.5" w="1.0" />
             <target x="-30" y="20" z="10" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1" g="1" b="1" a="1.0" />
-            <attenuation constant="1.0" linear="0" quadratic="0" /> 
+            <attenuation constant="0" linear="1.0" quadratic="0" /> 
         </spot>
 
-        <!-- ligth near the telescope -->
+        <!-- ligth near the telescope, with quadratic attenuation to only ligth the telescope -->
         <omni id="telescopeLight" enabled="1">
-            <location x="-36" y="1.2" z="12" w="1.0" />
+            <location x="-33.5" y="1.2" z="12" w="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="1.0" linear="0" quadratic="0" /> 
+            <attenuation constant="0" linear="0" quadratic="1.0" /> 
         </omni>
 
-        <!-- ligth coming for the sun  --> 
+        <!-- ligth coming for the sun, attenuation linear because of the real intensity of the ligth of the sun  --> 
         <omni id="sunLight" enabled="1">
             <location x="0" y="20" z="2.1" w="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -166,6 +167,7 @@
     </materials>
 
     <transformations>
+        <!-- where are the transformations of complete obejcts, to become easier to move them around -->
         <transformation id="identityTransform" >
             <scale x="1.0" y="1.0" z="1.0" /> 
         </transformation>
@@ -176,9 +178,17 @@
         </transformation>
 
         <transformation id="starTransform">
+            <translate x="20" y="20" z="27.6" />
+        </transformation>   
+
+        <transformation id="star1Transform">
+            <translate x="15" y="17" z="25" />
+        </transformation>
+
+        <transformation id="shootingStarTransform">
             <translate x="-30" y="20" z="10" />
             <scale x="2" y="2" z="2" />
-        </transformation>
+        </transformation>    
 
     </transformations>
 
@@ -188,7 +198,7 @@
         </primitive>
 
         <primitive id="triangle">
-            <triangle x1="0.5" y1="0.8" z1="0" x2="0" y2="0" z2="0" x3="1" y3="0" z3="0" />
+            <triangle x1="0" y1="0" z1="0" x2="1" y2="0" z2="0" x3="0.5" y3="0.8" z3="0" />
         </primitive>
         
         <primitive id="cylinder">
@@ -404,7 +414,7 @@
 
         <component id="star">
             <transformation>
-                <translate x="20" y="20" z="27.6" />
+                <transformationref id="starTransform" />
             </transformation>
             <materials>
                 <material id="whiteMaterial" />
@@ -418,7 +428,7 @@
 
         <component id="star1">
             <transformation>
-                <translate x="15" y="17" z="25" />
+                <transformationref id="star1Transform" />
             </transformation>
             <materials>
                 <material id="whiteMaterial" />
@@ -432,7 +442,7 @@
 
         <component id="shootingStar">
             <transformation>
-                <transformationref id="starTransform" />
+                <transformationref id="shootingStarTransform" />
             </transformation>
             <materials>
                 <material id="whiteMaterial" />

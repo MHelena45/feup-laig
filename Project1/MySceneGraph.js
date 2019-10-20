@@ -988,6 +988,7 @@ class MySceneGraph {
 
                 // slices
                 var slices = this.reader.getFloat(grandChildren[0], 'slices');
+                /** although slices should be greater than 2 to lock like a cylinder, some of my colleges used 1 as value */
                 if (!(slices != null && !isNaN(slices) && slices > 0))
                     return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
 

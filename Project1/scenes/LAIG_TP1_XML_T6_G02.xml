@@ -510,7 +510,7 @@
             <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <primitiveref id="triangle" />
-                <componentref id="backHalfStarAbove" />
+                <componentref id="backHalfStarAbove" /> <!-- back of the star, in the same place, but seen from the other side -->
             </children>
         </component>
 
@@ -581,8 +581,7 @@
         <!-- all planets below -->
         <component id="mercury">
             <transformation>
-                <translate x="0" y="23" z="-1.1" />
-                <scale x="1.1" y="1.1" z="1.1" />
+                <translate x="0" y="23" z="-1.2" />
             </transformation>
             <materials>
                 <material id="inherit" />

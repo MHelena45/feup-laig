@@ -8,8 +8,9 @@ var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
 var TRANSFORMATIONS_INDEX = 6;
-var PRIMITIVES_INDEX = 7;
-var COMPONENTS_INDEX = 8;
+var ANIMATION_INDEX = 7;
+var PRIMITIVES_INDEX = 8;
+var COMPONENTS_INDEX = 9;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -170,6 +171,18 @@ class MySceneGraph {
 
             //Parse transformations block
             if ((error = this.parseTransformations(nodes[index])) != null)
+                return error;
+        }
+
+        // <animations>
+        if ((index = nodeNames.indexOf("animations")) == -1)
+            return "tag <animations> missing";
+        else {
+            if (index != ANIMATION_INDEX)
+                this.onXMLMinorError("tag <animations> out of order");
+    
+            //Parse primitives block
+            if ((error = this.parseAnimation(nodes[index])) != null)
                 return error;
         }
 
@@ -849,6 +862,37 @@ class MySceneGraph {
 
         this.log("Parsed transformations");
         return null;
+    }
+
+    /**
+     * Parses the <primitives> block.
+     * @param {primitives block element} primitivesNode
+     */
+    parseAnimation(primitivesNode) {
+        var children = primitivesNode.children;
+
+        this.animation = [];
+
+        var grandChildren = [];
+
+        // Any number of animations.
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].nodeName != "animation") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+            // Get id of the current animation.
+            var animationId = this.reader.getString(children[i], 'id');
+            if (animationId == null){
+                this.onXMLError("no ID defined for animation " + children[i]);
+                continue; //object with no id is ignore
+            }
+             // Checks for repeated IDs.
+            if (this.animation[animationId] != null){
+                this.onXMLMinorError("ID must be unique for each animation (conflict: ID = " + animationId + ")");
+                continue; //ignore the repeated primitive
+            }           
+        }
     }
 
     /**

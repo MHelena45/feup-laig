@@ -894,25 +894,25 @@ class MySceneGraph {
                 this.onXMLMinorError("ID must be unique for each animation (conflict: ID = " + animationId + ")");
                 continue; //ignore the repeated primitive
             }    
-
-            grandChildren = children[i].children;
-            for(var j = 0;  j < grandChildren.length; i++) {
-
-                if (grandChildren[j] != "keyframe") {
+            
+            grandChildren = children[i].children; 
+            for(var j = 0;  j < grandChildren.length; j++) {
+                
+                if (grandChildren[j].nodeName != "keyframe") {
                     this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + ">");
                     continue;
                 }
-                var keyframe = this.reader.getFloat(grandChildren[j], 'instant');
-                if(keyframe == null){
+                var instant = this.reader.getFloat(grandChildren[j], 'instant');
+                if(instant == null){
                     this.onXMLMinorError("instant must be define for animation ID = " + animationId + ")");
                     continue; 
                 }
-                if(keyframe <= 0){
+                if(instant <= 0){
                     this.onXMLMinorError("instant must be a positive number for animation with id = " + animationId + ")");
                     continue; 
                 }
 
-                grandGrandChildren = grandchildren[j].children;
+                grandGrandChildren = grandChildren[j].children;
                 //every tranformation must be define
                 if (grandGrandChildren.length != 3 ||
                     (grandGrandChildren[0].nodeName != 'translate' && 
@@ -920,7 +920,7 @@ class MySceneGraph {
                     grandGrandChildren[0].nodeName != 'scale' )) {
                     return "There must be exactly 1 animation type (translate, rotate or scale)"
                 }
-                console.log(grandChildren.length);
+
                 if(grandGrandChildren[0].nodeName != 'translate'){
                     this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + ">");
                     continue;
@@ -931,19 +931,20 @@ class MySceneGraph {
                     continue;
                 }    
                 console.log(translate);
-                if(grandGrandChildren[0].nodeName != 'rotate'){
-                    this.onXMLMinorError("unknown tag <" + grandChildren[1].nodeName + "> in animation for ID = " + animationId);
+         
+                if(grandGrandChildren[1].nodeName != 'rotate'){
+                    this.onXMLMinorError("unknown tag <" + grandGrandChildren[1].nodeName + "> in animation for ID = " + animationId);
                     continue;
                 }
-                var x_rotate = this.getFloat(grandGrandChildren[1],'angle_x');
+                var x_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_x');
                 console.log(x_rotate);
-                var y_rotate = this.getFloat(grandGrandChildren[1],'angle_y');
+                var y_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_y');
                 console.log(y_rotate);
-                var z_rotate = this.getFloat(grandGrandChildren[1],'angle_z');   
+                var z_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_z');   
                 console.log(z_rotate); 
 
                 if(grandGrandChildren[2].nodeName != 'scale'){
-                    this.onXMLMinorError("unknown tag <" + grandChildren[2].nodeName + "> in animation for ID = " + animationId);
+                    this.onXMLMinorError("unknown tag <" + grandGrandChildren[2].nodeName + "> in animation for ID = " + animationId);
                     continue;
                 }
                 var scale = this.parseCoordinates3D(grandGrandChildren[2], "scale in animation for ID = " + animationId);
@@ -952,10 +953,10 @@ class MySceneGraph {
                     continue; 
                 }      
                 console.log(scale);   
-            }
-                      
+            } 
+                     
         } 
-         //TODO: push of animation
+         //TODO: push of animation 
         this.log("Parsed animations");
         return null;
     }

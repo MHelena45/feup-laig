@@ -209,9 +209,60 @@
 
     </transformations>
 
+    <!--informacao de animacao -->
+
+<!-- o bloco "animations" deve ser declarado -->
+
+<!-- imediatamente antes do bloco  "primitives" -->
+
+<animations>
+
+    <!-- O bloco animations pode ser vazio, isto é, pode -->
+
+    <!-- não ser declarada qualquer animação -->
+
+    <animation id=“ss” >
+
+        <!-- Deve existir pelo menos 1 elemento keyframe. -->
+
+        <!-- instant e’ o tempo expresso em segundos -->
+
+        <!-- desde o inicio da animação. -->
+
+        <keyframe instant=“ff”>
+
+            <!-- translate, rotate e scale representam as -->
+
+            <!-- quantidades das transformações -->
+
+            <!-- correspondentes, medidas em relação à -->
+
+            <!-- situação inicial (instante zero) --> -->
+
+            <!-- Para uma mesma keyframe, os elementos -->
+
+            <!-- translate, rotate e scale sao obrigatorios -->
+
+            <!-- e fornecidos por esta ordem -->
+
+            <!-- a instrução rotação corresponde a:       -->
+
+            <!--    <rotate axis="x" angle="angle_x" />   -->
+
+            <!--    <rotate axis="y" angle="angle_y" />   -->
+
+            <!--    <rotate axis="z" angle="angle_z" />   -->
+            <translate x=“ff” y=“ff” z=“ff” />
+            <rotate angle_x="ff" angle_y="ff" angle_z="ff" />
+            <scale x=“ff” y=“ff” z=“ff” />
+        </keyframe>
+
+    </animation>
+
+</animations>
 
 
-    <primitives> <!-- tag checked -->
+    <primitives>
 
         <!-- Uma "primitive" corresponde à noção de "folha" -->
 
@@ -237,6 +288,26 @@
 
             <!-- assim como o documento sobre as coordenadas dos triangulos -->
 
+            <!-- Nova primitiva: plano, gerado por NURBS -->
+            <!-- ex: <plane npartsU=“5” npartsU=“8” /> -->
+            <!-- um plano de dimensões 1 x 1 unidades assente -->
+            <!-- em XZ, centrado na origem -->
+            <!-- e com a face visível apontando para +Y -->
+            <!-- com divisão em cinco partes por oito partes -->
+
+            <plane npartsU=“ii” npartsV=“ii” />
+                <!-- Nova primitiva: patch, gerada por NURBS -->
+                <!-- — parâmetros: -->
+                <!-- — npartsU: divisão em partes no domínio U a -->
+                <!-- ser usada para o cálculo da superfície -->
+                <!-- — npartsV: divisão em partes no domínio V -->
+                <!-- a ser usada para o cálculo da superficie -->
+                <!-- - o número de pontos de controlo dentro da -->
+                <!-- primitiva patch é npointsU * npointsV -->
+
+            <patch npointsU=“ii” npointsV=“ii” npartsU=“ii” npartsV=“ii” >
+                <controlpoint xx=“ff” yy=“ff” zz=“ff” />
+            </patch>
 
             <rectangle x1="ff" y1="ff" x2="ff" y2="ff" />
 
@@ -246,12 +317,14 @@
 
                         x3="ff" y3="ff" z3="ff" />
 
+            <!-- — Nova primitiva: cilindro baseado em NURBS -->
+            <!-- parâmetros iguais ao cilindro original -->
             <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
 
             <sphere radius="ff" slices="ii" stacks="ii" />
 
             <torus inner="ff" outer="ff" slices="ii" loops="ii" />
-
+           
         </primitive >
 
     </primitives >

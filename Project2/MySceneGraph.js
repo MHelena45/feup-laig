@@ -875,6 +875,8 @@ class MySceneGraph {
 
         var grandChildren = [];
 
+        var grandGrandChildren = [];
+
         // Any number of animations.
         for (var i = 0; i < children.length; i++) {
             if (children[i].nodeName != "animation") {
@@ -891,8 +893,71 @@ class MySceneGraph {
             if (this.animation[animationId] != null){
                 this.onXMLMinorError("ID must be unique for each animation (conflict: ID = " + animationId + ")");
                 continue; //ignore the repeated primitive
-            }           
-        }
+            }    
+
+            grandChildren = children[i].children;
+            for(var j = 0;  j < grandChildren.length; i++) {
+
+                if (grandChildren[j] != "keyframe") {
+                    this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + ">");
+                    continue;
+                }
+                var keyframe = this.reader.getFloat(grandChildren[j], 'instant');
+                if(keyframe == null){
+                    this.onXMLMinorError("instant must be define for animation ID = " + animationId + ")");
+                    continue; 
+                }
+                if(keyframe <= 0){
+                    this.onXMLMinorError("instant must be a positive number for animation with id = " + animationId + ")");
+                    continue; 
+                }
+
+                grandGrandChildren = grandchildren[j].children;
+                //every tranformation must be define
+                if (grandGrandChildren.length != 3 ||
+                    (grandGrandChildren[0].nodeName != 'translate' && 
+                    grandGrandChildren[0].nodeName != 'rotate' &&
+                    grandGrandChildren[0].nodeName != 'scale' )) {
+                    return "There must be exactly 1 animation type (translate, rotate or scale)"
+                }
+                console.log(grandChildren.length);
+                if(grandGrandChildren[0].nodeName != 'translate'){
+                    this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + ">");
+                    continue;
+                }
+                var translate = this.parseCoordinates3D(grandGrandChildren[0], "translate in animation for ID = " + animationId);
+                if (!Array.isArray(translate)){
+                    this.onXMLMinorError(animationId);
+                    continue;
+                }    
+                console.log(translate);
+                if(grandGrandChildren[0].nodeName != 'rotate'){
+                    this.onXMLMinorError("unknown tag <" + grandChildren[1].nodeName + "> in animation for ID = " + animationId);
+                    continue;
+                }
+                var x_rotate = this.getFloat(grandGrandChildren[1],'angle_x');
+                console.log(x_rotate);
+                var y_rotate = this.getFloat(grandGrandChildren[1],'angle_y');
+                console.log(y_rotate);
+                var z_rotate = this.getFloat(grandGrandChildren[1],'angle_z');   
+                console.log(z_rotate); 
+
+                if(grandGrandChildren[2].nodeName != 'scale'){
+                    this.onXMLMinorError("unknown tag <" + grandChildren[2].nodeName + "> in animation for ID = " + animationId);
+                    continue;
+                }
+                var scale = this.parseCoordinates3D(grandGrandChildren[2], "scale in animation for ID = " + animationId);
+                if (!Array.isArray(scale)){
+                    this.onXMLMinorError(scale);
+                    continue; 
+                }      
+                console.log(scale);   
+            }
+                      
+        } 
+         //TODO: push of animation
+        this.log("Parsed animations");
+        return null;
     }
 
     /**

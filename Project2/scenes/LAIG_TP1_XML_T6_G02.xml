@@ -204,14 +204,13 @@
             <!-- translate, rotate e scale sao obrigatorios -->
             <!-- e fornecidos por esta ordem -->
             <!-- a instrução rotação corresponde a:       -->
-            <!--    <rotate axis="x" angle="angle_x" />   -->
-            <!--    <rotate axis="y" angle="angle_y" />   -->
-            <!--    <rotate axis="z" angle="angle_z" />   -->
-
+            <!--    <rotate axis="x" angle="angle_x" /> -->
+            <!--    <rotate axis="y" angle="angle_y" /> -->
+            <!--    <rotate axis="z" angle="angle_z" /> -->       
                 <translate x=“0” y=“0” z=“0” />
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x=“1” y=“1” z=“1” />
-            </keyframe>
+            </keyframe> 
         </animation>
 
     </animations>

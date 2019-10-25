@@ -1359,7 +1359,7 @@ class MySceneGraph {
             return;
         }
 
-        // Get id of the current texture.
+        // Get id of the current animation
         var animationID = this.reader.getString(animationrefNode, 'id');
         if (animationID == null)
             return "no ID defined for animation";

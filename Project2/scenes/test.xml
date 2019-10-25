@@ -1,0 +1,435 @@
+<lxs>
+    <scene root="myRoot" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <!-- view from the front to the all scene -->
+        <perspective id="defaultCamera" near="0.1" far="300" angle="50"> <!-- value of far is big to see skybox -->
+            <from x="-5" y="13" z="60" />
+            <to x="0" y="15" z="0" />
+        </perspective> 
+
+        <!-- view from behind -->
+        <perspective id="behindCamera" near="0.1" far="300" angle="40">
+            <from x="-5" y="13" z="-60" />
+            <to x="0" y="15" z="0" />
+        </perspective> 
+
+        <!-- view of an upper position -->
+       <ortho id="upCamera" near="0.1" far="300" left="-40" right="45" top="18" bottom="-16" >
+            <from x="0" y="80" z="0" />
+            <to x="0" y="15" z="00" />
+            <up x="0" y="0" z="1" /> 
+        </ortho> 
+
+        <!-- view of the earth and it's moon -->
+       <ortho id="earthCamera" near="0.1" far="300" left="-20" right="20" top="10" bottom="-10" >
+            <from x="5.4" y="20" z="6" />
+            <to x="6.2" y="20" z="0" />
+            <up x="0" y="1" z="0" /> 
+        </ortho> 
+        
+    </views>
+
+    <globals>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </globals>
+
+    <lights>
+        <!-- ligth used to inligth the scene, with constant attenuatuan to get everywhere (expect back faces because of back face culling) -->
+        <omni id="firstLight" enabled="1">
+            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0" quadratic="0" /> 
+        </omni>
+
+        <!-- ligth coming for the shooting star, linear attenuation because stars give ligth but not as must as the sun -->
+        <spot id="starLight" enabled="1" angle="70" exponent="50">        
+            <location x="-30" y="20" z="10.5" w="1.0" />
+            <target x="-30" y="20" z="10" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1" g="1" b="1" a="1.0" />
+            <attenuation constant="0" linear="1.0" quadratic="0" /> 
+        </spot>
+
+        <!-- ligth near the telescope, with quadratic attenuation to only ligth the telescope -->
+        <omni id="telescopeLight" enabled="1">
+            <location x="-33.5" y="1.2" z="12" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="0" linear="0" quadratic="1.0" /> 
+        </omni>
+
+        <!-- ligth coming for the sun, attenuation linear because of the real intensity of the ligth of the sun  --> 
+        <omni id="sunLight" enabled="1">
+            <location x="0" y="20" z="2.1" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0" quadratic="0" /> 
+        </omni>       
+       
+    </lights>
+
+    <textures>
+        <texture id="sunTexture" file="scenes/images/sun.jpg" />
+        <texture id="neptuneTexture" file="scenes/images/neptune.jpg" />
+        <texture id="starsTexture" file="scenes/images/stars.jpg" />
+    </textures>
+
+    <materials>
+        <material id="backgroundMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        </material>
+
+        <material id="sunMaterial" shininess="10">
+            <emission r="1.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="1.0" g="0.5" b="0.5" a="1.0" />
+            <specular r="0" g="0" b="0" a="1.0" />
+        </material>
+
+        <material id="planetMaterial" shininess="10">
+            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
+            <ambient r="0.7" g="0.7" b="0.7" a="0.7" />
+            <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+        </material>
+
+        <material id="orbitMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.05" g="0.05" b="0.3" a="0.05" />
+            <diffuse r="0" g="0" b="0" a="0" />
+            <specular r="0" g="0" b="0" a="0" />
+        </material>
+
+        <!-- different blue -->
+        <material id="orbitMaterial1" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.01" g="0.01" b="0.1" a="0.05" />
+            <diffuse r="0" g="0" b="0" a="0" />
+            <specular r="0" g="0" b="0" a="0" />
+        </material>
+
+        <!-- shinny object to simulate the shine of a shootingStar track -->
+        <material id="whiteMaterial" shininess="20">
+            <emission r="1.0" g="1.0" b="1.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0" g="0" b="0" a="0" />
+        </material>
+
+    </materials>
+
+    <transformations>
+        <!-- where are the transformations of complete obejcts, to become easier to move them around -->
+        <transformation id="identityTransform" >
+            <scale x="1.0" y="1.0" z="1.0" /> 
+        </transformation>
+
+        <transformation id="starTransform">
+            <translate x="20" y="20" z="27.6" />
+        </transformation>   
+
+        <transformation id="star1Transform">
+            <translate x="15" y="17" z="25" />
+        </transformation>
+
+        <transformation id="shootingStarTransform">
+            <translate x="-30" y="20" z="10" />
+            <scale x="2" y="2" z="2" />
+        </transformation>    
+
+    </transformations>
+
+    <animations>
+        <animation id="planetAnimation" >
+            <keyframe instant="1">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe> 
+            <keyframe instant="2">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="45" angle_y="45" angle_z="45" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe>  
+        </animation> 
+
+        <animation id="starAnimation" >
+            <keyframe instant="1">
+                <translate x="1" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="2">
+                <translate x="2" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="3">
+                <translate x="3" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="4">
+                <translate x="4" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe>  
+
+            <keyframe instant="5">
+                <translate x="5" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="2">
+                <translate x="6" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="3">
+                <translate x="7" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="4">
+                <translate x="8" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe> 
+        </animation> 
+    </animations>
+
+    <primitives>
+        <primitive id="rectangle">
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+        </primitive>
+
+        <primitive id="triangle">
+            <triangle x1="0" y1="0" z1="0" x2="1" y2="0" z2="0" x3="0.5" y3="0.8" z3="0" />
+        </primitive>
+        
+        <primitive id="cylinder">
+            <cylinder base="0.4" top="0.2" height="2" slices="16" stacks="16" />
+        </primitive>
+
+        <primitive id="telescopeLegPrim">
+            <cylinder base="0.2" top="0.2" height="2" slices="16" stacks="16" />
+        </primitive>
+
+        <primitive id="sphere">
+            <sphere radius="1" slices="18" stacks="18" />
+        </primitive>
+
+        <primitive id="thickOrbit">
+            <torus inner="0.02" outer="1" slices="18" loops="18" />
+        </primitive>
+
+        <!-- orbits far from the sun need to be thinier because of big scales-->
+        <primitive id="thinOrbit">
+            <torus inner="0.01" outer="1" slices="18" loops="18" />
+        </primitive>
+
+        <!-- for ring of saturn -->
+        <primitive id="ring">
+            <torus inner="0.15" outer="1" slices="18" loops="18" />
+        </primitive>
+
+        <primitive id="torus">
+            <torus inner="0.25" outer="1" slices="18" loops="18" />
+        </primitive>
+    </primitives>
+
+    <components>
+        <component id="myRoot">
+            <transformation>
+                <transformationref id="identityTransform" />
+            </transformation>
+            <materials>
+                <material id="backgroundMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="shootingStar" /> 
+                <componentref id="sun" />
+                <componentref id="planets" />
+                <componentref id="orbits" />
+            </children>
+        </component> 
+
+
+        <component id="shootingStar">
+            <transformation>
+                <transformationref id="shootingStarTransform" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="shootingStarPart" />
+                <componentref id="halfStarabove" />
+                <componentref id="halfStardown" />            
+            </children>
+        </component>
+
+        <component id="shootingStarPart">
+            <transformation>
+                <translate x="-0.1" y="0.28" z="-0.01" />
+                <scale x="0.6" y="0.3" z="0" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+                <material id="sunMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component> 
+
+        <component id="halfStardown">
+            <transformation>
+                <translate x="1" y="0.5" z="0" />
+                <rotate axis="z" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="triangle" />
+                <componentref id="backHalfStardown" />
+            </children>
+        </component>
+
+        <!-- stars can be seen from both sides -->
+        <component id="backHalfStardown">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <component id="halfStarabove">
+            <transformation>
+                <transformationref id="identityTransform"/>              
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="triangle" />
+                <componentref id="backHalfStarAbove" /> <!-- back of the star, in the same place, but seen from the other side -->
+            </children>
+        </component>
+
+        <component id="backHalfStarAbove">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="180" />                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <component id="sun">
+            <transformation>
+                <translate x="0" y="20" z="0" />
+                <scale x="2" y="2" z="2" />
+            </transformation>
+            <materials>
+                <material id="sunMaterial" />
+            </materials>
+            <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="planets">
+            <transformation>
+                <transformationref id="identityTransform"/>
+            </transformation>
+            <materials>
+                <material id="planetMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="neptune" />
+            </children>
+        </component>
+
+        <component id="neptune">
+            <transformation>
+                <translate x="8" y="6.7" z="-12" />                
+                <scale x="2" y="2" z="2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="neptuneTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="orbits">
+            <transformation>
+                <transformationref id="identityTransform"/>
+            </transformation>
+            <materials>
+                <material id="orbitMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="neptuneOrbit" />
+            </children>
+        </component>
+
+        <component id="neptuneOrbit">
+            <transformation>
+                <translate x="0" y="20" z="0" />
+                <rotate axis="x" angle="40" /> 
+                <scale x="20" y="20" z="20" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+                <material id="whiteMaterial" />
+                <material id="orbitMaterial1" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="thinOrbit" />
+            </children>
+        </component>
+
+    </components>
+</lxs>

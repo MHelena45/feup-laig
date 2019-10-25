@@ -252,9 +252,9 @@
             <!--    <rotate axis="y" angle="angle_y" />   -->
 
             <!--    <rotate axis="z" angle="angle_z" />   -->
-            <translate x=“ff” y=“ff” z=“ff” />
+            <translate x="ff" y="ff" z="ff" />
             <rotate angle_x="ff" angle_y="ff" angle_z="ff" />
-            <scale x=“ff” y=“ff” z=“ff” />
+            <scale x="ff" y="ff" z="ff" />
         </keyframe>
 
     </animation>

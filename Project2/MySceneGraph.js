@@ -182,7 +182,7 @@ class MySceneGraph {
                 this.onXMLMinorError("tag <animations> out of order");
     
             //Parse primitives block
-            if ((error = this.parseAnimation(nodes[index])) != null)
+            if ((error = this.parseAnimations(nodes[index])) != null)
                 return error;
         }
 
@@ -868,10 +868,10 @@ class MySceneGraph {
      * Parses the <primitives> block.
      * @param {primitives block element} primitivesNode
      */
-    parseAnimation(primitivesNode) {
+    parseAnimations(primitivesNode) {
         var children = primitivesNode.children;
 
-        this.animation = [];
+        this.animations = [];
 
         var grandChildren = [];
 
@@ -884,14 +884,14 @@ class MySceneGraph {
                 continue;
             }
             // Get id of the current animation.
-            var animationId = this.reader.getString(children[i], 'id');
-            if (animationId == null){
+            var animationID = this.reader.getString(children[i], 'id');
+            if (animationID == null){
                 this.onXMLError("no ID defined for animation " + children[i]);
                 continue; //object with no id is ignore
             }
              // Checks for repeated IDs.
-            if (this.animation[animationId] != null){
-                this.onXMLMinorError("ID must be unique for each animation (conflict: ID = " + animationId + ")");
+            if (this.animations[animationID] != null){
+                this.onXMLMinorError("ID must be unique for each animation (conflict: ID = " + animationID + ")");
                 continue; //ignore the repeated primitive
             }    
             
@@ -904,59 +904,70 @@ class MySceneGraph {
                 }
                 var instant = this.reader.getFloat(grandChildren[j], 'instant');
                 if(instant == null){
-                    this.onXMLMinorError("instant must be define for animation ID = " + animationId + ")");
+                    this.onXMLMinorError("instant must be define for animation ID = " + animationID + ")");
                     continue; 
                 }
                 if(instant <= 0){
-                    this.onXMLMinorError("instant must be a positive number for animation with id = " + animationId + ")");
+                    this.onXMLMinorError("instant must be a positive number for animation with id = " + animationID + ")");
                     continue; 
                 }
 
                 grandGrandChildren = grandChildren[j].children;
-                //every tranformation must be define
+                //every animation must be defined
                 if (grandGrandChildren.length != 3 ||
                     (grandGrandChildren[0].nodeName != 'translate' && 
-                    grandGrandChildren[0].nodeName != 'rotate' &&
-                    grandGrandChildren[0].nodeName != 'scale' )) {
-                    return "There must be exactly 1 animation type (translate, rotate or scale)"
+                    grandGrandChildren[1].nodeName != 'rotate' &&
+                    grandGrandChildren[2].nodeName != 'scale' )) {
+                    return "There must be exactly 1 of each animation type (1 - translate, 2 - rotate and 3 - scale)"
                 }
 
+                // create animation
+                var animation = new KeyframeAnimation();
+                var animationMatrix = mat4.create(); // creates identity matrix
+                
+                // <translate>
                 if(grandGrandChildren[0].nodeName != 'translate'){
                     this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + ">");
                     continue;
                 }
-                var translate = this.parseCoordinates3D(grandGrandChildren[0], "translate in animation for ID = " + animationId);
+                var translate = this.parseCoordinates3D(grandGrandChildren[0], "translate in animation for ID = " + animationID);
                 if (!Array.isArray(translate)){
-                    this.onXMLMinorError(animationId);
+                    this.onXMLMinorError(animationID);
                     continue;
-                }    
-                console.log(translate);
+                }
+                animationMatrix = mat4.translate(animationMatrix, animationMatrix, translate);
          
                 if(grandGrandChildren[1].nodeName != 'rotate'){
-                    this.onXMLMinorError("unknown tag <" + grandGrandChildren[1].nodeName + "> in animation for ID = " + animationId);
+                    this.onXMLMinorError("unknown tag <" + grandGrandChildren[1].nodeName + "> in animation for ID = " + animationID);
                     continue;
                 }
                 var x_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_x');
-                console.log(x_rotate);
+                animationMatrix = mat4.rotateX(animationMatrix, animationMatrix, DEGREE_TO_RAD * x_rotate);
                 var y_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_y');
-                console.log(y_rotate);
+                animationMatrix = mat4.rotateY(animationMatrix, animationMatrix, DEGREE_TO_RAD * y_rotate);
                 var z_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_z');   
-                console.log(z_rotate); 
+                animationMatrix = mat4.rotateZ(animationMatrix, animationMatrix, DEGREE_TO_RAD * z_rotate);
 
                 if(grandGrandChildren[2].nodeName != 'scale'){
-                    this.onXMLMinorError("unknown tag <" + grandGrandChildren[2].nodeName + "> in animation for ID = " + animationId);
+                    this.onXMLMinorError("unknown tag <" + grandGrandChildren[2].nodeName + "> in animation for ID = " + animationID);
                     continue;
                 }
-                var scale = this.parseCoordinates3D(grandGrandChildren[2], "scale in animation for ID = " + animationId);
+                var scale = this.parseCoordinates3D(grandGrandChildren[2], "scale in animation for ID = " + animationID);
                 if (!Array.isArray(scale)){
                     this.onXMLMinorError(scale);
                     continue; 
-                }      
-                console.log(scale);   
+                }
+                animationMatrix = mat4.scale(animationMatrix, animationMatrix, scale);
+                
+                // save matrix
+                animation.animationMatrix = animationMatrix;
+                // save animation
+                this.animations[animationID] = animation;
             } 
                      
         } 
-         //TODO: push of animation 
+        
+        //TODO: push of animation 
         this.log("Parsed animations");
         return null;
     }
@@ -1207,11 +1218,12 @@ class MySceneGraph {
             }
 
             var transformationIndex = nodeNames.indexOf("transformation");
-
             if (transformationIndex == null)
                 return "no transformation index defined for transformation";
             else if (transformationIndex < 0)
                 return "negative transformation index defined for transformation";
+
+            var animationrefIndex = nodeNames.indexOf("animationref");
 
             var materialsIndex = nodeNames.indexOf("materials");
             if (materialsIndex == null)
@@ -1240,6 +1252,14 @@ class MySceneGraph {
             if (error != null)
                 return error + " for component with ID " + componentID;
 
+            // Animation
+            if (animationrefIndex != null && animationrefIndex >= 0) {
+                var animationrefNode = grandChildren[animationrefIndex];
+                error = this.parseComponentAnimation(component, animationrefNode);
+                if (error != null)
+                    return error + " for component with ID " + componentID;
+            }
+
             // Materials
             var materialsNode = grandChildren[materialsIndex];
             error = this.parseComponentMaterials(component, materialsNode);
@@ -1248,7 +1268,7 @@ class MySceneGraph {
 
             // Texture
             var textureNode = grandChildren[textureIndex];
-            error = this.parseComponentTextures(component, textureNode);
+            error = this.parseComponentTexture(component, textureNode);
             if (error != null)
                 return error + " for component with ID " + componentID;
 
@@ -1331,6 +1351,33 @@ class MySceneGraph {
     /**
      * Parse the transformation of component with ID = componentID
      * @param {block element} component
+     * @param {block element} animationrefNode
+     */
+    parseComponentAnimation(component, animationrefNode) {
+        if (animationrefNode.nodeName != "animationref") {
+            this.onXMLMinorError("unknown tag <" + animationrefNode.nodeName + ">");
+            return;
+        }
+
+        // Get id of the current texture.
+        var animationID = this.reader.getString(animationrefNode, 'id');
+        if (animationID == null)
+            return "no ID defined for animation";
+
+        if (animationID == "")
+            return "no ID defined for animation";
+
+        // check if animation exists
+        var animation = this.animations[animationID];
+        if(animation == null)
+            return "Animation with ID " + animationID + " not defined";
+        else
+            component.KeyframeAnimation = animation;
+    }
+
+    /**
+     * Parse the transformation of component with ID = componentID
+     * @param {block element} component
      * @param {block element} transformationsNode
      */
     parseComponentMaterials(component, materialsNode) {
@@ -1368,7 +1415,7 @@ class MySceneGraph {
      * @param {block element} component
      * @param {block element} transformationsNode
      */
-    parseComponentTextures(component, textureNode) {
+    parseComponentTexture(component, textureNode) {
 
         if (textureNode.nodeName != "texture") {
             this.onXMLMinorError("unknown tag <" + textureNode.nodeName + ">");
@@ -1787,11 +1834,11 @@ class MySceneGraph {
         var length_s = component.length_s;
         var length_t = component.length_t;
       
-       if (textureID == "inherit"){
-           if(parentTextureID == "none" || parentTextureID == "inherit"){ //only if any ancestor has a texture define before
-            this.onXMLMinorError("inherit a texture not defined on " + component);
-            appliedMaterial.setTexture(null);
-           }
+        if (textureID == "inherit"){
+            if(parentTextureID == "none" || parentTextureID == "inherit"){ //only if any ancestor has a texture define before
+                this.onXMLMinorError("inherit a texture not defined on " + component);
+                appliedMaterial.setTexture(null);
+            }
             length_s = parentLength_s;
             length_t = parentLength_t;
             textureID = parentTextureID;   
@@ -1801,7 +1848,7 @@ class MySceneGraph {
             */  
             appliedMaterial.setTextureWrap('REPEAT','REPEAT' );     
             appliedMaterial.setTexture(this.textures[textureID]);
-       }            
+        }
         else if (textureID == "none"){
             //the texture apply is none but passes the closest ancestor texture defined to the son
             length_s = parentLength_s;

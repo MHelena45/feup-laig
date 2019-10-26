@@ -31,19 +31,23 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
-        this.lights1 = true; //checkbox
+        //checkboxes
+        this.lights1 = true; 
         this.lights2 = true;
         this.lights3 = true;
 
-        this.selectedView = 0;
+        this.mClick = false; //used to now when M/m is being press  
 
+        //DropBox
+        this.selectedView = 0;
 		// Labels and ID's for object selection on MyInterface
 		this.modeIds = { 'Front': 0, 'Behind': 1, 'Up': 2, 'Earth' : 3 };
 
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(100);   
-        
-        this.mClick = false; //used to now when M/m is being press           
+
+      /*  var FPS = 20; //numero de frames por segundo
+        this.setUpdatePeriod(1000 / FPS);   */
+        this.setUpdatePeriod(100);
     }
 
     /**

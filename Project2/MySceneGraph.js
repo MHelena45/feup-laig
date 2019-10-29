@@ -893,10 +893,14 @@ class MySceneGraph {
             if (this.animations[animationID] != null){
                 this.onXMLMinorError("ID must be unique for each animation (conflict: ID = " + animationID + ")");
                 continue; //ignore the repeated primitive
-            }    
+            }
+
+            // create animation
+            var animation = new KeyframeAnimation(this.scene);
             
             grandChildren = children[i].children; 
             for(var j = 0;  j < grandChildren.length; j++) {
+                var animationMatrix = mat4.create(); // creates identity matrix
                 
                 if (grandChildren[j].nodeName != "keyframe") {
                     this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + ">");
@@ -909,7 +913,7 @@ class MySceneGraph {
                 }
                 if(instant <= 0){
                     this.onXMLMinorError("instant must be a positive number for animation with id = " + animationID + ")");
-                    continue; 
+                    continue;
                 }
 
                 grandGrandChildren = grandChildren[j].children;
@@ -920,10 +924,6 @@ class MySceneGraph {
                     grandGrandChildren[2].nodeName != 'scale' )) {
                     return "There must be exactly 1 of each animation type (1 - translate, 2 - rotate and 3 - scale)"
                 }
-
-                // create animation
-                var animation = new KeyframeAnimation();
-                var animationMatrix = mat4.create(); // creates identity matrix
                 
                 // <translate>
                 if(grandGrandChildren[0].nodeName != 'translate'){
@@ -936,7 +936,8 @@ class MySceneGraph {
                     continue;
                 }
                 animationMatrix = mat4.translate(animationMatrix, animationMatrix, translate);
-         
+                
+                // <rotate>
                 if(grandGrandChildren[1].nodeName != 'rotate'){
                     this.onXMLMinorError("unknown tag <" + grandGrandChildren[1].nodeName + "> in animation for ID = " + animationID);
                     continue;
@@ -948,6 +949,7 @@ class MySceneGraph {
                 var z_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_z');   
                 animationMatrix = mat4.rotateZ(animationMatrix, animationMatrix, DEGREE_TO_RAD * z_rotate);
 
+                // <scale>
                 if(grandGrandChildren[2].nodeName != 'scale'){
                     this.onXMLMinorError("unknown tag <" + grandGrandChildren[2].nodeName + "> in animation for ID = " + animationID);
                     continue;
@@ -958,13 +960,12 @@ class MySceneGraph {
                     continue; 
                 }
                 animationMatrix = mat4.scale(animationMatrix, animationMatrix, scale);
-                
-                // save matrix
-                animation.animationMatrix = animationMatrix;
-                // save animation
-                this.animations[animationID] = animation;
+                // save matrix and instance
+                animation.animationMatrices[instant] = animationMatrix;
+                animation.keys.push(...[instant]);
             } 
-                     
+            // save animation
+            this.animations[animationID] = animation;         
         } 
         
         //TODO: push of animation 
@@ -1787,6 +1788,12 @@ class MySceneGraph {
         var matrix = component.transformationMatrix;
         this.scene.pushMatrix();
         this.scene.multMatrix(matrix);
+
+        // apply animation
+        if (component.KeyframeAnimation != null) {
+            component.KeyframeAnimation.update();
+            component.KeyframeAnimation.apply();
+        }
 
         // loop children
         for (var i = 0; i < component.childrenIDs.length; i++) {

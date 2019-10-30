@@ -1784,16 +1784,18 @@ class MySceneGraph {
         var length_s = childAndTextureID[2];
         var length_t = childAndTextureID[3];
       
+
+        // apply animation
+        if (component.KeyframeAnimation != null) {
+            component.KeyframeAnimation.update();
+            this.scene.pushMatrix();
+            component.KeyframeAnimation.apply();
+        }
         // get matrix
         var matrix = component.transformationMatrix;
         this.scene.pushMatrix();
         this.scene.multMatrix(matrix);
 
-        // apply animation
-        if (component.KeyframeAnimation != null) {
-            component.KeyframeAnimation.update();
-            component.KeyframeAnimation.apply();
-        }
 
         // loop children
         for (var i = 0; i < component.childrenIDs.length; i++) {
@@ -1815,6 +1817,11 @@ class MySceneGraph {
         }
         
         this.scene.popMatrix();
+        
+        if (component.KeyframeAnimation != null){
+            this.scene.popMatrix();
+        }
+
     }
 
     setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t){

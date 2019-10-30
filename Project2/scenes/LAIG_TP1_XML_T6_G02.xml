@@ -198,37 +198,37 @@
 
             <keyframe instant="2">
                 <translate x="3.35" y="1.5" z="2.2" /> 
-                <rotate angle_x="30" angle_y="30" angle_z="30" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe> 
 
-         <!--   <keyframe instant="3">
+            <keyframe instant="3">
                 <translate x="5" y="2" z="2.4" /> 
-                <rotate angle_x="45" angle_y="45" angle_z="45" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
-            </keyframe> -->
+            </keyframe>
 
             <keyframe instant="4">
                 <translate x="6.66" y="3.4" z="3.4" /> 
-                <rotate angle_x="60" angle_y="60" angle_z="60" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>  
 
-        <!--   <keyframe instant="5">
+           <keyframe instant="5">
                 <translate x="8.35" y="5" z="5" /> 
-                <rotate angle_x="75" angle_y="75" angle_z="75" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
-            </keyframe> -->
+            </keyframe> 
 
             <keyframe instant="6">
                 <translate x="11.6" y="9.7" z="9.2" /> 
-                <rotate angle_x="90" angle_y="90" angle_z="90" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>  
 
             <keyframe instant="8">
                 <translate x="9.13" y="21.2" z="18.5" /> 
-                <rotate angle_x="120" angle_y="120" angle_z="120" />
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>
         </animation> 
@@ -544,6 +544,7 @@
             <materials>
                 <material id="whiteMaterial" />
             </materials>
+            <animationref id="starAnimation" />
             <texture id="none"/>
             <children>
                 <componentref id="shootingStarPart" />
@@ -805,11 +806,11 @@
         </component>
 
         <component id="neptune">
-            <transformation>
-                <translate x="9.13" y="21.2" z="18.5" />        
+            <transformation>    
                 <translate x="8" y="-13.3" z="-11.8" />                
                 <scale x="2" y="2" z="2" />
             </transformation>
+            <animationref id="neptuneAnimation" />
             <materials>
                 <material id="inherit" />
             </materials>

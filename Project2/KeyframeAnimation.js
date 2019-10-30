@@ -13,8 +13,10 @@ class KeyframeAnimation extends Animation {
         this.scene = scene;
         this.lastDate = new Date();
         this.lastTime;
+        this.deltaTime;
 
         this.currentAnimationKey = 0;
+        this.nextAnimationKey = 1;
     }
 
     update() {
@@ -23,19 +25,9 @@ class KeyframeAnimation extends Animation {
         var currentDate = new Date();
         var currentTime = currentDate.getTime();
 
-        var deltaTime = (currentTime - this.lastTime) / 1000;
+        this.deltaTime = (currentTime - this.lastTime) / 1000;
 
-        // get current animation key
-        if(deltaTime < this.keys[this.keys.length - 1])
-            while(deltaTime > this.keys[this.currentAnimationKey])
-            this.currentAnimationKey++;
-        
-
-        this.periodicAnimationMatrix = this.animationMatrices[this.keys[this.currentAnimationKey]];
-
-        debugger;
-
-        /*
+       /* 
         this.periodicAnimationMatrix[0] = this.animationMatrix[0] * deltaTime;
         this.periodicAnimationMatrix[1] = this.animationMatrix[1] * deltaTime;
         this.periodicAnimationMatrix[2] = this.animationMatrix[2] * deltaTime;
@@ -56,10 +48,30 @@ class KeyframeAnimation extends Animation {
     }
 
     apply() {
-        this.scene.pushMatrix();
-        debugger;
-        this.scene.multMatrix(this.periodicAnimationMatrix);
-        this.scene.popMatrix();
+        
+        // get current animation key
+        if(this.deltaTime < this.keys[this.keys.length - 2]){
+            while(this.deltaTime > this.keys[this.currentAnimationKey]){
+                this.currentAnimationKey++;
+            }
+        //    if(this.deltaTime == this.keys[this.currentAnimationKey] ){
+                this.periodicAnimationMatrix = this.animationMatrices[this.keys[this.currentAnimationKey]];
+                this.scene.multMatrix(this.periodicAnimationMatrix); 
+        /*    } else {
+                //if current time isn't defined, interpolate
+                var difference = this.keys[this.currentAnimationKey] - this.keys[this.currentAnimationKey+1];
+                this.currentAnimationMatrix = this.animationMatrices[this.keys[this.currentAnimationKey]];
+                this.nextAnimationMatrix = this.animationMatrices[this.keys[this.currentAnimationKey+1]];
+
+                this.periodicAnimationMatrix = mat4.multiply(this.periodicAnimationMatrix, this.nextAnimationMatrix, this.currentAnimationMatrix) ;
+                console.log(this.periodicAnimationMatrix);
+                this.scene.multMatrix(this.periodicAnimationMatrix); 
+            } */
+
+        } else { //stops the animation the last place defined
+            this.periodicAnimationMatrix = this.animationMatrices[this.keys[this.keys.length - 1]];
+            this.scene.multMatrix(this.periodicAnimationMatrix);   
+        }
     }
 }
 

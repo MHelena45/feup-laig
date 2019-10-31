@@ -190,13 +190,13 @@
     <animations>
         <animation id="neptuneAnimation" >
             <!-- Complete Rotation in 12 instants -->
-        <!--    <keyframe instant="1">
+            <keyframe instant="1">
                 <translate x="1.67" y="1" z="1" /> 
                 <rotate angle_x="15" angle_y="15" angle_z="15" />
                 <scale x="1" y="1" z="1" /> 
-            </keyframe> -->
+            </keyframe>
 
-            <keyframe instant="2">
+             <keyframe instant="2">
                 <translate x="3.35" y="1.5" z="2.2" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
@@ -240,11 +240,11 @@
                 <scale x="1" y="1" z="1" /> 
             </keyframe> 
 
-            <keyframe instant="2">
+           <keyframe instant="2">
                 <translate x="2" y="-1" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
-            </keyframe> 
+            </keyframe>  
 
             <keyframe instant="3">
                 <translate x="3" y="-1.5" z="0" /> 

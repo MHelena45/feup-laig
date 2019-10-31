@@ -45,8 +45,8 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
 
-      /*  var FPS = 20; //numero de frames por segundo
-        this.setUpdatePeriod(1000 / FPS);   */
+        /*var FPS = 20; //numero de frames por segundo
+        this.setUpdatePeriod(1000 / FPS);*/
         this.setUpdatePeriod(100);
     }
 

@@ -900,7 +900,6 @@ class MySceneGraph {
             
             grandChildren = children[i].children; 
             for(var j = 0;  j < grandChildren.length; j++) {
-                var animationMatrix = mat4.create(); // creates identity matrix
                 
                 if (grandChildren[j].nodeName != "keyframe") {
                     this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + ">");
@@ -932,22 +931,25 @@ class MySceneGraph {
                 }
                 var translate = this.parseCoordinates3D(grandGrandChildren[0], "translate in animation for ID = " + animationID);
                 if (!Array.isArray(translate)){
-                    this.onXMLMinorError(animationID);
+                    this.onXMLMinorError(translate);
                     continue;
                 }
-                animationMatrix = mat4.translate(animationMatrix, animationMatrix, translate);
+                animation.animationTranslation.push(...[translate]);
                 
                 // <rotate>
                 if(grandGrandChildren[1].nodeName != 'rotate'){
                     this.onXMLMinorError("unknown tag <" + grandGrandChildren[1].nodeName + "> in animation for ID = " + animationID);
                     continue;
                 }
+
                 var x_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_x');
-                animationMatrix = mat4.rotateX(animationMatrix, animationMatrix, DEGREE_TO_RAD * x_rotate);
+                animation.animationRotationX.push(...[x_rotate]);
+
                 var y_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_y');
-                animationMatrix = mat4.rotateY(animationMatrix, animationMatrix, DEGREE_TO_RAD * y_rotate);
+                animation.animationRotationY.push(...[y_rotate]);
+
                 var z_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_z');   
-                animationMatrix = mat4.rotateZ(animationMatrix, animationMatrix, DEGREE_TO_RAD * z_rotate);
+                animation.animationRotationZ.push(...[z_rotate]);
 
                 // <scale>
                 if(grandGrandChildren[2].nodeName != 'scale'){
@@ -959,9 +961,8 @@ class MySceneGraph {
                     this.onXMLMinorError(scale);
                     continue; 
                 }
-                animationMatrix = mat4.scale(animationMatrix, animationMatrix, scale);
+                animation.animationScales.push(...[scale]);
                 // save matrix and instance
-                animation.animationMatrices[instant] = animationMatrix;
                 animation.keys.push(...[instant]);
             } 
             // save animation
@@ -1795,7 +1796,6 @@ class MySceneGraph {
         var matrix = component.transformationMatrix;
         this.scene.pushMatrix();
         this.scene.multMatrix(matrix);
-
 
         // loop children
         for (var i = 0; i < component.childrenIDs.length; i++) {

@@ -934,7 +934,7 @@ class MySceneGraph {
                     this.onXMLMinorError(translate);
                     continue;
                 }
-                animation.animationTranslation.push(...[translate]);
+                animation.translation.push(...[translate]);
                 
                 // <rotate>
                 if(grandGrandChildren[1].nodeName != 'rotate'){
@@ -943,13 +943,9 @@ class MySceneGraph {
                 }
 
                 var x_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_x');
-                animation.animationRotationX.push(...[x_rotate]);
-
                 var y_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_y');
-                animation.animationRotationY.push(...[y_rotate]);
-
                 var z_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_z');   
-                animation.animationRotationZ.push(...[z_rotate]);
+                animation.rotation.push(...[[x_rotate, y_rotate, z_rotate]]);
 
                 // <scale>
                 if(grandGrandChildren[2].nodeName != 'scale'){
@@ -961,9 +957,9 @@ class MySceneGraph {
                     this.onXMLMinorError(scale);
                     continue; 
                 }
-                animation.animationScales.push(...[scale]);
+                animation.scale.push(...[scale]);
                 // save matrix and instance
-                animation.keys.push(...[instant]);
+                animation.instances.push(...[instant]);
             } 
             // save animation
             this.animations[animationID] = animation;         
@@ -1785,13 +1781,13 @@ class MySceneGraph {
         var length_s = childAndTextureID[2];
         var length_t = childAndTextureID[3];
       
-
         // apply animation
         if (component.KeyframeAnimation != null) {
             component.KeyframeAnimation.update();
             this.scene.pushMatrix();
             component.KeyframeAnimation.apply();
         }
+        
         // get matrix
         var matrix = component.transformationMatrix;
         this.scene.pushMatrix();

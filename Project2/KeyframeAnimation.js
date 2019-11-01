@@ -62,20 +62,11 @@ class KeyframeAnimation extends Animation {
             this.animationMatrix = mat4.create();  
             var timeInterval = this.instances[this.currentAnimationKey + 1] - this.instances[this.currentAnimationKey];
             var periodicDeltaTime = (this.deltaTime - this.instances[this.currentAnimationKey]) / timeInterval;
-
-            // Applying old animation matrix
-            var oldAnimation = mat4.create();
-            oldAnimation = mat4.scale(oldAnimation, oldAnimation, this.scale[this.currentAnimationKey]);
-            oldAnimation = mat4.rotateX(oldAnimation, oldAnimation, DEGREE_TO_RAD * this.rotation[this.currentAnimationKey][0]);
-            oldAnimation = mat4.rotateY(oldAnimation, oldAnimation, DEGREE_TO_RAD * this.rotation[this.currentAnimationKey][1]);
-            oldAnimation = mat4.rotateZ(oldAnimation, oldAnimation, DEGREE_TO_RAD * this.rotation[this.currentAnimationKey][2]);
-            oldAnimation = mat4.translate(oldAnimation, oldAnimation, this.translation[this.currentAnimationKey]);
-            this.scene.multMatrix(oldAnimation);
             
-            // scale
-            var periodicScale = this.subtractArray(this.scale[this.currentAnimationKey + 1], this.scale[this.currentAnimationKey]);
-            periodicScale = this.sumArray(this.multiplyArray(periodicScale, periodicDeltaTime), this.scale[this.currentAnimationKey]);
-            this.animationMatrix = mat4.scale(this.animationMatrix, this.animationMatrix, periodicScale);
+            // translation
+            var periodicTranslation = this.subtractArray(this.translation[this.currentAnimationKey + 1], this.translation[this.currentAnimationKey]);
+            periodicTranslation = this.multiplyArray(periodicTranslation, periodicDeltaTime);
+            this.animationMatrix = mat4.translate(this.animationMatrix, this.animationMatrix, periodicTranslation);
 
             // rotation
             var periodicRotation = this.subtractArray(this.rotation[this.currentAnimationKey + 1], this.rotation[this.currentAnimationKey]);
@@ -83,11 +74,20 @@ class KeyframeAnimation extends Animation {
             this.animationMatrix = mat4.rotateX(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * periodicRotation[0]);
             this.animationMatrix = mat4.rotateY(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * periodicRotation[1]);
             this.animationMatrix = mat4.rotateZ(this.animationMatrix, this.animationMatrix,DEGREE_TO_RAD * periodicRotation[2]);
-            
-            // translation
-            var periodicTranslation = this.subtractArray(this.translation[this.currentAnimationKey + 1], this.translation[this.currentAnimationKey]);
-            periodicTranslation = this.multiplyArray(periodicTranslation, periodicDeltaTime);
-            this.animationMatrix = mat4.translate(this.animationMatrix, this.animationMatrix, periodicTranslation);
+          
+            // scale
+            var periodicScale = this.subtractArray(this.scale[this.currentAnimationKey + 1], this.scale[this.currentAnimationKey]);
+            periodicScale = this.sumArray(this.multiplyArray(periodicScale, periodicDeltaTime), this.scale[this.currentAnimationKey]);
+            this.animationMatrix = mat4.scale(this.animationMatrix, this.animationMatrix, periodicScale);
+
+            // Applying old animation matrix
+            var oldAnimation = mat4.create();
+            oldAnimation = mat4.translate(oldAnimation, oldAnimation, this.translation[this.currentAnimationKey]);
+            oldAnimation = mat4.rotateX(oldAnimation, oldAnimation, DEGREE_TO_RAD * this.rotation[this.currentAnimationKey][0]);
+            oldAnimation = mat4.rotateY(oldAnimation, oldAnimation, DEGREE_TO_RAD * this.rotation[this.currentAnimationKey][1]);
+            oldAnimation = mat4.rotateZ(oldAnimation, oldAnimation, DEGREE_TO_RAD * this.rotation[this.currentAnimationKey][2]);
+            oldAnimation = mat4.scale(oldAnimation, oldAnimation, this.scale[this.currentAnimationKey]);
+            this.scene.multMatrix(oldAnimation);
         }
         else { //stops the animation the last place defined
             this.animationMatrix = mat4.create();  

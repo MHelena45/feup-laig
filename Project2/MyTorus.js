@@ -29,15 +29,15 @@ class MyTorus extends CGFobject {
         var theta = (2 * Math.PI) / this.slices;
         var fi = (2 * Math.PI) / this.loops;
 
-        for(var i = 0; i <= this.slices; i++) {
-            for(var j = 0; j <= this.loops; j++) {
+        for(let i = 0; i <= this.slices; i++) {
+            for(let j = 0; j <= this.loops; j++) {
                 this.vertices.push(
                     (this.outerRadius + this.innerRadius * Math.cos(i * theta)) * Math.cos(j * fi),
                     (this.outerRadius + this.innerRadius * Math.cos(i * theta)) * Math.sin(j * fi),
                     this.innerRadius * Math.sin(i * theta)
                 );
 
-                var size = Math.sqrt(Math.pow(Math.cos(i * theta) * Math.cos(j * fi),2) +
+                let size = Math.sqrt(Math.pow(Math.cos(i * theta) * Math.cos(j * fi),2) +
                     Math.pow(Math.cos(i * theta) * Math.sin(j * fi), 2) +
                     Math.pow(Math.sin(i * theta) , 2));
 
@@ -55,8 +55,8 @@ class MyTorus extends CGFobject {
             }
         }
 
-        for(var i = 0; i < this.slices; i++) {
-            for(var j = 0; j < this.loops; j++) {
+        for(let i = 0; i < this.slices; i++) {
+            for(let j = 0; j < this.loops; j++) {
                 this.indices.push(
                     i * (this.loops + 1) + j,
                     i * (this.loops + 1) + 1 + j,

@@ -25,18 +25,18 @@ class MySphere extends CGFobject {
         this.normals = [];
         this.texCoords = [];
 
-        var theta = (Math.PI / 2) / this.stacks;
-        var fi = (2 * Math.PI) / this.slices;
+        let theta = (Math.PI / 2) / this.stacks;
+        let fi = (2 * Math.PI) / this.slices;
 
-        for(var i = 0; i <= this.stacks * 2; i++) {
-            for(var j = 0; j <= this.slices; j++) {
+        for(let i = 0; i <= this.stacks * 2; i++) {
+            for(let j = 0; j <= this.slices; j++) {
                 this.vertices.push(
                     this.radius * Math.cos((i-this.stacks) * theta) * Math.cos(j * fi),
                     this.radius * Math.cos((i-this.stacks) * theta) * Math.sin(j * fi),
                     this.radius * Math.sin((i-this.stacks) * theta)
                 );
                 //size is used to normalize the normals
-                var size = Math.sqrt( Math.pow(Math.cos((i-this.stacks) * theta) * Math.cos(j * fi), 2) +
+                let size = Math.sqrt( Math.pow(Math.cos((i-this.stacks) * theta) * Math.cos(j * fi), 2) +
                 Math.pow(Math.cos((i-this.stacks) * theta) * Math.sin(j * fi),2) +
                 Math.pow(Math.sin((i-this.stacks) * theta),2));
 
@@ -53,8 +53,8 @@ class MySphere extends CGFobject {
             }
         }
 
-        for(var i = 0; i < this.stacks * 2; i++) {
-            for(var j = 0; j < this.slices; j++) {
+        for(let i = 0; i < this.stacks * 2; i++) {
+            for(let j = 0; j < this.slices; j++) {
                 this.indices.push(
                     i * (this.slices + 1) + j,
                     i * (this.slices + 1) + 1 + j,

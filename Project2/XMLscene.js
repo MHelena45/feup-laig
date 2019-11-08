@@ -1,5 +1,6 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 var CLICK_M = 0;
+var BUFFER = 0;
 /**
  * XMLscene class, representing the scene that is to be rendered.
  */
@@ -45,9 +46,10 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
 
-        /*var FPS = 20; //numero de frames por segundo
-        this.setUpdatePeriod(1000 / FPS);*/
         this.setUpdatePeriod(100);
+       
+        this.securityCameraTexture = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
+        this.securityCamera = new MySecurityCamera( this, 'securityCamera', 0.5, 1 , -0.5, -1 );
     }
 
     /**
@@ -80,16 +82,16 @@ class XMLscene extends CGFscene {
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
-        var i = 0; 
+        let i = 0; 
         // Lights index.
 
         // Reads the lights from the scene graph.
-        for (var key in this.graph.lights) {
+        for (let key in this.graph.lights) {
             if (i >= 8)
                 break;              // Only eight lights allowed by WebGL.
 
             if (this.graph.lights.hasOwnProperty(key)) {
-                var light = this.graph.lights[key];
+                let light = this.graph.lights[key];
   
                 this.lights[i].setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
                 this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
@@ -160,9 +162,17 @@ class XMLscene extends CGFscene {
     }
     
     /**
+     * set the scene camera with id="wantedCamera"
+     */
+    setCamera(wantedCamera) {
+        this.camera = this.graph.views[wantedCamera];
+        this.interface.setActiveCamera(this.camera);
+    }
+
+    /**
      * Displays the scene.
      */
-    display() {
+    render(securityCamera) {
         // ---- BEGIN Background, camera and axis setup
 
         // Clear image and depth buffer everytime we update the scene
@@ -181,7 +191,12 @@ class XMLscene extends CGFscene {
 
         this.checkKeys();
 
-        this.displayLights();
+        //Set requested camera
+        if(securityCamera)
+            this.setCamera("behindCamera");
+
+        //Update lights
+        this.displayLights(); 
 
         if (this.sceneInited) {
             // Draw axis
@@ -224,6 +239,17 @@ class XMLscene extends CGFscene {
             }
             this.lights[i].update();
         }
+    }
+
+    display(){
+
+      /*  this.securityCameraTexture.attachToFrameBuffer();           
+        this.render(1);         //render of security camera  
+        this.securityCameraTexture.detachFromFrameBuffer();   */
+        this.render(0);         //render of the scene
+     /*   this.gl.enable(this.gl.DEPTH_TEST);
+        this.securityCamera.display(); */
+
     }
 }
 

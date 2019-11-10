@@ -23,33 +23,28 @@ class Plane extends CGFobject {
 			1, // degree on V: 2 control vertexes on V
 		   [	// U = 0
 			   [ // V = 0..1;
-					[-1.0, 0.0, 1.0, 1 ],
-					[-1.0, 1.0, -1.0, 1 ]
+					[-1.0, 0, 1.0, 1 ],
+					[-1.0, 0, -1.0, 1 ]
 				   
 			   ],
 			   // U = 1
 			   [ // V = 0..1
-					[ 1.0, 0.0, 1.0, 1 ],
-					[ 1.0, 1.0, -1.0, 1 ]							 
+					[ 1.0, 0, 1.0, 1 ],
+					[ 1.0, 0, -1.0, 1 ]							 
 			   ]
 		   ], // translation of surface 
 		   [0,0,0]);
 
-
-/*
-		this.primitiveType = this.scene.gl.TRIANGLES;
-		this.initGLBuffers(); */
 	}
 
 	display(){
 		for (var i =0; i<this.surfaces.length; i++) {
-			this.pushMatrix();
-		
-			this.translate(this.translations[i][0], this.translations[i][1], this.translations[i][2]);
 
+			this.scene.pushMatrix();		
+			this.scene.translate(this.translations[i][0], this.translations[i][1], this.translations[i][2]);
 			this.surfaces[i].display();
-			this.popMatrix();
-		}
+			this.scene.popMatrix();
+		} 
 	}
 
 	/**
@@ -63,15 +58,14 @@ class Plane extends CGFobject {
 	}
 
     makeSurface(degree1, degree2, controlvertexes, translation) {
-			
+	
 		var nurbsSurface = new CGFnurbsSurface(degree1, degree2, controlvertexes);
 
-		var obj = new CGFnurbsObject(this, this.nrDivU, this.nrDivV, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
-		
+		var obj = new CGFnurbsObject(this.scene, this.nrDivU, this.nrDivV, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
+
 		this.surfaces.push(obj);	
 		this.translations.push(translation);
 
 	}
-
 
 }

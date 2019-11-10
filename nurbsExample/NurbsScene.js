@@ -38,34 +38,19 @@ class NurbsScene extends CGFscene
 		
 		this.surfaces = [];
 		
-		this.makeSurface(1, // degree on U: 2 control vertexes U
-			1, // degree on V: 2 control vertexes on V
-		   [	// U = 0
-			   [ // V = 0..1;
-					[-1.0, 0.0, 1.0, 1 ],
-					[-1.0, 0.0, -1.0, 1 ]
-				   
-			   ],
-			   // U = 1
-			   [ // V = 0..1
-					[ 1.0, 0.0, 1.0, 1 ],
-					[ 1.0, .0, -1.0, 1 ]							 
-			   ]
-		   ], // translation of surface 
-		   [-3,0,3]);
 
 		this.makeSurface(1, // degree on U: 2 control vertexes U
 			1, // degree on V: 2 control vertexes on V
 		   [	// U = 0
 			   [ // V = 0..1;
-					[-1.0, 0.0, 1.0, 1 ],
-					[-1.0, 1.0, -1.0, 1 ]
+					[-1.0, 0, 1.0, 1 ],
+					[-1.0, 0, -1.0, 1 ]
 				   
 			   ],
 			   // U = 1
 			   [ // V = 0..1
-					[ 1.0, 0.0, 1.0, 1 ],
-					[ 1.0, 1.0, -1.0, 1 ]							 
+					[ 1.0, 0, 1.0, 1 ],
+					[ 1.0, 0, -1.0, 1 ]							 
 			   ]
 		   ], // translation of surface 
 		   [0,0,3]);
@@ -176,7 +161,7 @@ class NurbsScene extends CGFscene
 	}
 
 	initLights() {
-		this.lights[0].setPosition(0,0,15,1);
+		this.lights[0].setPosition(0,10,15,1);
 		this.lights[0].setAmbient(0.1,0.1,0.1,1);
 		this.lights[0].setDiffuse(0.9,0.9,0.9,1);
 		this.lights[0].setSpecular(0,0,0,1);

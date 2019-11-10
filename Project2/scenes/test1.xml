@@ -4,7 +4,7 @@
     <views default="defaultCamera">
         <!-- view from the front to the all scene -->
         <perspective id="defaultCamera" near="0.1" far="300" angle="50"> <!-- value of far is big to see skybox -->
-            <from x="-5" y="13" z="6" />
+            <from x="-5" y="30" z="10" />
             <to x="0" y="0" z="0" />
         </perspective> 
 
@@ -398,9 +398,22 @@
     </animations>
 
     <primitives>
+        <primitive id="plane">
+            <plane npartsU="2" npartsV="2" />
+        </primitive> 
+
         <primitive id="rectangle">
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive>
+
+        <primitive id="patch">
+            <patch npointsU="2" npointsV="2" npartsU="2" npartsV="2" >
+                <controlpoint xx="-2.0" yy="-2" zz="0.0" />
+                <controlpoint xx="-2.0" yy="2" zz="0.0" />
+                <controlpoint xx="2.0" yy="-2" zz="0.0" />
+                <controlpoint xx="2.0" yy="2" zz="0.0" />
+            </patch>
+        </primitive> 
 
         <primitive id="triangle">
             <triangle x1="0" y1="0" z1="0" x2="1" y2="0" z2="0" x3="0.5" y3="0.8" z3="0" />
@@ -452,6 +465,7 @@
                 <componentref id="star1" />
                 <componentref id="solarSystem" />
                 <componentref id="telescope" />
+                <primitiveref id="patch" /> 
             </children>
         </component> 
 

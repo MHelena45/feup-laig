@@ -1,6 +1,6 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 var CLICK_M = 0;
-var BUFFER = 0;
+
 /**
  * XMLscene class, representing the scene that is to be rendered.
  */
@@ -251,5 +251,6 @@ class XMLscene extends CGFscene {
         this.securityCamera.display(); */
 
     }
+
 }
 

@@ -38,13 +38,13 @@ class KeyframeAnimation extends Animation {
             let periodicDeltaTime = (this.deltaTime - this.instances[this.currentAnimationKey]) / timeInterval;
             
             // translation
-            let periodicTranslation = this.subtractArray(this.translation[this.currentAnimationKey + 1], this.translation[this.currentAnimationKey]);
+            let periodicTranslation = this.subtract2Arrays(this.translation[this.currentAnimationKey + 1], this.translation[this.currentAnimationKey]);
             periodicTranslation = this.multiplyArray(periodicTranslation, periodicDeltaTime);
-            this.animationMatrix = mat4.translate(this.animationMatrix, this.animationMatrix, this.translation[this.currentAnimationKey]);
+            periodicTranslation = this.sum2Arrays(this.translation[this.currentAnimationKey], periodicTranslation);
             this.animationMatrix = mat4.translate(this.animationMatrix, this.animationMatrix, periodicTranslation);
 
             // rotation
-            let periodicRotation = this.subtractArray(this.rotation[this.currentAnimationKey + 1], this.rotation[this.currentAnimationKey]);     
+            let periodicRotation = this.subtract2Arrays(this.rotation[this.currentAnimationKey + 1], this.rotation[this.currentAnimationKey]);     
             periodicRotation = this.multiplyArray(periodicRotation, periodicDeltaTime);
             this.animationMatrix = mat4.rotateX(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * (periodicRotation[0] + this.rotation[this.currentAnimationKey][0]));
             this.animationMatrix = mat4.rotateY(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * (periodicRotation[1] + this.rotation[this.currentAnimationKey][1]));
@@ -70,49 +70,57 @@ class KeyframeAnimation extends Animation {
         
     }
 
-    subtractArray(A, B) {
-        let sub = [];
-        for(let i = 0; i < B.length; i++) {
-            sub.push(A[i] - B[i]);
+    /** Operations with arrays, applied to all the elements */
+    subtract2Arrays(Array1, Array2) {
+        let subtract2Arrays = [];
+        for(let i = 0; i < Array1.length; i++) {
+            subtract2Arrays.push(Array1[i] - Array2[i]);
         }
-        return sub;
+        return subtract2Arrays;
     }
 
-    multiplyArray(Arr, constant) {
+    multiplyArray(Array, constant) {
         let multiplicationArray = [];
-        for(let i = 0; i < Arr.length; i++) {
-            multiplicationArray.push(constant * Arr[i]);
+        for(let i = 0; i < Array.length; i++) {
+            multiplicationArray.push(constant * Array[i]);
         }
         return multiplicationArray;
     }
 
-    multiply2Array(Arr, Arr1){
+    multiply2Array(Array1, Array2){
         let multiplication2Array = [];
-        for(let i= 0; i < Arr.length; i++){
-            multiplication2Array.push(Arr[i] * Arr1[i]);
+        for(let i= 0; i < Array1.length; i++){
+            multiplication2Array.push(Array2[i] * Array1[i]);
         }
         return multiplication2Array;
 
     }
 
-    division2Array(Arr, Arr1){
+    division2Array(Array, Array1){
         let div = [];
-        for(let i= 0; i < Arr.length; i++){
-            div.push(Arr[i] / Arr1[i]);
+        for(let i= 0; i < Array.length; i++){
+            div.push(Array[i] / Array1[i]);
         }
         return div;
     }
 
-    powArray(Arr, e){
+    sum2Arrays(Array, Array1){
+        let sum2Arrays = [];
+        for(let i= 0; i < Array.length; i++){
+            sum2Arrays.push(Array[i] + Array1[i]);
+        }
+        return sum2Arrays;
+    }
+
+    powArray(Array, e){
         let pow = [];
-        for(let i = 0; i < Arr.length; i++) {
-            pow.push(Math.pow(Arr[i], e));
+        for(let i = 0; i < Array.length; i++) {
+            pow.push(Math.pow(Array[i], e));
         }
         return pow;
     }
 
-    apply() {
-      
+    apply() {     
         this.scene.multMatrix(this.animationMatrix);
     }
 }

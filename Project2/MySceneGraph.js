@@ -1186,11 +1186,11 @@ class MySceneGraph {
                 if (!(npartsV != null && !isNaN(npartsV)) && (npartsV > 0) )
                     return "unable to parse npartsV of the primitive coordinates for ID = " + primitiveId;
 
-                let plane = new Plane(this.scene, primitiveId, npartsU, npartsV);
+                //let plane = new Plane(this.scene, primitiveId, npartsU, npartsV);
 
                 this.primitives[primitiveId] = plane;
                 break;
-            }
+            } 
             default:
                 console.warn("To do: Parse other primitives.");
                 break;

@@ -9,52 +9,49 @@ class Plane extends CGFobject {
 
 		this.nrDivU = nrDivU;
 		this.nrDivV = nrDivV;
-		this.patchLengthV = 1.0 / nrDivV;
-		this.patchLengthU = 1.0 / nrDivU;
 
-		this.initBuffers();
+		this.surfaces = [];
+		this.translations = [];
+
+		this.initSurface();
+
 	}
 
-	initBuffers() {
-		// Generate vertices, normals, and texCoords
-		this.vertices = [];
-		this.indices = [];
-		this.normals = [];
-		this.texCoords = [];
+	initSurface() {
 
-		let zCoord = -0.5;
-		for (let j = 0; j <= this.nrDivU; j++) {
-			let xCoord = -0.5;
-			for (let i = 0; i <= this.nrDivV; i++) {
-				this.vertices.push(xCoord, 0, zCoord);
-				this.normals.push(0, 1, 0);
-			//	this.texCoords.push(xCoord, 0, zCoord);
-				xCoord += this.patchLengthV;
-			}
-			zCoord += this.patchLengthU;
-		}
+		this.makeSurface(1, // degree on U: 2 control vertexes U
+			1, // degree on V: 2 control vertexes on V
+		   [	// U = 0
+			   [ // V = 0..1;
+					[-1.0, 0.0, 1.0, 1 ],
+					[-1.0, 1.0, -1.0, 1 ]
+				   
+			   ],
+			   // U = 1
+			   [ // V = 0..1
+					[ 1.0, 0.0, 1.0, 1 ],
+					[ 1.0, 1.0, -1.0, 1 ]							 
+			   ]
+		   ], // translation of surface 
+		   [0,0,0]);
 
-		// Generating indices
-		var ind = 0;
-		for (let j = 0; j < this.nrDivU; j++) {
-			for (let i = 0; i < this.nrDivV; i++) {
-				this.indices.push(ind);
-				this.indices.push(ind + this.nrDivV + 1);
-				this.indices.push(ind + 1);
 
-				this.indices.push(ind + 1);
-				this.indices.push(ind + this.nrDivV + 1);
-				this.indices.push(ind + this.nrDivV + 2);
-				ind++;
-
-			}
-			ind++;
-
-		}
-
+/*
 		this.primitiveType = this.scene.gl.TRIANGLES;
-		this.initGLBuffers();
+		this.initGLBuffers(); */
 	}
+
+	display(){
+		for (var i =0; i<this.surfaces.length; i++) {
+			this.pushMatrix();
+		
+			this.translate(this.translations[i][0], this.translations[i][1], this.translations[i][2]);
+
+			this.surfaces[i].display();
+			this.popMatrix();
+		}
+	}
+
 	/**
 	 * @method updateTexCoords
 	 * Updates the list of texture coordinates of the rectangle
@@ -62,13 +59,18 @@ class Plane extends CGFobject {
      * @param {value of the length_v in texture} length_v 
      */
 	updateTexCoords(length_u, length_v) {
-		/*this.texCoords = [		
-			0, 1/length_v,
-			1/length_u, 1/length_v,
-			0, 0,
-			1/length_u,0
-		];	
-		this.updateTexCoordsGLBuffers();*/
+
+	}
+
+    makeSurface(degree1, degree2, controlvertexes, translation) {
+			
+		var nurbsSurface = new CGFnurbsSurface(degree1, degree2, controlvertexes);
+
+		var obj = new CGFnurbsObject(this, this.nrDivU, this.nrDivV, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
+		
+		this.surfaces.push(obj);	
+		this.translations.push(translation);
+
 	}
 
 

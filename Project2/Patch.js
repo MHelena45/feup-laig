@@ -15,38 +15,23 @@ class Patch extends CGFobject {
 		this.npartsV = npartsV
 		this.controlpoints = controlpoints;
 
-		this.surfaces = [];
-		this.translations = [];
-	
-		this.initSurface();
+		this.obj;	
 
+		this.initSurface();
 	}
 
 	initSurface() {
-		this.makeSurface( this.npointsU - 1 ,  this.npointsV - 1, this.controlpoints, [0,0,0]);
-
+		this.makeSurface(this.npointsU - 1, this.npointsV - 1, this.controlpoints);
 	}
 	
-	makeSurface(degree1, degree2, controlvertexes, translation) {
-		console.log(controlvertexes);
+	makeSurface(degree1, degree2, controlvertexes) {
 		var nurbsSurface = new CGFnurbsSurface(degree1, degree2, controlvertexes);
-
-		var obj = new CGFnurbsObject(this.scene, this.npartsU, this.npartsV, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
-
-		this.surfaces.push(obj);	
-		this.translations.push(translation);
-
+		this.obj = new CGFnurbsObject(this.scene, this.npartsU, this.npartsV, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
 	}
 
 	
 	display(){
-		for (var i =0; i< this.surfaces.length; i++) {
-
-			this.scene.pushMatrix();		
-			this.scene.translate(this.translations[i][0], this.translations[i][1], this.translations[i][2]);
-			this.surfaces[i].display();
-			this.scene.popMatrix();
-		} 
+		this.obj.display();0
 	}
 
 	/**

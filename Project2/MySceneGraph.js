@@ -1224,50 +1224,33 @@ class MySceneGraph {
                 if (grandGrandChildren.length != npointsU * npointsV)
                     return "Wrong number of controlPoints for patch with ID = " + primitiveId;
 
-                let controlpointsU = [];
-                let controlpointsV = [];
+                let controlpoints = [];
 
-                for(i = 0; i < npointsU; i++) {
-                    //xx
-                    let xx = this.reader.getFloat(grandGrandChildren[i], 'xx');
-                    if (!(xx != null && !isNaN(xx)))
-                        return "unable to parse xx of the primitive coordinates for ID = " + primitiveId;
-                    
-                    //yy
-                    let yy = this.reader.getFloat(grandGrandChildren[i], 'yy');
-                    if (!(yy != null && !isNaN(yy)))
-                        return "unable to parse yy of the primitive coordinates for ID = " + primitiveId;
-
-                    //zz
-                    let zz = this.reader.getFloat(grandGrandChildren[i], 'zz');
-                    if (!(zz != null && !isNaN(zz)))
-                        return "unable to parse zz of the primitive coordinates for ID = " + primitiveId;
-                    
-                    controlpointsU.push(...[[xx, yy, zz, 1]]);
+                for(let k = 0; k < npointsU; k++) {
+                    let controlpointsAux = [];
+                    for(let j = 0; j < npointsV; j++) {
+                        //xx
+                        let xx = this.reader.getFloat(grandGrandChildren[j + k * npointsV], 'xx');
+                        if (!(xx != null && !isNaN(xx)))
+                            return "unable to parse xx of the primitive coordinates for ID = " + primitiveId;
+                        
+                        //yy
+                        let yy = this.reader.getFloat(grandGrandChildren[j + k * npointsV], 'yy');
+                        if (!(yy != null && !isNaN(yy)))
+                            return "unable to parse yy of the primitive coordinates for ID = " + primitiveId;
+    
+                        //zz
+                        let zz = this.reader.getFloat(grandGrandChildren[j + k * npointsV], 'zz');
+                        if (!(zz != null && !isNaN(zz)))
+                            return "unable to parse zz of the primitive coordinates for ID = " + primitiveId;
+                        
+                        controlpointsAux.push(...[[xx, yy, zz, 1]]);
+                    }
+                    controlpoints.push(...[controlpointsAux]);
                 }
-  
-                for(let j = i; j < (npointsV + i); j++) {
-                    //xx
-                    let xx = this.reader.getFloat(grandGrandChildren[i], 'xx');
-                    if (!(xx != null && !isNaN(xx)))
-                        return "unable to parse xx of the primitive coordinates for ID = " + primitiveId;
-                    
-                    //yy
-                    let yy = this.reader.getFloat(grandGrandChildren[i], 'yy');
-                    if (!(yy != null && !isNaN(yy)))
-                        return "unable to parse yy of the primitive coordinates for ID = " + primitiveId;
-
-                    //zz
-                    let zz = this.reader.getFloat(grandGrandChildren[i], 'zz');
-                    if (!(zz != null && !isNaN(zz)))
-                        return "unable to parse zz of the primitive coordinates for ID = " + primitiveId;
-                    
-                    controlpointsV.push(...[[xx, yy, zz, 1]]);
-                }
-
-
-                var patch = new Patch(this.scene, primitiveId, npointsU, npointsV, npartsU, npartsV, [ controlpointsU, controlpointsV]);
-                this.primitives[primitiveId] = patch; 
+                
+                var patch = new Patch(this.scene, primitiveId, npointsU, npointsV, npartsU, npartsV, controlpoints);
+                this.primitives[primitiveId] = patch;
 
                 break;
             }
@@ -1892,8 +1875,7 @@ class MySceneGraph {
      */
     displayScene() {
         var root = this.components[this.idRoot];
-        this.processNode(root.componentID, root.materialIDs[0], root.textureID, root.length_s, root.length_t);        
-        
+        this.processNode(root.componentID, root.materialIDs[0], root.textureID, root.length_s, root.length_t);
     }
 
     /**

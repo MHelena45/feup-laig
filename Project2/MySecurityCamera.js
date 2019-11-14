@@ -17,9 +17,9 @@ class MySecurityCamera extends CGFobject {
 	}
 
 	display() {
-		this.scene.securityCameraTexture.bind(1); 
+	//	this.scene.securityCameraTexture.bind(1); 
 		this.rectangle.display();
-		this.scene.securityCameraTexture.unbind(1); 
+	//	this.scene.securityCameraTexture.unbind(1); 
 	}
 	
 	

@@ -26,7 +26,8 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'lights3').name('Light of the sun');
 
         //Dropdown for environment
-        this.gui.add(this.scene, 'selectedView', this.scene.modeIds).name('Selected View').onChange(this.scene.updateView.bind(this.scene));
+        this.gui.add(this.scene, 'selectedView', this.scene.SceneViewsIds).name('Selected scene View').onChange(this.scene.updateView.bind(this.scene));
+        this.gui.add(this.scene, 'securityCameraView', this.scene.securityCameraViewIds).name('Security camera View').onChange(this.scene.updateSecurityCameraView.bind(this.scene));
 
         // add a group of controls (and open/expand by defult)
 

@@ -335,7 +335,7 @@ class MySceneGraph {
                
                 if(this.views[viewID] == null ) //views with repeated id are not store
                 //the angle in xml is in degrees but WebCGF works in rad so we have to convert it
-                    this.views[viewID] = new CGFcamera(DEGREE_TO_RAD * angle, near, far, position, target);
+                this.views[viewID] = new CGFcamera(DEGREE_TO_RAD * angle, near, far, position, target);
             }
             // ortho
             else if (children[i].nodeName == "ortho") {

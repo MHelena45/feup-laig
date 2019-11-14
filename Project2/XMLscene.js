@@ -42,8 +42,13 @@ class XMLscene extends CGFscene {
         //DropBox
         this.selectedView = 0;
 		// Labels and ID's for object selection on MyInterface
-		this.modeIds = { 'Front': 0, 'Behind': 1, 'Up': 2, 'Earth' : 3 };
+		this.SceneViewsIds = { 'Front': 0, 'Behind': 1, 'Up': 2, 'Earth' : 3 };
 
+        //DropBox of the security camera
+        this.securityCameraView = 1;
+		// Labels and ID's for object selection on MyInterface
+        this.securityCameraViewIds = { 'Behind': 1, 'Left side': 4, 'Right Side': 5, 'Up' : 2 };
+        
         this.axis = new CGFaxis(this);
 
         this.setUpdatePeriod(100);
@@ -76,7 +81,19 @@ class XMLscene extends CGFscene {
         this.views_ID = this.graph.getViewsID();
         this.camera = this.views[this.views_ID[this.selectedView]];       
         this.interface.setActiveCamera(this.camera);
+    }
+    
+    /**
+     * used for the dropbox
+     * updates the view according to the selected view
+     */
+    updateSecurityCameraView() {
+        this.views = this.graph.getViews();
+        this.views_ID = this.graph.getViewsID();
+        this.camera = this.views[this.views_ID[this.securityCameraView]];       
+        this.interface.setActiveCamera(this.camera);
 	}
+
 
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -162,17 +179,9 @@ class XMLscene extends CGFscene {
     }
     
     /**
-     * set the scene camera with id="wantedCamera"
-     */
-    setCamera(wantedCamera) {
-        this.camera = this.graph.views[wantedCamera];
-        this.interface.setActiveCamera(this.camera);
-    }
-
-    /**
      * Displays the scene.
      */
-    render(securityCamera) {
+    render(wantedCamera) {
         // ---- BEGIN Background, camera and axis setup
 
         // Clear image and depth buffer everytime we update the scene
@@ -192,9 +201,9 @@ class XMLscene extends CGFscene {
         this.checkKeys();
 
         //Set requested camera
-        if(securityCamera)
-            this.setCamera("behindCamera");
-
+        if(wantedCamera)
+            this.updateSecurityCameraView();
+        else this.updateView() 
         //Update lights
         this.displayLights(); 
 
@@ -242,14 +251,13 @@ class XMLscene extends CGFscene {
     }
 
     display(){
-
-      /*  this.securityCameraTexture.attachToFrameBuffer();           
-        this.render(1);         //render of security camera  
-        this.securityCameraTexture.detachFromFrameBuffer();   */
-        this.render(0);         //render of the scene
-     /*   this.gl.enable(this.gl.DEPTH_TEST);
-        this.securityCamera.display(); */
-
+        this.securityCameraTexture.attachToFrameBuffer();           
+        this.render(1);         //Render scene to CGFtextureRTT texture using different camera
+        this.securityCameraTexture.detachFromFrameBuffer(); 
+        this.render(0);         //render  scene to canvas       
+        this.gl.disable(this.gl.DEPTH_TEST);
+        this.securityCamera.display();
+        this.gl.enable(this.gl.DEPTH_TEST);
     }
 
 }

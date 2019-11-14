@@ -27,7 +27,19 @@
             <to x="6.2" y="20" z="0" />
             <up x="0" y="1" z="0" /> 
         </ortho> 
+
+        <!-- view from left side -->
+        <perspective id="LeftCamera" near="0.1" far="400" angle="50">
+            <from x="-43" y="30" z="0" />
+            <to x="0" y="18" z="0" />
+        </perspective>
         
+        <!-- view from Right side -->
+        <perspective id="RightCamera" near="0.1" far="300" angle="40">
+            <from x="-60" y="20" z="0" />
+            <to x="0" y="18" z="0" />
+        </perspective>
+
     </views>
 
     <globals>

@@ -15,21 +15,17 @@ class MyInterface extends CGFinterface {
      */
     init(application) {
         super.init(application);
-        // init GUI. For more information on the methods, check:
-        //  http://workshop.chromeexperiments.com/examples/gui
 
         this.gui = new dat.GUI();
 
-        //Checkbox element to display Textures
+        //Checkbox element to display or not lights
         this.gui.add(this.scene, 'lights1').name('Light of the star');
         this.gui.add(this.scene, 'lights2').name('Light telescope');
         this.gui.add(this.scene, 'lights3').name('Light of the sun');
 
-        //Dropdown for environment
+        //Dropdown for views
         this.gui.add(this.scene, 'selectedView', this.scene.SceneViewsIds).name('Selected scene View').onChange(this.scene.updateView.bind(this.scene));
         this.gui.add(this.scene, 'securityCameraView', this.scene.securityCameraViewIds).name('Security camera View').onChange(this.scene.updateSecurityCameraView.bind(this.scene));
-
-        // add a group of controls (and open/expand by defult)
 
         this.initKeys();
 

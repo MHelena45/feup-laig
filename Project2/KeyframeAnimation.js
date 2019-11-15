@@ -5,10 +5,10 @@
 class KeyframeAnimation extends Animation {
     constructor(scene) {
         super();
-        this.instances = [0];
-        this.translation = [[0, 0, 0]];
-        this.rotation = [[0, 0, 0]];
-        this.scale = [[1, 1, 1]];
+        this.instances = [];
+        this.translation = [];
+        this.rotation = [];
+        this.scale = [];
 
         this.animationMatrix = mat4.create();
 
@@ -18,6 +18,7 @@ class KeyframeAnimation extends Animation {
         this.deltaTime;
 
         this.currentAnimationKey = 0;
+
     }
 
     update() {
@@ -26,6 +27,9 @@ class KeyframeAnimation extends Animation {
         let currentDate = new Date();
         let currentTime = currentDate.getTime();
         this.deltaTime = (currentTime - this.firstTime) / 1000;
+
+        //TODO
+       // console.log(this.deltaTime);
         
         // update currentAnimationKey
         if(this.deltaTime >= this.instances[this.currentAnimationKey + 1]){
@@ -120,7 +124,7 @@ class KeyframeAnimation extends Animation {
         return pow;
     }
 
-    apply() {     
+    apply() {  
         this.scene.multMatrix(this.animationMatrix);
     }
 }

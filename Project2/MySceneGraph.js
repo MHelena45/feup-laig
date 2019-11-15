@@ -898,6 +898,7 @@ class MySceneGraph {
             var animation = new KeyframeAnimation(this.scene);
             
             grandChildren = children[i].children; 
+
             for(let j = 0;  j < grandChildren.length; j++) {
                 
                 if (grandChildren[j].nodeName != "keyframe") {
@@ -909,9 +910,15 @@ class MySceneGraph {
                     this.onXMLMinorError("instant must be define for animation ID = " + animationID + ")");
                     continue; 
                 }
-                if(instant <= 0){
-                    this.onXMLMinorError("instant must be a positive number for animation with id = " + animationID + ")");
+                if(instant < 0){
+                    this.onXMLMinorError("instant must be a zero or positive number for animation with id = " + animationID + ")");
                     continue;
+                }
+                if(j == 0 && instant > 0){
+                    animation.instances.push(0);
+                    animation.translation.push(...[[0, 0 ,0]]);
+                    animation.rotation.push(...[[0, 0, 0]]);
+                    animation.scale.push(...[[1,1,1]]);  
                 }
 
                 grandGrandChildren = grandChildren[j].children;
@@ -958,7 +965,7 @@ class MySceneGraph {
                 }
                 animation.scale.push(...[scale]);
                 // save matrix and instance
-                animation.instances.push(...[instant]);
+                animation.instances.push(instant);
             } 
             // save animation
             this.animations[animationID] = animation;         

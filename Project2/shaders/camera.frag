@@ -2,21 +2,21 @@
 precision highp float;
 #endif
 
-varying vec2 vTextureCoord;
-uniform float timeFactor;
+varying vec2 vTextureCoordinates;
+uniform float timeFactor, lineThickness, lineSpacing;
 
 uniform sampler2D uSampler;		// original texture
 
 void main() {
 	
-	vec4 color = texture2D(uSampler, vTextureCoord);
+	vec4 color = texture2D(uSampler, vTextureCoordinates);
 
-    float cenas = mod(timeFactor + vTextureCoord.y * 100.0, 12.0);
+    float animation = mod(timeFactor + vTextureCoordinates.y * 100.0, 12.0 * lineSpacing);
     
-    if(cenas < 1.0)
+    if(animation < (1.0 * lineThickness))
         color = vec4(1.0, 1.0, 1.0, 1.0);
 
-	color.rgb = color.rgb - (abs(vTextureCoord.x - 0.5) + abs(vTextureCoord.y - 0.5)) / 1.2;
+	color.rgb = color.rgb - (abs(vTextureCoordinates.x - 0.5) + abs(vTextureCoordinates.y - 0.5)) / 1.2;
 
 	gl_FragColor = color;
 }

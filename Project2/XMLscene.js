@@ -39,6 +39,7 @@ class XMLscene extends CGFscene {
 
         this.mClick = false; //used to now when M/m is being press  
 
+        /* Start of components of Interface */
         //DropBox
         this.selectedView = 0;
 		// Labels and ID's for object selection on MyInterface
@@ -48,6 +49,10 @@ class XMLscene extends CGFscene {
         this.securityCameraView = 1;
 		// Labels and ID's for object selection on MyInterface
         this.securityCameraViewIds = { 'Behind': 1, 'Left side': 4, 'Right Side': 5, 'Up' : 2 };
+
+        this.lineThickness = 1;
+        this.lineSpacing = 1;
+        /* End of components of Interface */
         
         this.axis = new CGFaxis(this);
 
@@ -204,12 +209,15 @@ class XMLscene extends CGFscene {
 
         this.checkKeys();
 
-        //Set requested camera
-        if(wantedCamera)
-            this.updateSecurityCameraView();
-        else
-            this.updateView();
-        
+        //At program startup, the default camera should be used in both situations.
+        if(this.sceneInited) {
+            //Set requested camera
+            if(wantedCamera)
+                this.updateSecurityCameraView();
+            else
+                this.updateView();
+        }
+
         //Update lights
         this.displayLights(); 
 
@@ -256,16 +264,14 @@ class XMLscene extends CGFscene {
         }
     }
 
-    display(){
-        if (this.sceneInited) {
-            this.render(1);         //render scene to canvas   
-            this.securityCameraTexture.attachToFrameBuffer();           
-            this.render(0);         //Render scene to CGFtextureRTT texture using different camera
-            this.securityCameraTexture.detachFromFrameBuffer(); 
-            this.gl.disable(this.gl.DEPTH_TEST);
-            this.securityCamera.display();
-            this.gl.enable(this.gl.DEPTH_TEST);
-        }
+    display(){        
+        this.securityCameraTexture.attachToFrameBuffer();           
+        this.render(0);         //Render scene to CGFtextureRTT texture using different camera
+        this.securityCameraTexture.detachFromFrameBuffer(); 
+        this.render(1);         //render scene to canvas   
+        this.gl.disable(this.gl.DEPTH_TEST);
+        this.securityCamera.display();
+        this.gl.enable(this.gl.DEPTH_TEST);       
     }
 
 }

@@ -201,7 +201,13 @@
 
     <animations>
         <animation id="mercuryAnimation" >
-            <!-- Complete Rotation in 32 keyframes  -->
+            <!-- Complete Rotation in 33 keyframes -->
+            <keyframe instant="3">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe>
+            
             <keyframe instant="4">
                 <translate x="-0.375" y="-0.1" z="0.15" /> 
                 <rotate angle_x="11.25" angle_y="0" angle_z="0" />
@@ -396,7 +402,13 @@
         </animation> 
 
         <animation id="venusAnimation" >
-            <!-- Complete Rotation in 32 keyframes  -->
+            <!-- Complete Rotation in 33 keyframes -->
+            <keyframe instant="3">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe>
+
             <keyframe instant="4">
                 <translate x="0.475" y="0.1" z="0.1" /> 
                 <rotate angle_x="11.25" angle_y="0" angle_z="0" />
@@ -591,7 +603,13 @@
         </animation> 
 
         <animation id="earthAnimation" >
-            <!-- Complete Rotation in 32 keyframes  -->
+            <!-- Complete Rotation in 33 keyframes -->
+            <keyframe instant="3">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe>
+
             <keyframe instant="4">
                 <translate x="-0.1" y="0.7" z="0" /> 
                 <rotate angle_x="-40" angle_y="0" angle_z="0" />
@@ -786,7 +804,13 @@
         </animation> 
 
         <animation id="moonAnimation" >
-            <!-- Complete Rotation in 32 keyframes  -->
+            <!-- Complete Rotation in 17 keyframes -->
+            <keyframe instant="4">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe>
+
             <keyframe instant="6">
                 <translate x="-0.4" y="1.6" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
@@ -885,7 +909,13 @@
         </animation>
 
         <animation id="marsAnimation" >
-            <!-- Complete Rotation in 32 keyframes  -->
+            <!-- Complete Rotation in 33 keyframes -->
+            <keyframe instant="3">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe>
+
             <keyframe instant="4">
                 <translate x="0.2" y="0" z="0.7" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
@@ -1080,7 +1110,13 @@
         </animation> 
 
         <animation id="jupiterAnimation" >
-            <!-- Complete Rotation in 32 keyframes  -->
+            <!-- Complete Rotation in 33 keyframes -->
+            <keyframe instant="3">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe>
+
             <keyframe instant="4">
                 <translate x="-0.9" y="-0.7" z="-0.7" /> 
                 <rotate angle_x="12" angle_y="0" angle_z="0" />
@@ -1275,7 +1311,13 @@
         </animation> 
 
         <animation id="saturnAnimation" >
-            <!-- Complete Rotation in 32 keyframes  -->
+            <!-- Complete Rotation in 33 keyframes -->
+            <keyframe instant="3">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe>
+
             <keyframe instant="4">
                 <translate x="1" y="0.7" z="0" /> 
                 <rotate angle_x="11.25" angle_y="11.25" angle_z="11.25" />
@@ -1470,7 +1512,13 @@
         </animation> 
 
         <animation id="uranusAnimation" >
-            <!-- Complete Rotation in 32 keyframes  -->
+            <!-- Complete Rotation in 33 keyframes -->
+            <keyframe instant="3">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe>
+
             <keyframe instant="4">
                 <translate x="-0.53" y="1.2" z="-1.3" /> 
                 <rotate angle_x="11.25" angle_y="11.25" angle_z="11.25" />
@@ -1665,7 +1713,13 @@
         </animation> 
 
         <animation id="neptuneAnimation" >
-            <!-- Complete Rotation in 32 keyframes -->
+            <!-- Complete Rotation in 33 keyframes -->
+            <keyframe instant="3">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe>
+
             <keyframe instant="4">
                 <translate x="1.6" y="0.5" z="0.9" /> 
                 <rotate angle_x="11.25" angle_y="11.25" angle_z="11.25" />

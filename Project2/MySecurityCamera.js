@@ -18,7 +18,7 @@ class MySecurityCamera extends CGFobject {
 	}
 
 	updateTimeFactor(t) {
-		this.cameraShader.setUniformsValues({ timeFactor: t / 100 % 1000 });
+		this.cameraShader.setUniformsValues({ timeFactor: t / 100 % 1000, lineThickness: this.scene.lineThickness, lineSpacing: this.scene.lineSpacing });
 	}
 
 	display() {

@@ -2,7 +2,7 @@
 precision highp float;
 
 in vec4 vFinalColor;
-in vec2 vTextureCoord;
+in vec2 vTextureCoordinates;
 
 out vec4 fragColor;
 
@@ -15,7 +15,7 @@ void main() {
 	// When based on a non-changing uniform, it is usually optimized.
 	if (uUseTexture)
 	{
-		vec4 textureColor = texture(uSampler, vTextureCoord);
+		vec4 textureColor = texture(uSampler, vTextureCoordinates);
 		fragColor = textureColor * vFinalColor;
 	}
 	else

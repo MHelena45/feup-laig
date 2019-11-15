@@ -47,7 +47,7 @@ uniform materialProperties uFrontMaterial;
 uniform materialProperties uBackMaterial;
 
 out vec4 vFinalColor;
-out vec2 vTextureCoord;
+out vec2 vTextureCoordinates;
 
 vec4 lighting(vec4 vertex, vec3 E, vec3 N) {
 
@@ -124,7 +124,7 @@ void main() {
 	gl_Position = uPMatrix * vertex;
 
     if (uUseTexture)
-        vTextureCoord = aTextureCoord;
+        vTextureCoordinates = aTextureCoord;
 
 }
 

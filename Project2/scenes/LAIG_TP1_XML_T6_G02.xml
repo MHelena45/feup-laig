@@ -1928,6 +1928,17 @@
         <primitive id="triangle">
             <triangle x1="0" y1="0" z1="0" x2="1" y2="0" z2="0" x3="0.5" y3="0.8" z3="0" />
         </primitive>
+
+        <primitive id="triangle3D">
+            <patch npointsU="3" npointsV="2" npartsU="2" npartsV="2" >
+                <controlpoint xx="0.0" yy="0.0" zz="0.0" />
+                <controlpoint xx="0.499" yy="0.8" zz="0.0" />
+                <controlpoint xx="0.5" yy="0.0" zz="0.3" />
+                <controlpoint xx="0.5" yy="0.8" zz="0.0" />
+                <controlpoint xx="1.0" yy="0.0" zz="0.0" />
+                <controlpoint xx="0.5001" yy="0.8" zz="0.0" />
+            </patch>
+        </primitive>
         
         <primitive id="cylinder">
             <cylinder2 base="0.4" top="0.2" height="2" slices="16" stacks="16" />
@@ -2215,7 +2226,7 @@
             </materials>
             <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
             <children>
-                <primitiveref id="triangle" />
+                <primitiveref id="triangle3D" />
                 <componentref id="backHalfStardown" />
             </children>
         </component>
@@ -2244,7 +2255,7 @@
             </materials>
             <texture id="sunTexture" length_s="1.0" length_t="1.0"/>
             <children>
-                <primitiveref id="triangle" />
+                <primitiveref id="triangle3D" />
                 <componentref id="backHalfStarAbove" /> <!-- back of the star, in the same place, but seen from the other side -->
             </children>
         </component>

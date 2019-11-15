@@ -1884,7 +1884,7 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        var root = this.components[this.idRoot];
+        let root = this.components[this.idRoot];
         this.processNode(root.componentID, root.materialIDs[0], root.textureID, root.length_s, root.length_t);
     }
 
@@ -1899,20 +1899,20 @@ class MySceneGraph {
     processNode(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t) {
         
         // Check if id exists
-        var component = this.components[id];
+        let component = this.components[id];
         if (this.components[id] == null) {
             this.onXMLMinorError("element without id! ");
             return; //jumps that element
         }
-        var childAndTextureID = this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
+        let childAndTextureID = this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
       
-        var childMaterialID = childAndTextureID[0];
-        var textureID = childAndTextureID[1];  
-        var length_s = childAndTextureID[2];
-        var length_t = childAndTextureID[3];
+        let childMaterialID = childAndTextureID[0];
+        let textureID = childAndTextureID[1];  
+        let length_s = childAndTextureID[2];
+        let length_t = childAndTextureID[3];
         
         // get matrix
-        var matrix = component.transformationMatrix;
+        let matrix = component.transformationMatrix;
         this.scene.pushMatrix();
         this.scene.multMatrix(matrix);
         
@@ -1924,7 +1924,7 @@ class MySceneGraph {
         }
 
         // loop children
-        for (var i = 0; i < component.childrenIDs.length; i++) {
+        for (let i = 0; i < component.childrenIDs.length; i++) {
             // if primitive
             if (this.primitives[component.childrenIDs[i]] != null) {
                 //the line below deals with nodes with components and primitives
@@ -1951,14 +1951,14 @@ class MySceneGraph {
     }
 
     setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t){
-        var component = this.components[id];
+        let component = this.components[id];
         if(component == null) //check if is primitive, null components don't get this far (checked before)
             component = this.primitives[id];
         
         // get materials
-        var materials = component.materialIDs;
-        var appliedMaterial;
-        var childMaterialID;
+        let materials = component.materialIDs;
+        let appliedMaterial;
+        let childMaterialID;
       
         if (materials[this.scene.getM() % materials.length] == "inherit") {    
             childMaterialID = parentMaterialID;
@@ -1970,9 +1970,9 @@ class MySceneGraph {
         }
 
         // get texture
-        var textureID = component.textureID;
-        var length_s = component.length_s;
-        var length_t = component.length_t;
+        let textureID = component.textureID;
+        let length_s = component.length_s;
+        let length_t = component.length_t;
       
         if (textureID == "inherit"){
             if(parentTextureID == "none" || parentTextureID == "inherit"){ //only if any ancestor has a texture define before

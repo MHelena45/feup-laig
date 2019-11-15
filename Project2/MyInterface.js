@@ -25,7 +25,7 @@ class MyInterface extends CGFinterface {
 
         //Dropdown for views
         this.gui.add(this.scene, 'selectedView', this.scene.SceneViewsIds).name('Selected scene View').onChange(this.scene.updateView.bind(this.scene));
-       // this.gui.add(this.scene, 'securityCameraView', this.scene.securityCameraViewIds).name('Security camera View').onChange(this.scene.updateSecurityCameraView.bind(this.scene));
+        this.gui.add(this.scene, 'securityCameraView', this.scene.securityCameraViewIds).name('Security camera View').onChange(this.scene.updateSecurityCameraView.bind(this.scene.securityCamera));
 
         this.initKeys();
 

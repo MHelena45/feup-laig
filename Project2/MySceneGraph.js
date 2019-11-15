@@ -2005,5 +2005,4 @@ class MySceneGraph {
 
         return [childMaterialID, textureID, length_s, length_t];
     }
-
 }

@@ -54,7 +54,11 @@ class XMLscene extends CGFscene {
         this.setUpdatePeriod(100);
        
         this.securityCameraTexture = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
-        this.securityCamera = new MySecurityCamera( this, 'securityCamera', 0.5, 1 , -0.5, -1 );
+        this.securityCamera = new MySecurityCamera( this, 'securityCamera', 0.5, 1, -1, -0.5);
+    }
+
+    update(t) {
+        this.securityCamera.updateTimeFactor(t);
     }
 
     /**
@@ -203,7 +207,9 @@ class XMLscene extends CGFscene {
         //Set requested camera
         if(wantedCamera)
             this.updateSecurityCameraView();
-        else this.updateView() 
+        else
+            this.updateView() 
+        
         //Update lights
         this.displayLights(); 
 
@@ -251,13 +257,15 @@ class XMLscene extends CGFscene {
     }
 
     display(){
-        this.securityCameraTexture.attachToFrameBuffer();           
-        this.render(1);         //Render scene to CGFtextureRTT texture using different camera
-        this.securityCameraTexture.detachFromFrameBuffer(); 
-        this.render(0);         //render  scene to canvas       
-        this.gl.disable(this.gl.DEPTH_TEST);
-        this.securityCamera.display();
-        this.gl.enable(this.gl.DEPTH_TEST);
+        if (this.sceneInited) {
+            this.render(1);         //render scene to canvas   
+            this.securityCameraTexture.attachToFrameBuffer();           
+            this.render(0);         //Render scene to CGFtextureRTT texture using different camera
+            this.securityCameraTexture.detachFromFrameBuffer(); 
+            this.gl.disable(this.gl.DEPTH_TEST);
+            this.securityCamera.display();
+            this.gl.enable(this.gl.DEPTH_TEST);
+        }
     }
 
 }

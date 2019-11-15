@@ -1288,7 +1288,10 @@ class MySceneGraph {
                 if (!(stacks != null && !isNaN(stacks) && stacks > 0))
                     return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
 
-
+                console.log(base);
+                console.log(top),
+                console.log(slices);
+                
                 var cylinder2 = new MyCylinder2(this.scene, primitiveId, base, top, height, slices, stacks);
 
                 this.primitives[primitiveId] = cylinder2;

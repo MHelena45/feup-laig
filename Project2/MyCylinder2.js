@@ -11,62 +11,72 @@
  */
 class MyCylinder2 extends CGFobject {
 	constructor(scene, id, base, top, height, slices, stacks) {
-		super(scene);
+        super(scene);       
 		this.base = base;
 		this.top = top;
 		this.height = height;
 		this.slices = slices;
-        this.stacks = stacks;
-        
-		this.initBuffers();
+        this.stacks = stacks;	
+
+        this.surface;
+        this.P1 = [-this.top, 0, this.height, 1];
+        this.P4 = [ this.top, 0, this.height, 1];
+        this.R1 = [0, this.top, this.height, 1];
+       
+        this.L3 = [-this.top/ 2, this.top, 0, 1];
+        this.R2 = [this.top/2, this.top, 0, 1];
+
+        let yH = 4 * this.top/ 3;
+        this.L2 = [-this.top,  yH/2, 0, 1];
+        this.R3 = [this.top, yH/2, 0, 1];
+        this.H = [0, yH , 0, 1];
+
+        this.P2 = [-this.top, yH, this.height , 1];
+        this.P3 = [this.top, yH, this.height , 1];
+
+        this.initSurface();
 	}
 	
-	initBuffers() {
-		this.vertices = [];
-        this.indices = [];
-        this.normals = [];
-        this.texCoords = [];
-    
-        var tx = 0;
-        var ty = 0;
-        var tz = 0; 
-        var lengthx = 1 / this.slices;
-        var lengthy = 1 / this.stacks;
-        var lengthz = this.height/ this.stacks;
-              
-        var ang = (2 * Math.PI) / this.slices;        
-        var deltaRadius = (this.top - this.base) / this.stacks;
-        var delta = (deltaRadius * i) + this.base; 
-
-        for (var i = 0; i <= this.stacks; i++) {
-            delta = (deltaRadius * i) + this.base;
-            for (var j = 0; j < this.slices; j++) {
-                this.vertices.push(delta * Math.cos(ang * j), delta * Math.sin(ang * j), tz);
-                //size is calculated to normalize the normals
-                var size = Math.sqrt(Math.pow(Math.cos(j * ang),2) + Math.pow(Math.sin(j * ang),2) + Math.pow( Math.atan((this.base - this.top) / this.height),2));
-                this.normals.push(Math.cos(j * ang)/size, Math.sin(j * ang)/size, Math.atan((this.base - this.top) / this.height))/size;
-                
-                this.texCoords.push(tx, ty);
-                tx += lengthx;
-            }
-            tx = 0;
-            ty += lengthy;
-            tz += lengthz;
-        }
-    
-        for (var i = 0; i < this.stacks; i++) {
-            for (var j = 0; j < this.slices - 1; j++) {
-                this.indices.push(i * this.slices + j, i * this.slices + j + 1, (i + 1) * this.slices + j);
-                this.indices.push(i * this.slices + j + 1, (i + 1) * this.slices + j + 1, (i + 1) * this.slices + j);
-            }
-    
-            this.indices.push(i * this.slices + this.slices - 1, i * this.slices, (i + 1) * this.slices + this.slices - 1);
-            this.indices.push(i * this.slices, i * this.slices + this.slices, (i + 1) * this.slices + this.slices - 1);
-        }
-        
-        this.primitiveType = this.scene.gl.TRIANGLES;
-        this.initGLBuffers();
+	initSurface(){
+        this.makeSurface(3, // degree on U: 2 control vertexes U
+			1, // degree on V: 2 control vertexes on V
+		    [	// U = 0
+			    [ // V = 0..1;
+					this.P1,
+					[-this.base, 0, 0, 1]
+				   
+                ],
+                // U = 1
+			    [ // V = 0..1
+                    this.P2,
+                    [-this.base, 4 * this.base/ 3, 0 , 1]							 
+                ],
+                // U = 2
+			    [ // V = 0..1
+                    this.P3,
+                    [this.base, 4 * this.base/ 3, 0 , 1]								 
+                ],
+			    // U = 3
+			    [ // V = 0..1
+					this.P4,
+					[ this.base, 0, 0, 1]							 
+			    ]
+		   ]);
+           
     }
+
+    makeSurface(degree1, degree2, controlvertexes) {			
+		let nurbsSurface = new CGFnurbsSurface(degree1, degree2, controlvertexes);
+        this.surface = new CGFnurbsObject(this.scene, this.slices/2, this.stacks, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)		
+    }
+       
+	display(){
+        this.surface.display();
+		this.scene.pushMatrix();		
+		this.scene.rotate(Math.PI, 0, 0, 1);
+		this.surface.display();
+		this.scene.popMatrix();
+	} 
     
     /**
      * In this work doesn't have to be implemented

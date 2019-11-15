@@ -4,7 +4,7 @@
     <views default="defaultCamera">
         <!-- view from the front to the all scene -->
         <perspective id="defaultCamera" near="0.1" far="300" angle="50"> <!-- value of far is big to see skybox -->
-            <from x="-5" y="30" z="10" />
+            <from x="-5" y="10" z="10" />
             <to x="0" y="0" z="0" />
         </perspective> 
 
@@ -425,6 +425,10 @@
             <cylinder base="0.4" top="0.2" height="2" slices="16" stacks="16" />
         </primitive>
 
+         <primitive id="cylinder2">
+            <cylinder2 base="0.4" top="0.2" height="2" slices="16" stacks="16" />
+        </primitive>
+
         <primitive id="telescopeLegPrim">
             <cylinder base="0.2" top="0.2" height="2" slices="16" stacks="16" />
         </primitive>
@@ -467,7 +471,8 @@
                 <componentref id="star1" />
                 <componentref id="solarSystem" />
                 <componentref id="telescope" />
-                <primitiveref id="patch" /> 
+            <!--    <primitiveref id="patch" /> -->
+                <primitiveref id="cylinder2" /> 
             </children>
         </component> 
 

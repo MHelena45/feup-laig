@@ -45,9 +45,9 @@ class XMLscene extends CGFscene {
 		this.SceneViewsIds = { 'Front': 0, 'Behind': 1, 'Up': 2, 'Earth' : 3 };
 
         //DropBox of the security camera
-        this.securityCameraView = 1;
+      //  this.securityCameraView = 1;
 		// Labels and ID's for object selection on MyInterface
-        this.securityCameraViewIds = { 'Behind': 1, 'Left side': 4, 'Right Side': 5, 'Up' : 2 };
+     //   this.securityCameraViewIds = { 'Behind': 1, 'Left side': 4, 'Right Side': 5, 'Up' : 2 };
         
         this.axis = new CGFaxis(this);
 
@@ -251,13 +251,13 @@ class XMLscene extends CGFscene {
     }
 
     display(){
-        this.securityCameraTexture.attachToFrameBuffer();           
+     /*   this.securityCameraTexture.attachToFrameBuffer();           
         this.render(1);         //Render scene to CGFtextureRTT texture using different camera
         this.securityCameraTexture.detachFromFrameBuffer(); 
-        this.render(0);         //render  scene to canvas       
-        this.gl.disable(this.gl.DEPTH_TEST);
+      */  this.render(0);         //render  scene to canvas       
+       /* this.gl.disable(this.gl.DEPTH_TEST);
         this.securityCamera.display();
-        this.gl.enable(this.gl.DEPTH_TEST);
+        this.gl.enable(this.gl.DEPTH_TEST);*/
     }
 
 }

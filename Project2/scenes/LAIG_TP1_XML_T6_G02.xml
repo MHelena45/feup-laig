@@ -1995,11 +1995,11 @@
         </primitive>
         
         <primitive id="cylinder">
-            <cylinder2 base="0.4" top="0.2" height="2" slices="16" stacks="16" />
+            <cylinder base="0.4" top="0.2" height="2" slices="16" stacks="16" />
         </primitive>
 
         <primitive id="telescopeLegPrim">
-            <cylinder base="0.2" top="0.2" height="2" slices="16" stacks="16" />
+            <cylinder2 base="0.2" top="0.2" height="2" slices="16" stacks="16" />
         </primitive>
 
         <primitive id="sphere">

@@ -264,11 +264,11 @@ class XMLscene extends CGFscene {
         }
     }
 
-    display(){        
+    display(){    
+        this.render(1);         //render scene to canvas     
         this.securityCameraTexture.attachToFrameBuffer();           
         this.render(0);         //Render scene to CGFtextureRTT texture using different camera
-        this.securityCameraTexture.detachFromFrameBuffer(); 
-        this.render(1);         //render scene to canvas   
+        this.securityCameraTexture.detachFromFrameBuffer();   
         this.gl.disable(this.gl.DEPTH_TEST);
         this.securityCamera.display();
         this.gl.enable(this.gl.DEPTH_TEST);       

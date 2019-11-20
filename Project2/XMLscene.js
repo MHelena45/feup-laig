@@ -43,15 +43,17 @@ class XMLscene extends CGFscene {
         //DropBox
         this.selectedView = 0;
 		// Labels and ID's for object selection on MyInterface
-		this.SceneViewsIds = { 'Front': 0, 'Behind': 1, 'Up': 2, 'Earth' : 3 };
+		this.SceneViewsIds = { 'Front': 0, 'Behind': 1, 'Up': 2, 'Right Side' : 3 };
+
+        this.lineColor = 0;
+        this.ColorsIds = { 'white': 0, 'Red': 1, 'Green': 2, 'Blue' : 3 };
 
         //DropBox of the security camera
         this.securityCameraView = 1;
-		// Labels and ID's for object selection on MyInterface
-        this.securityCameraViewIds = { 'Behind': 1, 'Left side': 4, 'Right Side': 5, 'Up' : 2 };
 
         this.lineThickness = 1;
         this.lineSpacing = 1;
+
         /* End of components of Interface */
         
         this.axis = new CGFaxis(this);
@@ -101,7 +103,15 @@ class XMLscene extends CGFscene {
         this.views_ID = this.graph.getViewsID();
         this.camera = this.views[this.views_ID[this.securityCameraView]];       
         this.interface.setActiveCamera(this.camera);
-	}
+    }
+    
+     /**
+     * used for the dropbox
+     * updates the color of the lines according to the selected color selected
+     */
+    updateColors(){
+
+    }
 
 
     /**

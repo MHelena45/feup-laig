@@ -20,23 +20,10 @@
             <to x="0" y="15" z="00" />
             <up x="0" y="0" z="1" /> 
         </ortho> 
-
-        <!-- view of the earth and it's moon -->
-       <ortho id="earthCamera" near="0.1" far="300" left="-20" right="20" top="10" bottom="-10" >
-            <from x="5.4" y="20" z="6" />
-            <to x="6.2" y="20" z="0" />
-            <up x="0" y="1" z="0" /> 
-        </ortho> 
-
-        <!-- view from left side -->
-        <perspective id="LeftCamera" near="0.1" far="400" angle="50">
-            <from x="-43" y="30" z="0" />
-            <to x="0" y="18" z="0" />
-        </perspective>
         
         <!-- view from Right side -->
         <perspective id="RightCamera" near="0.1" far="300" angle="40">
-            <from x="-60" y="20" z="0" />
+            <from x="60" y="20" z="0" />
             <to x="0" y="18" z="0" />
         </perspective>
 
@@ -810,45 +797,45 @@
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>
-
+                     
             <keyframe instant="6">
-                <translate x="-0.4" y="1.6" z="0" /> 
+                <translate x="-0.4" y="-1.6" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />             
-            </keyframe>
+            </keyframe>       
   
             <keyframe instant="8">
-               <translate x="-1" y="2.2" z="0" /> 
+               <translate x="-1" y="-2.2" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>  
 
             <keyframe instant="10">
-               <translate x="-2" y="3.6" z="0" /> 
+               <translate x="-2" y="-3.6" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
-            </keyframe>  
+            </keyframe> 
 
             <keyframe instant="12">
-                <translate x="-4" y="4" z="0" /> 
+                <translate x="-4" y="-4" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>
 
             <keyframe instant="14">
-                <translate x="-6" y="3.2" z="0" /> 
+                <translate x="-6" y="-3.2" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>
 
             <keyframe instant="16">
-                <translate x="-6.8" y="2.2" z="0" /> 
+                <translate x="-6.8" y="-2.2" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>
 
             <keyframe instant="18">
-                <translate x="-7" y="1.6" z="0" /> 
+                <translate x="-7" y="-1.6" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>
@@ -860,52 +847,53 @@
             </keyframe>
 
             <keyframe instant="22">
-                <translate x="-7" y="-1.6" z="0" /> 
+                <translate x="-7" y="1.6" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>
 
             <keyframe instant="24">
-                <translate x="-6.8" y="-2.2" z="0" /> 
+                <translate x="-6.8" y="2.2" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>
 
             <keyframe instant="26">
-                <translate x="-6" y="-3.2" z="0" /> 
+                <translate x="-6" y="3.2" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>
 
             <keyframe instant="28">
-                <translate x="-4" y="-4" z="0" /> 
+                <translate x="-4" y="4" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>
 
             <keyframe instant="30">
-               <translate x="-2" y="-3.6" z="0" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1" y="1" z="1" /> 
-            </keyframe> 
-  
-            <keyframe instant="32">
-               <translate x="-1" y="-2.2" z="0" /> 
+               <translate x="-2" y="3.6" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>  
-           
+  
+            <keyframe instant="32">
+               <translate x="-1" y="2.2" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1" y="1" z="1" /> 
+            </keyframe>  
+
             <keyframe instant="34">
-                <translate x="-0.4" y="-1.6" z="0" /> 
+                <translate x="-0.4" y="1.6" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" />             
-            </keyframe>       
+            </keyframe>
 
             <keyframe instant="36">
                 <translate x="0" y="0" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1" y="1" z="1" /> 
             </keyframe>
+
         </animation>
 
         <animation id="marsAnimation" >

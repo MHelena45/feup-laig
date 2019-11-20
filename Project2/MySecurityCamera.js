@@ -34,9 +34,7 @@ class MySecurityCamera extends CGFobject {
 		this.scene.securityCameraTexture.unbind(0); 
 	
 		this.scene.popMatrix();
-}
-	
-	
-	
+	}
+		
 }
 

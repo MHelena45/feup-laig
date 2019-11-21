@@ -1,8 +1,6 @@
 attribute vec3 aVertexPosition;
 attribute vec2 aTextureCoord;
 
-uniform float timeFactor;
-
 varying vec2 vTextureCoordinates;
 
 

@@ -45,9 +45,8 @@ class XMLscene extends CGFscene {
 		// Labels and ID's for object selection on MyInterface
 		this.SceneViewsIds = { 'Front': 0, 'Behind': 1, 'Up': 2, 'Right Side' : 3 };
 
-        this.lineColor = 0;
-        this.ColorsIds = { 'white': 0, 'Red': 1, 'Green': 2, 'Blue' : 3 };
-
+        this.selectedColor = 0;
+        this.colors = { 'White': 0, 'Red': 1, 'Green': 2, 'Blue' : 3 };
         //DropBox of the security camera
         this.securityCameraView = 1;
 
@@ -65,7 +64,7 @@ class XMLscene extends CGFscene {
     }
 
     update(t) {
-        this.securityCamera.updateTimeFactor(t);
+        this.securityCamera.update(t);
     }
 
     /**

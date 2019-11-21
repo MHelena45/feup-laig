@@ -3,7 +3,12 @@ precision highp float;
 #endif
 
 varying vec2 vTextureCoordinates;
-uniform float timeFactor, lineThickness, lineSpacing;
+uniform float timeFactor;
+uniform float lineThickness;
+uniform float lineSpacing;
+uniform float lineColorR;
+uniform float lineColorG;
+uniform float lineColorB;
 
 uniform sampler2D uSampler;		// original texture
 
@@ -13,8 +18,9 @@ void main() {
 
     float animation = mod(timeFactor + vTextureCoordinates.y * 100.0, 12.0 * lineSpacing);
     
-    if(animation < lineThickness)
-        color = vec4(1.0, 1.0, 1.0, 1.0);
+    if(animation < lineThickness) {
+        color = vec4(lineColorR, lineColorG, lineColorB, 1.0);
+    }
 
 	color.rgb = color.rgb - (abs(vTextureCoordinates.x - 0.5) + abs(vTextureCoordinates.y - 0.5)) / 1.2;
 

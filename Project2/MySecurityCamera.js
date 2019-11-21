@@ -17,8 +17,33 @@ class MySecurityCamera extends CGFobject {
 		this.cameraShader.setUniformsValues({ timeFactor: 0 });
 	}
 
-	updateTimeFactor(t) {
-		this.cameraShader.setUniformsValues({ timeFactor: t / 100 % 1000, lineThickness: this.scene.lineThickness, lineSpacing: this.scene.lineSpacing });
+	update(t) {
+		var lineColorR = 0.0;
+		var lineColorG = 0.0;
+		var lineColorB = 0.0;
+
+		if (this.scene.selectedColor == 0) { // white
+			lineColorR = 1.0;
+			lineColorG = 1.0;
+			lineColorB = 1.0;
+		}
+		else if (this.scene.selectedColor == 1) // red
+			lineColorR = 1.0;
+		else if (this.scene.selectedColor == 2) // green
+			lineColorG = 1.0;
+		else if (this.scene.selectedColor == 3) // blue
+			lineColorB = 1.0;
+		else
+			console.log('dumbass');
+
+		this.cameraShader.setUniformsValues({
+			timeFactor: t / 100 % 1000,
+			lineThickness: this.scene.lineThickness,
+			lineSpacing: this.scene.lineSpacing,
+			lineColorR: lineColorR,
+			lineColorG: lineColorG,
+			lineColorB: lineColorB
+		});
 	}
 
 	display() {

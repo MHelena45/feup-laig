@@ -89,9 +89,9 @@ class XMLscene extends CGFscene {
      * updates the view according to the selected view
      */
     updateView() {
-        this.views = this.graph.getViews();
-        this.views_ID = this.graph.getViewsID();
-        this.camera = this.views[this.views_ID[this.selectedView]];       
+        let views = this.graph.getViews();
+        let views_ID = this.graph.getViewsID();
+        this.camera = views[views_ID[this.selectedView]];       
         this.interface.setActiveCamera(this.camera);
     }
     
@@ -100,21 +100,12 @@ class XMLscene extends CGFscene {
      * updates the view according to the selected view
      */
     updateSecurityCameraView() {
-        this.views = this.graph.getViews();
-        this.views_ID = this.graph.getViewsID();
-        this.camera = this.views[this.views_ID[this.securityCameraView]];       
+        let views = this.graph.getViews();
+        let views_ID = this.graph.getViewsID();
+        this.camera = views[views_ID[this.securityCameraView]];       
         this.interface.setActiveCamera(this.camera);
     }
     
-     /**
-     * used for the dropbox
-     * updates the color of the lines according to the selected color selected
-     */
-    updateColors(){
-
-    }
-
-
     /**
      * Initializes the scene lights with the values read from the XML file.
      */
@@ -248,7 +239,7 @@ class XMLscene extends CGFscene {
      * Displays the lights according to the checkbox and the xml
      */
     displayLights(){
-        for (var i = 0; i < this.lights.length; i++) {
+        for (let i = 0; i < this.lights.length; i++) {
             this.lights[i].setVisible(true);
             switch(i)
             {

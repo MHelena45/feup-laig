@@ -27,7 +27,7 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'selectedView', this.scene.SceneViewsIds).name('Selected scene View').onChange(this.scene.updateView.bind(this.scene));
         this.gui.add(this.scene, 'securityCameraView', this.scene.SceneViewsIds).name('Security camera View').onChange(this.scene.updateSecurityCameraView.bind(this.scene.securityCamera));
      
-        this.gui.add(this.scene, 'selectedColor', this.scene.colors).name('Line color').onChange(this.scene.updateColors.bind(this.scene));
+        this.gui.add(this.scene, 'selectedColor', this.scene.colors).name('Line color').onChange(this.scene.securityCamera.updateColors.bind(this.scene));
  
         this.gui.add(this.scene, 'lineSpacing', 0.1, 3).name('Line spacing');
         this.gui.add(this.scene, 'lineThickness', 0.5, 8).name('Line thickness');

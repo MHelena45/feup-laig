@@ -27,9 +27,6 @@ class KeyframeAnimation extends Animation {
         let currentDate = new Date();
         let currentTime = currentDate.getTime();
         this.deltaTime = (currentTime - this.firstTime) / 1000;
-
-        //TODO
-       // console.log(this.deltaTime);
         
         // update currentAnimationKey
         if(this.deltaTime >= this.instances[this.currentAnimationKey + 1]){

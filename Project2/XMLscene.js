@@ -64,6 +64,8 @@ class XMLscene extends CGFscene {
     }
 
     update(t) {
+        if(this.sceneInited)
+            this.graph.update(t);
         this.securityCamera.update(t);
     }
 

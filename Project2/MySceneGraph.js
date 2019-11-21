@@ -1880,6 +1880,13 @@ class MySceneGraph {
         console.log("   " + message);
     }
 
+    update(t){
+        for (const componentID in this.components) {
+           if (this.components[componentID].KeyframeAnimation != null)
+            this.components[componentID].KeyframeAnimation.update();           
+        }           
+    }
+
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
@@ -1918,7 +1925,6 @@ class MySceneGraph {
         
         // apply animation
         if (component.KeyframeAnimation != null) {
-            component.KeyframeAnimation.update();
             this.scene.pushMatrix();
             component.KeyframeAnimation.apply();
         }

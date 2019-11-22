@@ -914,12 +914,6 @@ class MySceneGraph {
                     this.onXMLMinorError("instant must be a zero or positive number for animation with id = " + animationID + ")");
                     continue;
                 }
-                if(j == 0 && instant > 0){
-                    animation.instances.push(0);
-                    animation.translation.push(...[[0, 0 ,0]]);
-                    animation.rotation.push(...[[0, 0, 0]]);
-                    animation.scale.push(...[[1,1,1]]);  
-                }
 
                 grandGrandChildren = grandChildren[j].children;
                 //every animation must be defined
@@ -963,10 +957,9 @@ class MySceneGraph {
                 animation.instances.push(instant);
                 // saving transformation on map
                 animation.animations.set(instant, [translate, rotate, scale]);
-
             }
             // order animation instances
-            animation.instances.sort(animation.sortNumber);
+            animation.sortInstances();
             // save animation
             this.animations[animationID] = animation;         
         }

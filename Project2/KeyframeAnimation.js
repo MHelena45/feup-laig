@@ -9,9 +9,6 @@ class KeyframeAnimation extends Animation {
         this.animations = new Map();
 
         this.instances = [];
-        this.translation = [];
-        this.rotation = [];
-        this.scale = [];
 
         this.animationMatrix = mat4.create();
 
@@ -23,6 +20,13 @@ class KeyframeAnimation extends Animation {
         this.currentAnimationKey = 0;
     }
 
+    sortInstances(){
+        if(this.animations.get(0) == null){
+            this.instances.push(0);
+            this.animations.set(0, [[0,0,0], [0,0,0], [1,1,1]]);
+        }
+        this.instances.sort(this.sortNumber);
+    }
     sortNumber(number1, number2){
         return number1 - number2;
     }

@@ -966,8 +966,10 @@ class MySceneGraph {
                 animation.scale.push(...[scale]);
                 // save matrix and instance
                 animation.instances.push(instant);
-            } 
+
+            }
             // save animation
+            animation.setMap();
             this.animations[animationID] = animation;         
         } 
         

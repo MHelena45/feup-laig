@@ -16,6 +16,7 @@ class Animation {
     apply() {
         throw new TypeError("Abstract method 'apply' not defined."); 
     }
+
 }
 
 

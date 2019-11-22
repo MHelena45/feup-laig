@@ -57,25 +57,25 @@ class KeyframeAnimation extends Animation {
             let periodicDeltaTime = (this.deltaTime - this.instances[this.currentAnimationKey]) / timeInterval;
             
             // translation
-            let periodicTranslation = this.subtract2Arrays(this.translation[this.currentAnimationKey + 1], this.translation[this.currentAnimationKey]);
+            let periodicTranslation = this.subtract2Arrays(transformationsNext[0] , transformationsPrevious[0]);
             periodicTranslation = this.multiplyArray(periodicTranslation, periodicDeltaTime);
-            periodicTranslation = this.sum2Arrays(this.translation[this.currentAnimationKey], periodicTranslation);
+            periodicTranslation = this.sum2Arrays(transformationsPrevious[0], periodicTranslation);
             this.animationMatrix = mat4.translate(this.animationMatrix, this.animationMatrix, periodicTranslation);
 
             // rotation
-            let periodicRotation = this.subtract2Arrays(this.rotation[this.currentAnimationKey + 1], this.rotation[this.currentAnimationKey]);     
+            let periodicRotation = this.subtract2Arrays(transformationsNext[1], transformationsPrevious[1]);     
             periodicRotation = this.multiplyArray(periodicRotation, periodicDeltaTime);
-            this.animationMatrix = mat4.rotateX(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * (periodicRotation[0] + this.rotation[this.currentAnimationKey][0]));
-            this.animationMatrix = mat4.rotateY(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * (periodicRotation[1] + this.rotation[this.currentAnimationKey][1]));
-            this.animationMatrix = mat4.rotateZ(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * (periodicRotation[2] + this.rotation[this.currentAnimationKey][2]));
+            this.animationMatrix = mat4.rotateX(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * (periodicRotation[0] + transformationsPrevious[1][0]));
+            this.animationMatrix = mat4.rotateY(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * (periodicRotation[1] + transformationsPrevious[1][1]));
+            this.animationMatrix = mat4.rotateZ(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * (periodicRotation[2] + transformationsPrevious[1][2]));
           
             /* scale    */
             //calculates ratio
-            let periodicScale = this.powArray(this.division2Array(this.scale[this.currentAnimationKey + 1], this.scale[this.currentAnimationKey]), 1/timeInterval) ;
+            let periodicScale = this.powArray(this.division2Array(transformationsNext[2], transformationsPrevious[2]), 1/timeInterval) ;
             //ratio ^ n
             periodicScale = this.powArray(periodicScale, this.deltaTime - this.instances[this.currentAnimationKey]);
             //multiplies S0 * r^n
-            periodicScale = this.multiply2Array(periodicScale, this.scale[this.currentAnimationKey]);
+            periodicScale = this.multiply2Array(periodicScale, transformationsPrevious[2]);
             this.animationMatrix = mat4.scale(this.animationMatrix, this.animationMatrix, periodicScale);
         }
         else { //stops the animation the last place defined     

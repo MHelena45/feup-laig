@@ -19,20 +19,21 @@ class MyCylinder2 extends CGFobject {
         this.stacks = stacks;	
 
         this.surface;
-        this.P1 = [-this.top, 0, this.height, 1];
-        this.P4 = [ this.top, 0, this.height, 1];
-        this.R1 = [0, this.top, this.height, 1];
-       
-        this.L3 = [-this.top/ 2, this.top, 0, 1];
-        this.R2 = [this.top/2, this.top, 0, 1];
+
+        /* 4 Points need to create a half circle */
+        this.P1Top = [-this.top, 0, this.height, 1];
+        this.P1Base = [-this.base, 0, 0, 1];
 
         let yH = 4 * this.top/ 3;
-        this.L2 = [-this.top,  yH/2, 0, 1];
-        this.R3 = [this.top, yH/2, 0, 1];
-        this.H = [0, yH , 0, 1];
+        
+        this.P2Top = [-this.top, yH, this.height , 1];
+        this.P2Base = [-this.base, yH, 0 , 1];
 
-        this.P2 = [-this.top, yH, this.height , 1];
-        this.P3 = [this.top, yH, this.height , 1];
+        this.P3Top = [this.top, yH, this.height , 1];
+        this.P3Base = [this.base, yH, 0 , 1];
+
+        this.P4Top = [ this.top, 0, this.height, 1];
+        this.P4Base = [ this.base, 0, 0, 1];
 
         this.initSurface();
 	}
@@ -42,24 +43,23 @@ class MyCylinder2 extends CGFobject {
 			1, // degree on V: 2 control vertexes on V
 		    [	// U = 0
 			    [ // V = 0..1;
-					this.P1,
-					[-this.base, 0, 0, 1]
-				   
+					this.P1Top,
+					this.P1Base			   
                 ],
                 // U = 1
 			    [ // V = 0..1
-                    this.P2,
-                    [-this.base, 4 * this.base/ 3, 0 , 1]							 
+                    this.P2Top,
+                    this.P2Base						 
                 ],
                 // U = 2
 			    [ // V = 0..1
-                    this.P3,
-                    [this.base, 4 * this.base/ 3, 0 , 1]								 
+                    this.P3Top,
+                    this.P3Base								 
                 ],
 			    // U = 3
 			    [ // V = 0..1
-					this.P4,
-					[ this.base, 0, 0, 1]							 
+					this.P4Top,
+					this.P4Base						 
 			    ]
 		   ]);
            

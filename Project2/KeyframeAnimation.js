@@ -5,35 +5,33 @@
 class KeyframeAnimation extends Animation {
     constructor(scene) {
         super();
-
-        this.animations = new Map();
+        this.scene = scene;
 
         this.instances = [];
-
-        this.animationMatrix = mat4.create();
-
-        this.scene = scene;
-        this.firstDate = new Date();
-        this.firstTime;
-        this.deltaTime;
-
+        //map where key is instant and value a array with the 3 transformation [[translation], [rotation], [scale]]
+        this.animations = new Map();
+        
+        this.animationMatrix;               //matrix being apply in the moment         
+        this.firstTime;                     //time since animation start
+        this.deltaTime;                     
         this.currentAnimationKey = 0;
     }
 
     sortInstances(){
-        if(this.animations.get(0) == null){
+        if(this.animations.get(0) == null){ //if there isn't a transformation for the instant 0 add one neutral
             this.instances.push(0);
             this.animations.set(0, [[0,0,0], [0,0,0], [1,1,1]]);
         }
-        this.instances.sort(this.sortNumber);
+        this.instances.sort(this.subtractNumbers); //java script doesn't sort numbers correctly on it's own
     }
-    sortNumber(number1, number2){
+
+    subtractNumbers(number1, number2){
         return number1 - number2;
     }
 
     update() {
-        // get current time
-        this.firstTime = this.firstTime || this.firstDate.getTime();
+        // update time according to the current time
+        this.firstTime = this.firstTime || new Date().getTime(); //when first time isn't instantiated we get the current time
         let currentDate = new Date();
         let currentTime = currentDate.getTime();
         this.deltaTime = (currentTime - this.firstTime) / 1000;

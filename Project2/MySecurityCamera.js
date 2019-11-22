@@ -11,11 +11,11 @@ class MySecurityCamera extends CGFobject {
 		this.y1 = y1;
 		this.y2 = y2;
 
-        this.lineColorR = 1.0;
-		this.lineColorG = 1.0;
-		this.lineColorB = 1.0;		
-        this.lineThickness = 1;
-        this.lineSpacing = 1;
+        this.lineComponentR = 1.0;
+		this.lineComponentG = 1.0;
+		this.lineComponentB = 1.0;		
+        this.lineThickness = 1.0;
+        this.lineSpacing = 1.0;
 	
 		this.rectangle = new MyRectangle(this.scene, id, x1, x2, y1, y2);
 		
@@ -29,9 +29,9 @@ class MySecurityCamera extends CGFobject {
 			timeFactor: t / 100 % 1000,
 			lineThickness: this.lineThickness,
 			lineSpacing: this.lineSpacing,
-			lineColorR: this.lineColorR,
-			lineColorG: this.lineColorG,
-			lineColorB: this.lineColorB
+			lineComponentR: this.lineComponentR,
+			lineComponentG: this.lineComponentG,
+			lineComponentB: this.lineComponentB
 		});
 	}
 

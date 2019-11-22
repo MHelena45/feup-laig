@@ -24,7 +24,7 @@ class MyCylinder2 extends CGFobject {
         this.P1Top = [-this.top, 0, this.height, 1];
         this.P1Base = [-this.base, 0, 0, 1];
 
-        let yH = 4 * this.top/ 3;
+        let yH = 4 * this.top / 3;
         
         this.P2Top = [-this.top, yH, this.height , 1];
         this.P2Base = [-this.base, yH, 0 , 1];

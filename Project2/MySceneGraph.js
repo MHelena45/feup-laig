@@ -932,46 +932,44 @@ class MySceneGraph {
                 
                 // <translate>
                 if(grandGrandChildren[0].nodeName != 'translate'){
-                    this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + ">");
-                    continue;
+                    return "unknown tag <" + grandChildren[0].nodeName + ">";
                 }
                 var translate = this.parseCoordinates3D(grandGrandChildren[0], "translate in animation for ID = " + animationID);
                 if (!Array.isArray(translate)){
                     this.onXMLMinorError(translate);
                     continue;
                 }
-                animation.translation.push(...[translate]);
                 
                 // <rotate>
                 if(grandGrandChildren[1].nodeName != 'rotate'){
-                    this.onXMLMinorError("unknown tag <" + grandGrandChildren[1].nodeName + "> in animation for ID = " + animationID);
-                    continue;
+                    return "unknown tag <" + grandGrandChildren[1].nodeName + "> in animation for ID = " + animationID;
                 }
 
                 var x_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_x');
                 var y_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_y');
                 var z_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_z');   
-                animation.rotation.push(...[[x_rotate, y_rotate, z_rotate]]);
+                var rotate = [x_rotate, y_rotate, z_rotate];
 
                 // <scale>
                 if(grandGrandChildren[2].nodeName != 'scale'){
-                    this.onXMLMinorError("unknown tag <" + grandGrandChildren[2].nodeName + "> in animation for ID = " + animationID);
-                    continue;
+                    return "unknown tag <" + grandGrandChildren[2].nodeName + "> in animation for ID = " + animationID;
                 }
                 var scale = this.parseCoordinates3D(grandGrandChildren[2], "scale in animation for ID = " + animationID);
                 if (!Array.isArray(scale)){
-                    this.onXMLMinorError(scale);
-                    continue; 
+                    this.onXMLError(scale);
+                    return; 
                 }
-                animation.scale.push(...[scale]);
                 // save matrix and instance
                 animation.instances.push(instant);
+                // saving transformation on map
+                animation.animations.set(instant, [translate, rotate, scale]);
 
             }
+            // order animation instances
+            animation.instances.sort(animation.sortNumber);
             // save animation
-            animation.setMap();
             this.animations[animationID] = animation;         
-        } 
+        }
         
         //TODO: push of animation 
         this.log("Parsed animations");

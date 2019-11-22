@@ -877,7 +877,7 @@ class MySceneGraph {
         var grandGrandChildren = [];
 
         // Any number of animations.
-        for (var i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; i++) {
             if (children[i].nodeName != "animation") {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
@@ -895,24 +895,31 @@ class MySceneGraph {
             }
 
             // create animation
-            var animation = new KeyframeAnimation(this.scene);
+            let animation = new KeyframeAnimation(this.scene);
             
             grandChildren = children[i].children; 
 
             for(let j = 0;  j < grandChildren.length; j++) {
                 
                 if (grandChildren[j].nodeName != "keyframe") {
-                    this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + ">");
+                    this.onXMLMinorError( "unknown tag <" + grandChildren[j].nodeName + ">");
                     continue;
                 }
-                var instant = this.reader.getInteger(grandChildren[j], 'instant');
+
+                let instant = this.reader.getInteger(grandChildren[j], 'instant');
                 if(instant == null){
                     this.onXMLMinorError("instant must be define for animation ID = " + animationID + ")");
-                    continue; 
-                }
-                if(instant < 0){
-                    this.onXMLMinorError("instant must be a zero or positive number for animation with id = " + animationID + ")");
                     continue;
+                }                    
+
+                if(instant < 0){
+                    this.onXMLMinorError("instant must be a zero or positive number for animation with id = " + animationID + "). Assuming instant 0");
+                    instant = 0;
+                }
+
+                if(animation.animations.get(instant) != null){
+                    this.onXMLMinorError("instants must be unique for each animation (more than um instant = " + instant + " for " + animationID + ")");
+                    continue; //ignore that key animation
                 }
 
                 grandGrandChildren = grandChildren[j].children;
@@ -928,7 +935,7 @@ class MySceneGraph {
                 if(grandGrandChildren[0].nodeName != 'translate'){
                     return "unknown tag <" + grandChildren[0].nodeName + ">";
                 }
-                var translate = this.parseCoordinates3D(grandGrandChildren[0], "translate in animation for ID = " + animationID);
+                let translate = this.parseCoordinates3D(grandGrandChildren[0], "translate in animation for ID = " + animationID);
                 if (!Array.isArray(translate)){
                     this.onXMLMinorError(translate);
                     continue;
@@ -939,32 +946,45 @@ class MySceneGraph {
                     return "unknown tag <" + grandGrandChildren[1].nodeName + "> in animation for ID = " + animationID;
                 }
 
-                var x_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_x');
-                var y_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_y');
-                var z_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_z');   
-                var rotate = [x_rotate, y_rotate, z_rotate];
+                let x_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_x');
+                if(x_rotate == null){
+                    this.onXMLMinorError( "x_rotate must be define for animation ID = " + animationID + "). Assuming 0.");
+                    x_rotate = 0;
+                }
+
+                let y_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_y');
+                if(y_rotate == null){
+                    this.onXMLMinorError( "y_rotate must be define for animation ID = " + animationID + "). Assuming 0.");
+                    y_rotate = 0;
+                }
+                
+                let z_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_z');   
+                if(z_rotate == null){
+                    this.onXMLMinorError( "z_rotate must be define for animation ID = " + animationID + "). Assuming 0.");
+                    z_rotate = 0;
+                }
 
                 // <scale>
                 if(grandGrandChildren[2].nodeName != 'scale'){
                     return "unknown tag <" + grandGrandChildren[2].nodeName + "> in animation for ID = " + animationID;
                 }
-                var scale = this.parseCoordinates3D(grandGrandChildren[2], "scale in animation for ID = " + animationID);
+                let scale = this.parseCoordinates3D(grandGrandChildren[2], "scale in animation for ID = " + animationID);
                 if (!Array.isArray(scale)){
-                    this.onXMLError(scale);
-                    return; 
-                }
+                    this.onXMLMinorError(scale);
+                    continue;
+                }              
+
                 // save matrix and instance
                 animation.instances.push(instant);
                 // saving transformation on map
-                animation.animations.set(instant, [translate, rotate, scale]);
+                animation.animations.set(instant, [translate, [x_rotate, y_rotate, z_rotate], scale]);
             }
-            // order animation instances
+            // order animation instances and add instance 0 if needed
             animation.sortInstances();
             // save animation
             this.animations[animationID] = animation;         
         }
         
-        //TODO: push of animation 
         this.log("Parsed animations");
         return null;
     }
@@ -989,7 +1009,7 @@ class MySceneGraph {
             }
 
             // Get id of the current primitive.
-            var primitiveId = this.reader.getString(children[i], 'id');
+            let primitiveId = this.reader.getString(children[i], 'id');
             if (primitiveId == null){
                 this.onXMLError("no ID defined for texture" + children[i]);
                 continue; //object with no id is ignore
@@ -1095,7 +1115,7 @@ class MySceneGraph {
                 this.primitives[primitiveId] = triangle;
                 break;
             }
-            case 'cylinder': {
+            case 'cylinder': case 'cylinder2': {
                 // base
                 let base = this.reader.getFloat(grandChildren[0], 'base');
                 if (!(base != null && !isNaN(base) && base >= 0))
@@ -1113,7 +1133,6 @@ class MySceneGraph {
 
                 // slices
                 let slices = this.reader.getInteger(grandChildren[0], 'slices');
-                /** although slices should be greater than 2 to lock like a cylinder, some of my colleges used 1 as value */
                 if (!(slices != null && !isNaN(slices) && slices > 0))
                     return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
 
@@ -1122,8 +1141,11 @@ class MySceneGraph {
                 if (!(stacks != null && !isNaN(stacks) && stacks > 0))
                     return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
 
-
-                var cylinder = new MyCylinder(this.scene, primitiveId, base, top, height, slices, stacks);
+                let cylinder;
+                if(primitiveType == "cylinder")
+                    cylinder = new MyCylinder(this.scene, primitiveId, base, top, height, slices, stacks);
+                else
+                    cylinder = new MyCylinder2(this.scene, primitiveId, base, top, height, slices, stacks);
 
                 this.primitives[primitiveId] = cylinder;
                 break;
@@ -1144,7 +1166,7 @@ class MySceneGraph {
                 if (!(stacks != null && !isNaN(stacks)) && (stacks > 0))
                     return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
 
-                var sphere = new MySphere(this.scene, primitiveId, radius, slices, stacks);
+                let sphere = new MySphere(this.scene, primitiveId, radius, slices, stacks);
 
                 this.primitives[primitiveId] = sphere;
                 break;
@@ -1170,7 +1192,7 @@ class MySceneGraph {
                 if (!(loops != null && !isNaN(loops)) && (loops > 0))
                     return "unable to parse loops of the primitive coordinates for ID = " + primitiveId;
 
-                var torus = new MyTorus(this.scene, primitiveId, inner, outer, slices, loops);
+                let torus = new MyTorus(this.scene, primitiveId, inner, outer, slices, loops);
 
                 this.primitives[primitiveId] = torus;
                 break;
@@ -1214,7 +1236,6 @@ class MySceneGraph {
 
                 let grandGrandChildren = grandChildren[0].children;
 
-
                 // <controlpoint>
                 if(grandGrandChildren[0].nodeName != 'controlpoint'){
                     this.onXMLMinorError("unknown tag <" + grandGrandChildren[0].nodeName + ">");
@@ -1252,38 +1273,6 @@ class MySceneGraph {
                 var patch = new Patch(this.scene, primitiveId, npointsU, npointsV, npartsU, npartsV, controlpoints);
                 this.primitives[primitiveId] = patch;
 
-                break;
-            }
-            case 'cylinder2': {
-                // base
-                let base = this.reader.getFloat(grandChildren[0], 'base');
-                if (!(base != null && !isNaN(base) && base >= 0))
-                    return "unable to parse base of the primitive coordinates for ID = " + primitiveId;
-
-                // top
-                let top = this.reader.getFloat(grandChildren[0], 'top');
-                if (!(top != null && !isNaN(top) && top >= 0))
-                    return "unable to parse top of the primitive coordinates for ID = " + primitiveId;
-
-                // height
-                let height = this.reader.getFloat(grandChildren[0], 'height');
-                if (!(height != null && !isNaN(height) && height > 0))
-                    return "unable to parse height of the primitive coordinates for ID = " + primitiveId;
-
-                // slices
-                let slices = this.reader.getInteger(grandChildren[0], 'slices');
-                /** although slices should be greater than 2 to lock like a cylinder, some of my colleges used 1 as value */
-                if (!(slices != null && !isNaN(slices) && slices > 0))
-                    return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
-
-                //stacks
-                let stacks = this.reader.getInteger(grandChildren[0], 'stacks');
-                if (!(stacks != null && !isNaN(stacks) && stacks > 0))
-                    return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
-                
-                var cylinder2 = new MyCylinder2(this.scene, primitiveId, base, top, height, slices, stacks);
-
-                this.primitives[primitiveId] = cylinder2;
                 break;
             }
             default:

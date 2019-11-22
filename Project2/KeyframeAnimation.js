@@ -5,6 +5,9 @@
 class KeyframeAnimation extends Animation {
     constructor(scene) {
         super();
+
+        this.animations = new Map();
+
         this.instances = [];
         this.translation = [];
         this.rotation = [];
@@ -18,7 +21,17 @@ class KeyframeAnimation extends Animation {
         this.deltaTime;
 
         this.currentAnimationKey = 0;
+    }
 
+    sortNumber(number1, number2){
+        return number1 - number2;
+    }
+
+    setMap() {
+        for(let i=0; i < this.instances.length; i++){
+            this.animations.set(this.instances[i], [this.translation[i], this.rotation[i], this.scale[i]]);
+        }
+        this.instances.sort(this.sortNumber);
     }
 
     update() {
@@ -32,8 +45,13 @@ class KeyframeAnimation extends Animation {
         if(this.deltaTime >= this.instances[this.currentAnimationKey + 1]){
             this.currentAnimationKey++;
         }
+
           // get current animation key
-          if(this.deltaTime < this.instances[this.instances.length - 1]) {
+        if(this.deltaTime < this.instances[this.instances.length - 1]) {
+
+            let transformationsNext = this.animations.get(this.instances[this.currentAnimationKey + 1]);
+            let transformationsPrevious = this.animations.get(this.instances[this.currentAnimationKey]);
+
             this.animationMatrix = mat4.create();   
             let timeInterval = this.instances[this.currentAnimationKey + 1] - this.instances[this.currentAnimationKey];
             let periodicDeltaTime = (this.deltaTime - this.instances[this.currentAnimationKey]) / timeInterval;
@@ -60,13 +78,14 @@ class KeyframeAnimation extends Animation {
             periodicScale = this.multiply2Array(periodicScale, this.scale[this.currentAnimationKey]);
             this.animationMatrix = mat4.scale(this.animationMatrix, this.animationMatrix, periodicScale);
         }
-        else { //stops the animation the last place defined
+        else { //stops the animation the last place defined     
+            let transformations = this.animations.get(this.instances[this.instances.length - 1]);
             this.animationMatrix = mat4.create();  
-            this.animationMatrix = mat4.translate(this.animationMatrix, this.animationMatrix, this.translation[this.instances.length - 1] );
-            this.animationMatrix = mat4.rotateX(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * this.rotation[this.instances.length - 1][0]);
-            this.animationMatrix = mat4.rotateY(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * this.rotation[this.instances.length - 1][1]);
-            this.animationMatrix = mat4.rotateZ(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * this.rotation[this.instances.length - 1][2]);
-            this.animationMatrix = mat4.scale(this.animationMatrix, this.animationMatrix, this.scale[this.instances.length - 1]);
+            this.animationMatrix = mat4.translate(this.animationMatrix, this.animationMatrix, transformations[0] );
+            this.animationMatrix = mat4.rotateX(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * transformations[1][0]);
+            this.animationMatrix = mat4.rotateY(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * transformations[1][1]);
+            this.animationMatrix = mat4.rotateZ(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * transformations[1][2]);
+            this.animationMatrix = mat4.scale(this.animationMatrix, this.animationMatrix, transformations[2]);
         }
         
     }

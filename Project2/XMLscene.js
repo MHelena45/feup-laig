@@ -50,9 +50,6 @@ class XMLscene extends CGFscene {
         //DropBox of the security camera
         this.securityCameraView = 1;
 
-        this.lineThickness = 1;
-        this.lineSpacing = 1;
-
         /* End of components of Interface */
         
         this.axis = new CGFaxis(this);

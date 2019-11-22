@@ -22,15 +22,20 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'lights1').name('Light of the star');
         this.gui.add(this.scene, 'lights2').name('Light telescope');
         this.gui.add(this.scene, 'lights3').name('Light of the sun');
+          
+        this.gui.add(this.scene.securityCamera, 'lineColorR', 0, 1.0).name('Line component R');
+        this.gui.add(this.scene.securityCamera, 'lineColorG', 0, 1.0).name('Line component G');
+        this.gui.add(this.scene.securityCamera, 'lineColorB', 0, 1.0).name('Line component B');
 
         //Dropdown for views
         this.gui.add(this.scene, 'selectedView', this.scene.SceneViewsIds).name('Selected scene View').onChange(this.scene.updateView.bind(this.scene));
         this.gui.add(this.scene, 'securityCameraView', this.scene.SceneViewsIds).name('Security camera View').onChange(this.scene.updateSecurityCameraView.bind(this.scene.securityCamera));
-     
-        this.gui.add(this.scene, 'selectedColor', this.scene.colors).name('Line color').onChange(this.scene.securityCamera.updateColors.bind(this.scene));
- 
-        this.gui.add(this.scene, 'lineSpacing', 0.1, 3).name('Line spacing');
-        this.gui.add(this.scene, 'lineThickness', 0.5, 8).name('Line thickness');
+
+        this.gui.add(this.scene.securityCamera, 'lineSpacing', 0.1, 3).name('Line spacing');
+        this.gui.add(this.scene.securityCamera, 'lineSpacing', 0.1, 3).name('Line spacing');
+
+        this.gui.add(this.scene.securityCamera, 'lineSpacing', 0.1, 3).name('Line spacing');
+        this.gui.add(this.scene.securityCamera, 'lineThickness', 0.5, 8).name('Line thickness');
 
         this.initKeys();
 

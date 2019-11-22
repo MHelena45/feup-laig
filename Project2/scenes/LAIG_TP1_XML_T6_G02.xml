@@ -3,15 +3,15 @@
 
     <views default="defaultCamera">
         <!-- view from the front to the all scene -->
-        <perspective id="defaultCamera" near="0.1" far="300" angle="50"> <!-- value of far is big to see skybox -->
-            <from x="0" y="23" z="60" />
-            <to x="0" y="15" z="0" />
+        <perspective id="defaultCamera" near="0.1" far="300" angle="49"> <!-- value of far is big to see skybox -->
+            <from x="0" y="13" z="60" />
+            <to x="0" y="19" z="0" />
         </perspective> 
 
         <!-- view from behind -->
         <perspective id="behindCamera" near="0.1" far="300" angle="40">
-            <from x="-5" y="18" z="-60" />
-            <to x="0" y="18" z="0" />
+            <from x="0" y="15" z="-60" />
+            <to x="0" y="19" z="0" />
         </perspective> 
 
         <!-- view of an upper position -->
@@ -167,20 +167,20 @@
         </transformation>
 
         <transformation id ="telescopeTransform">
-            <translate x="-30" y="0" z="12" />
+            <translate x="-30" y="0" z="8" />
             <scale x="2" y="2" z="2" />
         </transformation>
 
         <transformation id="starTransform">
-            <translate x="20" y="20" z="27.6" />
+            <translate x="25" y="17" z="27.6" />
         </transformation>   
 
         <transformation id="star1Transform">
-            <translate x="15" y="17" z="25" />
+            <translate x="15" y="30" z="25" />
         </transformation>
 
         <transformation id="shootingStarTransform">
-            <translate x="-30" y="20" z="10" />
+            <translate x="-35" y="20" z="10" />
             <scale x="2" y="2" z="2" />
         </transformation>    
 
@@ -1902,59 +1902,66 @@
         </animation> 
 
         <animation id="starAnimation" >
-            <keyframe instant="1">
-                <translate x="1" y="-1" z="1" /> 
+            <keyframe instant="0">
+                <translate x="0" y="0" z="0" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.95" y="0.95" z="1" /> 
+                <scale x="1.50" y="1.50" z="1.50" /> 
+            </keyframe> 
+
+            <keyframe instant="1">
+                <translate x="1" y="-1" z="-1" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1.35" y="1.35" z="1.35" /> 
             </keyframe> 
 
             <keyframe instant="2">
-                <translate x="2" y="-2" z="2" /> 
+                <translate x="2" y="-2" z="-2" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.9" y="0.9" z="1" /> 
+                <scale x="1.10" y="1.10" z="1.10" /> 
             </keyframe>  
 
             <keyframe instant="3">
-                <translate x="4" y="-3" z="3.5" /> 
+                <translate x="4" y="-3" z="-3.5" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.8" y="0.8" z="1" /> 
+                <scale x="1.00" y="1.00" z="1.00" /> 
             </keyframe> 
 
             <keyframe instant="4">
-                <translate x="6" y="-4" z="5" /> 
+                <translate x="6" y="-4" z="-5" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.75" y="0.75" z="1" /> 
+                <scale x="0.90" y="0.90" z="0.50" /> 
             </keyframe>  
 
             <keyframe instant="5">
-                <translate x="9" y="-5" z="6" /> 
+                <translate x="9" y="-5" z="-6" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.7" y="0.7" z="1" /> 
+                <scale x="0.80" y="0.80" z="1" /> 
             </keyframe> 
 
             <keyframe instant="6">
-                <translate x="12" y="-6" z="7" /> 
+                <translate x="12" y="-6" z="-7" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.65" y="0.65" z="1" /> 
+                <scale x="0.70" y="0.70" z="1" /> 
             </keyframe> 
 
             <keyframe instant="7">
-                <translate x="16" y="-7" z="8" /> 
+                <translate x="16" y="-7" z="-8" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.6" y="0.6" z="1" /> 
+                <scale x="0.60" y="0.60" z="1" /> 
             </keyframe> 
 
             <keyframe instant="8">
-                <translate x="21" y="-8" z="9" /> 
+                <translate x="21" y="-8" z="-9" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.55" y="0.55" z="1" /> 
+                <scale x="0.50" y="0.50" z="1" /> 
             </keyframe> 
 
             <keyframe instant="9">
-                <translate x="27" y="-9" z="10" /> 
+                <translate x="27" y="-9" z="-10" /> 
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.5" y="0.5" z="1" /> 
+                <scale x="0.40" y="0.40" z="1" /> 
             </keyframe> 
+
         </animation> 
     </animations>
 
@@ -1975,7 +1982,7 @@
             <patch npointsU="3" npointsV="2" npartsU="2" npartsV="2" >
                 <controlpoint xx="0.0" yy="0.0" zz="0.0" />
                 <controlpoint xx="0.499" yy="0.8" zz="0.0" />
-                <controlpoint xx="0.5" yy="0.0" zz="0.3" />
+                <controlpoint xx="0.5" yy="0.0" zz="0.2" />
                 <controlpoint xx="0.5" yy="0.8" zz="0.0" />
                 <controlpoint xx="1.0" yy="0.0" zz="0.0" />
                 <controlpoint xx="0.5001" yy="0.8" zz="0.0" />

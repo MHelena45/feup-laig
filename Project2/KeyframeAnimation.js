@@ -27,13 +27,6 @@ class KeyframeAnimation extends Animation {
         return number1 - number2;
     }
 
-    setMap() {
-        for(let i=0; i < this.instances.length; i++){
-            this.animations.set(this.instances[i], [this.translation[i], this.rotation[i], this.scale[i]]);
-        }
-        this.instances.sort(this.sortNumber);
-    }
-
     update() {
         // get current time
         this.firstTime = this.firstTime || this.firstDate.getTime();

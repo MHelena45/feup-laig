@@ -939,7 +939,6 @@ class MySceneGraph {
                     this.onXMLMinorError(translate);
                     continue;
                 }
-                animation.translation.push(...[translate]);
                 
                 // <rotate>
                 if(grandGrandChildren[1].nodeName != 'rotate'){
@@ -949,7 +948,7 @@ class MySceneGraph {
                 var x_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_x');
                 var y_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_y');
                 var z_rotate = this.reader.getFloat(grandGrandChildren[1],'angle_z');   
-                animation.rotation.push(...[[x_rotate, y_rotate, z_rotate]]);
+                var rotate = [x_rotate, y_rotate, z_rotate];
 
                 // <scale>
                 if(grandGrandChildren[2].nodeName != 'scale'){
@@ -960,13 +959,15 @@ class MySceneGraph {
                     this.onXMLError(scale);
                     return; 
                 }
-                animation.scale.push(...[scale]);
                 // save matrix and instance
                 animation.instances.push(instant);
+                // saving transformation on map
+                animation.animations.set(instant, [translate, rotate, scale]);
 
             }
+            // order animation instances
+            animation.instances.sort(animation.sortNumber);
             // save animation
-            animation.setMap();
             this.animations[animationID] = animation;         
         }
         

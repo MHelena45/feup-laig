@@ -28,7 +28,7 @@ class MyInterface extends CGFinterface {
    
         this.gui.add(this.scene.securityCamera, 'lineSpacing', 0.1, 3).name('Line spacing');
         this.gui.add(this.scene.securityCamera, 'lineThickness', 0.5, 8).name('Line thickness');    
-        this.gui.add(this.scene.securityCamera, 'linesMovement', 100, 2000).name('Line movement');           
+        this.gui.add(this.scene.securityCamera, 'linesMovement', 30, 1000).name('Line movement');           
 
         //Dropdown for security camera view        
         this.gui.add(this.scene, 'securityCameraView', this.scene.SceneViewsIds).name('View sec camera').onChange(this.scene.updateSecurityCameraView.bind(this.scene.securityCamera));

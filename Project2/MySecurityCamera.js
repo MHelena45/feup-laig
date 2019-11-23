@@ -15,7 +15,8 @@ class MySecurityCamera extends CGFobject {
 		this.lineComponentG = 1.0;
 		this.lineComponentB = 1.0;		
         this.lineThickness = 1.0;
-        this.lineSpacing = 1.0;
+		this.lineSpacing = 1.0;
+		this.linesMovement = 100;
 	
 		this.rectangle = new MyRectangle(this.scene, id, x1, x2, y1, y2);
 		
@@ -26,7 +27,7 @@ class MySecurityCamera extends CGFobject {
 
 	update(t) {
 		this.cameraShader.setUniformsValues({
-			timeFactor: t / 100 % 1000,
+			timeFactor: t / 100 % this.linesMovement,
 			lineThickness: this.lineThickness,
 			lineSpacing: this.lineSpacing,
 			lineComponentR: this.lineComponentR,

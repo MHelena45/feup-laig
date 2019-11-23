@@ -40,7 +40,7 @@ class MyCylinder2 extends CGFobject {
 	}
 	
 	initSurface(){
-        this.makeSurface(3, // degree on U: 2 control vertexes U
+        let nurbsSurface = new CGFnurbsSurface(3, // degree on U: 2 control vertexes U
 			1, // degree on V: 2 control vertexes on V
 		    [	// U = 0
 			    [ // V = 0..1;
@@ -62,15 +62,12 @@ class MyCylinder2 extends CGFobject {
 					this.P4Top,
 					this.P4Base						 
 			    ]
-		   ]);
-           
-    }
-
-    makeSurface(degree1, degree2, controlvertexes) {			
-		let nurbsSurface = new CGFnurbsSurface(degree1, degree2, controlvertexes);
+           ]
+        );
         this.surface = new CGFnurbsObject(this.scene, this.slices/2, this.stacks, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)		
-    }
        
+    }
+		
 	display(){
         this.surface.display();
 		this.scene.pushMatrix();		

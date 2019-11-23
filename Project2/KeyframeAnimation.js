@@ -15,6 +15,7 @@ class KeyframeAnimation extends Animation {
         this.firstTime;                     //time since animation start
         this.deltaTime;                     
         this.currentAnimationKey = 0;
+        this.finishAnimation = false;      //if animation ended we don't need to keep calculating the new matrix (is always the same)
     }
 
     sortInstances(){
@@ -41,7 +42,7 @@ class KeyframeAnimation extends Animation {
             this.currentAnimationKey++;
         }
 
-          // get current animation key
+        // get current animation key matrix
         if(this.deltaTime < this.instances[this.instances.length - 1]) {
 
             let transformationsNext = this.animations.get(this.instances[this.currentAnimationKey + 1]);
@@ -73,7 +74,8 @@ class KeyframeAnimation extends Animation {
             periodicScale = this.multiply2Array(periodicScale, transformationsPrevious[2]);
             this.animationMatrix = mat4.scale(this.animationMatrix, this.animationMatrix, periodicScale);
         }
-        else { //stops the animation the last place defined     
+        //If there are no more keyframes left, calculate once the last matrix
+        else if(!this.finishAnimation) { //stops the animation the last place defined     
             let transformations = this.animations.get(this.instances[this.instances.length - 1]);
             this.animationMatrix = mat4.create();  
             this.animationMatrix = mat4.translate(this.animationMatrix, this.animationMatrix, transformations[0] );
@@ -81,8 +83,13 @@ class KeyframeAnimation extends Animation {
             this.animationMatrix = mat4.rotateY(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * transformations[1][1]);
             this.animationMatrix = mat4.rotateZ(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * transformations[1][2]);
             this.animationMatrix = mat4.scale(this.animationMatrix, this.animationMatrix, transformations[2]);
+            this.finishAnimation = true;
         }
         
+    }
+
+    apply() {  
+        this.scene.multMatrix(this.animationMatrix);
     }
 
     /** Operations with arrays, applied to all the elements */
@@ -135,9 +142,6 @@ class KeyframeAnimation extends Animation {
         return pow;
     }
 
-    apply() {  
-        this.scene.multMatrix(this.animationMatrix);
-    }
 }
 
 

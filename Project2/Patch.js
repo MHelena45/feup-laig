@@ -21,14 +21,9 @@ class Patch extends CGFobject {
 	}
 
 	initSurface() {
-		this.makeSurface(this.npointsU - 1, this.npointsV - 1, this.controlpoints);
-	}
-	
-	makeSurface(degree1, degree2, controlvertexes) {
-		let nurbsSurface = new CGFnurbsSurface(degree1, degree2, controlvertexes);
+		let nurbsSurface = new CGFnurbsSurface(this.npointsU - 1, this.npointsV - 1, this.controlpoints);		
 		this.obj = new CGFnurbsObject(this.scene, this.npartsU, this.npartsV, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
 	}
-
 	
 	display(){
 		this.obj.display();
@@ -40,10 +35,7 @@ class Patch extends CGFobject {
      * @param {value of the length_u in texture} length_u 
      * @param {value of the length_v in texture} length_v 
      */
-	updateTexCoords(length_u, length_v) {
+	updateTexCoords(length_u, length_v) { 	}
 
-	}
-
-	
 }
 

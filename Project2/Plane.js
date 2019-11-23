@@ -13,27 +13,27 @@ class Plane extends CGFobject {
 		this.obj;	
 
 		this.initSurface();
-
 	}
 
 	initSurface() {
-
-		this.makeSurface(1, // degree on U: 2 control vertexes U
+		let nurbsSurface = new 
+		CGFnurbsSurface(1, // // degree on U: 2 control vertexes U
 			1, // degree on V: 2 control vertexes on V
-		   [	// U = 0
-			   [ // V = 0..1;
+			[	// U = 0
+				[ // V = 0..1;
 					[-0.5, 0, 0.5, 1 ],
 					[-0.5, 0, -0.5, 1 ]
-				   
-			   ],
-			   // U = 1
-			   [ // V = 0..1
+					
+				],
+				// U = 1
+				[ // V = 0..1
 					[ 0.5, 0, 0.5, 1 ],
 					[ 0.5, 0, -0.5, 1 ]							 
-			   ]
-		   ], // translation of surface 
-		   [0,0,0]);
-
+				]
+			]
+		);
+				
+		this.obj = new CGFnurbsObject(this.scene, this.nrDivU, this.nrDivV, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
 	}
 
 	display(){
@@ -46,13 +46,6 @@ class Plane extends CGFobject {
      * @param {value of the length_u in texture} length_u 
      * @param {value of the length_v in texture} length_v 
      */
-	updateTexCoords(length_u, length_v) {
-
-	}
-
-    makeSurface(degree1, degree2, controlvertexes, translation) {
-		let nurbsSurface = new CGFnurbsSurface(degree1, degree2, controlvertexes);
-		this.obj = new CGFnurbsObject(this.scene, this.nrDivU, this.nrDivV, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
-	}
+	updateTexCoords(length_u, length_v) {	}
 
 }

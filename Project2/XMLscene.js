@@ -32,29 +32,26 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
+        /* Start of components of Interface */
         //checkboxes
         this.lights1 = true; 
         this.lights2 = true;
         this.lights3 = true;
 
-        this.mClick = false; //used to now when M/m is being press  
+        //DropBoxes
+        this.selectedView = 0;       //Dropbox of scene view
+        this.securityCameraView = 1; //DropBox of the security camera
 
-        /* Start of components of Interface */
-        //DropBox
-        this.selectedView = 0;
 		// Labels and ID's for object selection on MyInterface
-		this.SceneViewsIds = { 'Front': 0, 'Behind': 1, 'Up': 2, 'Right Side' : 3 };
-
-        this.selectedColor = 0;
-        this.colors = { 'White': 0, 'Red': 1, 'Green': 2, 'Blue' : 3 };
-        //DropBox of the security camera
-        this.securityCameraView = 1;
-
+		this.SceneViewsIds = { 'Front': 0, 'Behind': 1, 'Up': 2, 'Right Side' : 3 };      
+        
         /* End of components of Interface */
         
         this.axis = new CGFaxis(this);
 
         this.setUpdatePeriod(100);
+
+        this.mClick = false; //used to now when M/m is being press  
        
         this.securityCameraTexture = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
         this.securityCamera = new MySecurityCamera( this, 'securityCamera', 0.5, 1, -1, -0.5);

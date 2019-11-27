@@ -1,0 +1,350 @@
+<lxs>
+    <scene root="Root" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="-5" y="13" z="60" />
+            <to x="0" y="15" z="0" />
+        </perspective>
+    </views>
+
+    <globals>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </globals>
+
+    <lights>
+        <omni id="globalLight" enabled="1">
+            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0" quadratic="0" /> 
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="starTexture" file="scenes/images/star.jpg" />
+    </textures>
+
+    <materials>
+        <material id="blackMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0" g="0.0" b="0.0" a="1.0" />
+        </material>
+
+        <!-- shinny object to simulate the shine of a shootingStar track -->
+        <material id="whiteMaterial" shininess="20">
+            <emission r="1.0" g="1.0" b="1.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0" g="0" b="0" a="0" />
+        </material>
+
+    </materials>
+
+    <!-- where are the transformations of complete objcts, to become easier to move them around -->
+    <transformations>
+        <transformation id="identityTransform" >
+            <scale x="1.0" y="1.0" z="1.0" /> 
+        </transformation>
+    </transformations>
+
+     <animations>
+        <animation id="starAnimation" >
+            <keyframe instant="0">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1.50" y="1.50" z="1.50" /> 
+            </keyframe> 
+
+            <keyframe instant="1">
+                <translate x="1" y="-1" z="-1" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1.35" y="1.35" z="1.35" /> 
+            </keyframe> 
+
+            <keyframe instant="2">
+                <translate x="2" y="-2" z="-2" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1.10" y="1.10" z="1.10" /> 
+            </keyframe>  
+
+            <keyframe instant="3">
+                <translate x="4" y="-3" z="-3.5" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1.00" y="1.00" z="1.00" /> 
+            </keyframe> 
+
+            <keyframe instant="4">
+                <translate x="6" y="-4" z="-5" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.90" y="0.90" z="0.50" /> 
+            </keyframe>  
+
+            <keyframe instant="5">
+                <translate x="9" y="-5" z="-6" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.80" y="0.80" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="6">
+                <translate x="12" y="-6" z="-7" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.70" y="0.70" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="7">
+                <translate x="16" y="-7" z="-8" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.60" y="0.60" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="8">
+                <translate x="21" y="-8" z="-9" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.50" y="0.50" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="9">
+                <translate x="27" y="-9" z="-10" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.40" y="0.40" z="1" /> 
+            </keyframe> 
+
+        </animation> 
+    </animations>
+
+    <primitives>
+        <primitive id="rectangle">
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+        </primitive>
+
+        <primitive id="triangle">
+            <triangle x1="0" y1="0" z1="0" x2="1" y2="0" z2="0" x3="0.5" y3="0.8" z3="0" />
+        </primitive>
+
+        <primitive id="cylinder">
+            <cylinder base="1" top="1" height="2" slices="16" stacks="16" />
+        </primitive>
+
+        <primitive id="cone">
+            <cylinder base="1" top="0" height="2" slices="16" stacks="16" />
+        </primitive>
+
+        <primitive id="sphere">
+            <sphere radius="1" slices="18" stacks="18" />
+        </primitive>
+    </primitives>
+
+    <components>
+        <component id="Root">
+            <transformation>
+                <transformationref id="identityTransform" />
+            </transformation>
+            <materials>
+                <material id="blackMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="cone" />
+                <componentref id="skybox" />    
+            </children>
+        </component>
+      
+        <component id="shootingStar">
+            <transformation>
+                <translate x="-10" y="20" z="0" />
+            </transformation>
+            <animationref id="starAnimation" />
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="shootingStarPart" />
+                <componentref id="halfStarabove" />
+                <componentref id="halfStardown" />            
+            </children>
+        </component>
+
+        <component id="shootingStarPart">
+            <transformation>
+                <translate x="-0.1" y="0.28" z="-0.01" />
+                <scale x="0.6" y="0.3" z="0" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component> 
+
+        <component id="halfStardown">
+            <transformation>
+                <translate x="1" y="0.5" z="0" />
+                <rotate axis="z" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="starTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="triangle" />
+                <componentref id="backHalfStardown" />
+            </children>
+        </component>
+
+        <!-- stars can be seen from both sides -->
+        <component id="backHalfStardown">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="starTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <component id="halfStarabove">
+            <transformation>
+                <transformationref id="identityTransform"/>              
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="starTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="triangle" />
+                <componentref id="backHalfStarAbove" /> <!-- back of the star, in the same place, but seen from the other side -->
+            </children>
+        </component>
+
+        <component id="backHalfStarAbove">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="180" />                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="starTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <!-- skybox below --> 
+        <component id="skybox">
+            <transformation>
+                <translate x="0" y="10" z="0"/>
+                <scale x="180" y="180" z="180" /> 
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+                <!-- length is so small for texture to repeat over and over -->
+                <texture id="none"/>
+            <children>
+                <componentref id="frontSkybox" />
+                <componentref id="topSkybox" />
+                <componentref id="bottomSkybox" />
+                <componentref id="backSkybox" />                
+                <componentref id="rightSkybox" />
+                <componentref id="leftSkybox" />
+            </children>
+        </component>
+
+        <component id="frontSkybox">
+            <transformation>
+                <translate x="0" y="0" z="0.5" />
+                <rotate axis="y" angle="180" /> 
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component> 
+
+        <component id="topSkybox">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component> 
+
+       <component id="backSkybox">
+            <transformation>
+                <translate x="0" y="0" z="-0.5" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>    
+
+        <component id="rightSkybox">
+            <transformation>
+                <translate x="-0.5" y="0" z="0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>     
+
+        <component id="bottomSkybox">
+            <transformation>
+                <translate x="0" y="-0.5" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>  
+
+        <component id="leftSkybox">
+            <transformation>
+                <translate x="0.5" y="0" z="0" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle"  />
+            </children>
+        </component>
+
+    </components>
+</lxs>

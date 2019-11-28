@@ -1913,6 +1913,7 @@ class MySceneGraph {
             if (this.primitives[component.childrenIDs[i]] != null) {
                 //the line below deals with nodes with components and primitives
                 this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
+                this.displayPiece(id);
                 this.primitives[component.childrenIDs[i]].updateTexCoords(length_s, length_t);
                 this.primitives[component.childrenIDs[i]].display();
             }
@@ -1988,5 +1989,25 @@ class MySceneGraph {
         appliedMaterial.apply();
 
         return [childMaterialID, textureID, length_s, length_t];
+    }
+
+    displayPiece(id){
+        switch(id){
+            case "whiteConePiece":
+            this.scene.translate(this.scene.whiteCone1Position[0], this.scene.whiteCone1Position[1], this.scene.whiteCone1Position[2]);
+            break;
+            case "whiteSpherePiece":
+            this.scene.translate(this.scene.whiteSphere1Position[0], this.scene.whiteSphere1Position[1], this.scene.whiteSphere1Position[2]);
+            break;
+            case "whiteCylinderPiece":
+            this.scene.translate(this.scene.whiteCylinder1Position[0], this.scene.whiteCylinder1Position[1], this.scene.whiteCylinder1Position[2]);
+            break;
+            case "whiteCubePiece":
+            this.scene.translate(this.scene.whiteCube1Position[0], this.scene.whiteCube1Position[1], this.scene.whiteCube1Position[2]);
+            break;
+            default:
+            break;
+        }
+
     }
 }

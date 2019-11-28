@@ -3,8 +3,8 @@
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
-            <from x="-5" y="13" z="60" />
-            <to x="0" y="15" z="0" />
+            <from x="0" y="15" z="20" />
+            <to x="0" y="0" z="0" />
         </perspective>
     </views>
 
@@ -25,6 +25,7 @@
 
     <textures>
         <texture id="starTexture" file="scenes/images/star.jpg" />
+        <texture id="skyTexture" file="scenes/images/sky.jpg" />
     </textures>
 
     <materials>
@@ -149,11 +150,92 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="cone" />
                 <componentref id="skybox" />    
+                <componentref id="whiteConePiece" />
+                <componentref id="whiteCylinderPiece" />
+                <componentref id="whiteSpherePiece"/>
             </children>
         </component>
-      
+
+        <component id="whiteConePiece">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="cone" />
+            </children>
+        </component>
+
+        <component id="whiteCylinderPiece">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+
+        <component id="whiteSpherePiece">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+                <translate x="0.0" y="0" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+<!--
+        <component id="brownConePiece">
+            <transformation>
+                <transformationref id="identityTransform" />
+            </transformation>
+            <materials>
+                <material id="blackMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="cone" />
+            </children>
+        </component>
+
+        <component id="brownCylinderPiece">
+            <transformation>
+                <transformationref id="identityTransform" />
+            </transformation>
+            <materials>
+                <material id="blackMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+
+        <component id="brownSpherePiece">
+            <transformation>
+                <transformationref id="identityTransform" />
+            </transformation>
+            <materials>
+                <material id="blackMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component> -->
+
         <component id="shootingStar">
             <transformation>
                 <translate x="-10" y="20" z="0" />
@@ -197,7 +279,7 @@
                 <primitiveref id="triangle" />
                 <componentref id="backHalfStardown" />
             </children>
-        </component>
+        </component>     
 
         <!-- stars can be seen from both sides -->
         <component id="backHalfStardown">
@@ -252,7 +334,7 @@
                 <material id="whiteMaterial" />
             </materials>
                 <!-- length is so small for texture to repeat over and over -->
-                <texture id="none"/>
+                <texture id="skyTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <componentref id="frontSkybox" />
                 <componentref id="topSkybox" />

@@ -35,6 +35,26 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
+
+        /* White Pieces */
+        this.whiteCube1Position = [-6, -8, 0];
+        this.whiteCube2Position = [-6, -12, 0];
+        this.whiteCylinder1Position = [-2, -8, 0];
+        this.whiteCylinder2Position = [-2, 12, 0];
+        this.whiteCone1Position = [2, -8, 0];
+        this.whiteCone2Position = [2, -12, 0];
+        this.whiteSphere1Position = [6, -8, 0];
+        this.whiteSphere2Position = [6, -12, 0];
+
+        /* Brown Pieces */
+        this.brownCube1Position = [4, 0, -4];
+        this.brownCube2Position = [4, 0, -4];
+        this.brownCylinder1Position = [4, 0, -2];
+        this.brownCylinder2Position = [4, 0, -2];
+        this.brownCone1Position = [4, 0, 2];
+        this.brownCone2Position = [4, 0, 2];
+        this.brownSphere1Position = [4, 0, 4];
+        this.brownSphere2Position = [4, 0, 4];
     }
 
     /**
@@ -42,6 +62,15 @@ class XMLscene extends CGFscene {
      */
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+    }
+
+    
+    /**
+     * Initializes the scene camera with id="defaultCamera"
+     */
+    initDefaultCamera() {
+        this.camera = this.graph.views[this.graph.defaultCameraID];
+        this.interface.setActiveCamera(this.camera);
     }
 
     /**
@@ -102,6 +131,8 @@ class XMLscene extends CGFscene {
         this.initLights();
 
         this.sceneInited = true;
+
+        this.initDefaultCamera();
     }
 
      // controls if M/m is release

@@ -26,7 +26,10 @@ serialInclude(['../lib/CGF.js',
                 'Plane.js',
                 'Patch.js',
                 'MyCylinder2.js',
-
+                'MyUnitCube.js',
+                'MyCylinderCover.js',
+                'MyCircle.js',
+                
 main=function()
 {
 	// Standard application, scene and interface setup

@@ -76,4 +76,3 @@ class MyCylinder extends CGFobject {
     updateTexCoords(length_u, length_v) {	   }
 }
 
-

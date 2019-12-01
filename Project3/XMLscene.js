@@ -37,24 +37,24 @@ class XMLscene extends CGFscene {
         this.setUpdatePeriod(100);
 
         /* White Pieces */
-        this.whiteCube1Position = [-6, -8, 0];
-        this.whiteCube2Position = [-6, -12, 0];
-        this.whiteCylinder1Position = [-2, -8, 0];
-        this.whiteCylinder2Position = [-2, -12, 0];
-        this.whiteCone1Position = [2, -8, 0];
-        this.whiteCone2Position = [2, -12, 0];
-        this.whiteSphere1Position = [6, -8, 0];
-        this.whiteSphere2Position = [6, -12, 0];
+        this.whiteCube1Position = [-6, -12, 0];
+        this.whiteCube2Position = [-6, -16, 0];
+        this.whiteCylinder1Position = [-2, -12, 0];
+        this.whiteCylinder2Position = [-2, -16, 0];
+        this.whiteCone1Position = [2, -12, 0];
+        this.whiteCone2Position = [2, -16, 0];
+        this.whiteSphere1Position = [6, -12, 0];
+        this.whiteSphere2Position = [6, -16, 0];
 
         /* Brown Pieces */
-        this.brownCube1Position = [-6, 8, 0];
-        this.brownCube2Position = [-6, 12, 0];
-        this.brownCylinder1Position = [-2, 8, 0];
-        this.brownCylinder2Position = [-2, 12, 0];
-        this.brownCone1Position = [2, 8, 0];
-        this.brownCone2Position = [2, 12, 0];
-        this.brownSphere1Position = [6, 8, 0];
-        this.brownSphere2Position = [6, 12, 0];
+        this.brownCube1Position = [-6, 12, 0];
+        this.brownCube2Position = [-6, 16, 0];
+        this.brownCylinder1Position = [-2, 12, 0];
+        this.brownCylinder2Position = [-2, 16, 0];
+        this.brownCone1Position = [2, 12, 0];
+        this.brownCone2Position = [2, 16, 0];
+        this.brownSphere1Position = [6, 12, 0];
+        this.brownSphere2Position = [6, 16, 0];
     }
 
     /**

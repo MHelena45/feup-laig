@@ -29,7 +29,9 @@ serialInclude(['../lib/CGF.js',
                 'MyUnitCube.js',
                 'MyCylinderCover.js',
                 'MyCircle.js',
-                
+                'MyBoardQuarter.js',
+                'MyBoard.js',
+
 main=function()
 {
 	// Standard application, scene and interface setup

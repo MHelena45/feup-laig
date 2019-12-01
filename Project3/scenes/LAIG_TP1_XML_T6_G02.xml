@@ -3,7 +3,7 @@
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
-            <from x="0" y="15" z="40" />
+            <from x="0" y="40" z="30" />
             <to x="0" y="0" z="0" />
         </perspective>
     </views>
@@ -36,7 +36,7 @@
         <material id="blackMaterial" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
             <specular r="0" g="0.0" b="0.0" a="1.0" />
         </material>
 
@@ -176,6 +176,10 @@
         <primitive id="cube">
             <cube />
         </primitive> 
+
+        <primitive id="board">
+            <board />
+        </primitive> 
     </primitives>
 
     <components>
@@ -192,6 +196,7 @@
                 <componentref id="tree" /> 
                 <componentref id="whitePieces" />
                 <componentref id="brownPieces" />
+                <primitiveref id="board" />
             </children>
         </component>
 

@@ -16,6 +16,7 @@ class MyBoardQuarter extends CGFobject {
         this.normals = [];
         this.texCoords = [];
 
+        /* Up part of the board */
         this.vertices.push(0, 0, 0);
         this.normals.push(0, 0, 1);
         this.texCoords.push(0, 0, 0);
@@ -35,10 +36,38 @@ class MyBoardQuarter extends CGFobject {
         this.normals.push(0, 0, 1);
         this.texCoords.push(0, 0, 8);
 
-        for(let i = 0; i < 7 ; i++){
+        /* Down part of the board */
+        this.vertices.push(0, -1, 0);
+        this.normals.push(0, 1, 0);
+        this.texCoords.push(0, 0, 0);
+
+        this.vertices.push(8, -1, 0);
+        this.normals.push(0, 1, 0);
+        this.texCoords.push(8, 1, 0); 
+
+        //circle part
+        for (let i = 0; i < 5; i++) {
+            this.vertices.push(7 + Math.cos(i * (Math.PI / 8)), -1,  7 + Math.sin(i * (Math.PI / 8)));
+            this.normals.push(0, 1, 0);
+            this.texCoords.push(7 + Math.cos(i * (Math.PI / 8)), -1, 7 + Math.sin(i * (Math.PI / 8)));
+        }
+
+        this.vertices.push( 0, -1, 8);
+        this.normals.push(0, 1, 0);
+        this.texCoords.push(0, 1, 8); 
+
+        for(let i = 0; i < 6 ; i++){
             this.indices.push(0, i+2, i+1);
         }
 
+        /* side of the board */
+        for(let j = 0; j < 7; j++){
+            this.indices.push(j, j + 9, j + 8);
+            this.indices.push(j, j + 1, j + 9);
+        }
+
+        this.indices.push(0, 8, 7);
+        this.indices.push(7, 8, 15);
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }

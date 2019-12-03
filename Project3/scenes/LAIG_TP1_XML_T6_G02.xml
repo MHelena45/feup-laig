@@ -15,8 +15,8 @@
 
     <lights>
         <omni id="globalLight" enabled="1">
-            <location x="9.8" y="11.9" z="10" w="1.0" />
-            <ambient r="0" g="0" b="0" a="1.0" />
+            <location x="0" y="5" z="0" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="1.0" linear="0" quadratic="0" /> 
@@ -37,7 +37,7 @@
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
-            <specular r="0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
 
         <material id="brownMaterial" shininess="10">
@@ -47,12 +47,25 @@
             <specular r="1.0" g="0.40" b="0.10" a="1.0" />
         </material>
 
-        <!-- shinny object to simulate the shine of a shootingStar track -->
         <material id="whiteMaterial" shininess="20">
             <emission r="0.10" g="0.10" b="0.10" a="1.0" />
             <ambient r="0.70" g="0.60" b="0.50" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="0" />
+        </material>
+
+        <material id="orangeMaterial" shininess="20">
+            <emission r="0.10" g="0.10" b="0.10" a="1.0" />
+            <ambient r="1.00" g="0.40" b="0.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="0.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="0.0" a="0" />
+        </material>
+
+        <material id="redMaterial" shininess="20">
+            <emission r="0.10" g="0.10" b="0.10" a="1.0" />
+            <ambient r="1.00" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="1.00" g="0.0" b="0.0" a="1.0" />
+            <specular r="1.0" g="0.0" b="0.0" a="0" />
         </material>
 
     </materials>
@@ -180,6 +193,14 @@
         <primitive id="board">
             <board />
         </primitive> 
+
+        <primitive id="torus">
+            <torus inner="0.1" outer="1.2" slices="18" loops="18" />
+        </primitive>
+
+        <primitive id="rectangle2sides">
+            <cylinder base="0.5" top="0.5" height="3" slices="2" stacks="2" />
+        </primitive>
     </primitives>
 
     <components>
@@ -194,6 +215,7 @@
             <children>
                 <componentref id="skybox" />    
                 <componentref id="tree" /> 
+                <componentref id="snowman" /> 
                 <componentref id="whitePieces" />
                 <componentref id="brownPieces" />
                 <primitiveref id="board" />
@@ -769,5 +791,143 @@
                 <primitiveref id="sphere" />
             </children>
         </component>
+
+        <component id="snowman">
+            <transformation>
+                <translate x="20" y="0" z="-6" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="snowmanPart1" />
+                <componentref id="snowmanPart2" />
+                <componentref id="scarf" />
+                <componentref id="nose" />
+                <componentref id="eye1" />
+                <componentref id="eye2" />
+                <componentref id="scarfPart1" />
+                <componentref id="scarfPart2" />
+            </children>
+        </component>
+
+        <component id="snowmanPart1">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <scale x="2" y="2.1" z="2" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="snowmanPart2">
+            <transformation>
+                <translate x="0" y="3.5" z="0" />
+                <scale x="1.3" y="1.5" z="1.3" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+
+            </children>
+        </component>
+
+        <component id="nose">
+            <transformation>
+                <translate x="-1.1" y="3.6" z="0" />
+                <rotate axis="y" angle="-90" />
+                <scale x="0.3" y="0.3" z="0.76" />
+            </transformation>
+            <materials>
+                <material id="orangeMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="cone2" />
+            </children>
+        </component>
+
+        <component id="eye1">
+            <transformation>
+                <translate x="-0.8" y="4.23" z="0.5" />
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="blackMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="eye2">
+            <transformation>
+                <translate x="-0.8" y="4.23" z="-0.5" />
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="blackMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="scarf">
+            <transformation>
+                <translate x="0" y="2.6" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="1" y="1" z="4" />
+            </transformation>
+            <materials>
+                <material id="redMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="torus" />
+            </children>
+        </component>
+
+        <component id="scarfPart1">
+            <transformation>
+                <translate x="0" y="1" z="-2.8" />
+                <rotate axis="x" angle="-50" />
+            </transformation>
+            <materials>
+                <material id="redMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="rectangle2sides" />
+            </children>
+        </component>
+
+        <component id="scarfPart2">
+            <transformation>
+                <translate x="-2" y="0.8" z="-2.2" />
+                <rotate axis="y" angle="50" />
+                <rotate axis="x" angle="-50" />
+                <scale x="1" y="1" z="1" />
+            </transformation>
+            <materials>
+                <material id="redMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="rectangle2sides" />
+            </children>
+        </component>
+
     </components>
 </lxs>

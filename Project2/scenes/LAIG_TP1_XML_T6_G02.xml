@@ -2026,7 +2026,7 @@
                 <transformationref id="identityTransform" />
             </transformation>
             <materials>
-                <material id="backgroundMaterial" />
+                <material id="blackMaterial" />
             </materials>
             <texture id="none" />
             <children>

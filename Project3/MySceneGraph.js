@@ -1028,8 +1028,9 @@ class MySceneGraph {
                 (grandChildren[0].nodeName != 'rectangle' && grandChildren[0].nodeName != 'triangle' &&
                     grandChildren[0].nodeName != 'cylinder' && grandChildren[0].nodeName != 'sphere' &&
                     grandChildren[0].nodeName != 'torus' && grandChildren[0].nodeName != 'plane' &&
-                    grandChildren[0].nodeName != 'cylinder2' && grandChildren[0].nodeName != 'patch')) {
-                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere, torus, plane, patch or cylinder2)";
+                    grandChildren[0].nodeName != 'cylinder2' && grandChildren[0].nodeName != 'patch' &&
+                    grandChildren[0].nodeName != 'cube'&& grandChildren[0].nodeName != 'board')) {
+                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere, torus, plane, patch, cylinder2 or cube)";
             }
 
             // Specifications for the current primitive.
@@ -1143,7 +1144,7 @@ class MySceneGraph {
 
                 let cylinder;
                 if(primitiveType == "cylinder")
-                    cylinder = new MyCylinder(this.scene, primitiveId, base, top, height, slices, stacks);
+                    cylinder = new MyCylinderCover(this.scene, primitiveId, base, top, height, slices, stacks);
                 else
                     cylinder = new MyCylinder2(this.scene, primitiveId, base, top, height, slices, stacks);
 
@@ -1270,13 +1271,23 @@ class MySceneGraph {
                     controlpoints.push(...[controlpointsAux]);
                 }
                 
-                var patch = new Patch(this.scene, primitiveId, npointsU, npointsV, npartsU, npartsV, controlpoints);
+                let patch = new Patch(this.scene, primitiveId, npointsU, npointsV, npartsU, npartsV, controlpoints);
                 this.primitives[primitiveId] = patch;
 
                 break;
             }
+            case 'cube' :{
+                let cube = new MyUnitCube(this.scene, primitiveId);
+                this.primitives[primitiveId] = cube;
+                break;
+            }
+            case 'board' :{
+                let board = new MyBoard(this.scene, primitiveId);
+                this.primitives[primitiveId] = board;
+                break;
+            }
             default:
-                console.warn("To do: Parse other primitives.");
+                console.warn("To do: Parse other primitives. Primitive with Id=" + primitiveId + " doesn't exists");
                 break;
             }
         }
@@ -1871,6 +1882,7 @@ class MySceneGraph {
     displayScene() {
         let root = this.components[this.idRoot];
         this.processNode(root.componentID, root.materialIDs[0], root.textureID, root.length_s, root.length_t);
+        
     }
 
     /**
@@ -1913,7 +1925,7 @@ class MySceneGraph {
             if (this.primitives[component.childrenIDs[i]] != null) {
                 //the line below deals with nodes with components and primitives
                 this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
-                this.displayPiece(id);
+                this.displayPiece(id, component.childrenIDs[i]);
                 this.primitives[component.childrenIDs[i]].updateTexCoords(length_s, length_t);
                 this.primitives[component.childrenIDs[i]].display();
             }
@@ -1991,20 +2003,56 @@ class MySceneGraph {
         return [childMaterialID, textureID, length_s, length_t];
     }
 
-    displayPiece(id){
+    displayPiece(id, componentChildrenIDs){
         switch(id){
             case "whiteConePiece":
             this.scene.translate(this.scene.whiteCone1Position[0], this.scene.whiteCone1Position[1], this.scene.whiteCone1Position[2]);
+            this.primitives[componentChildrenIDs].display();
+            this.scene.translate(-this.scene.whiteCone1Position[0], -this.scene.whiteCone1Position[1], -this.scene.whiteCone1Position[2]);
+            this.scene.translate(this.scene.whiteCone2Position[0], this.scene.whiteCone2Position[1], this.scene.whiteCone2Position[2]);
             break;
             case "whiteSpherePiece":
             this.scene.translate(this.scene.whiteSphere1Position[0], this.scene.whiteSphere1Position[1], this.scene.whiteSphere1Position[2]);
+            this.primitives[componentChildrenIDs].display();
+            this.scene.translate(-this.scene.whiteSphere1Position[0], -this.scene.whiteSphere1Position[1], -this.scene.whiteSphere1Position[2]);
+            this.scene.translate(this.scene.whiteSphere2Position[0], this.scene.whiteSphere2Position[1], this.scene.whiteSphere2Position[2]);
             break;
             case "whiteCylinderPiece":
             this.scene.translate(this.scene.whiteCylinder1Position[0], this.scene.whiteCylinder1Position[1], this.scene.whiteCylinder1Position[2]);
+            this.primitives[componentChildrenIDs].display();
+            this.scene.translate(-this.scene.whiteCylinder1Position[0], -this.scene.whiteCylinder1Position[1], -this.scene.whiteCylinder1Position[2]);
+            this.scene.translate(this.scene.whiteCylinder2Position[0], this.scene.whiteCylinder2Position[1], this.scene.whiteCylinder2Position[2]);
             break;
             case "whiteCubePiece":
             this.scene.translate(this.scene.whiteCube1Position[0], this.scene.whiteCube1Position[1], this.scene.whiteCube1Position[2]);
+            this.primitives[componentChildrenIDs].display();
+            this.scene.translate(-this.scene.whiteCube1Position[0], -this.scene.whiteCube1Position[1], -this.scene.whiteCube1Position[2]);
+            this.scene.translate(this.scene.whiteCube2Position[0], this.scene.whiteCube2Position[1], this.scene.whiteCube2Position[2]);
+            break;     
+            case "brownConePiece":
+            this.scene.translate(this.scene.brownCone1Position[0], this.scene.brownCone1Position[1], this.scene.brownCone1Position[2]);
+            this.primitives[componentChildrenIDs].display();
+            this.scene.translate(-this.scene.brownCone1Position[0], -this.scene.brownCone1Position[1], -this.scene.brownCone1Position[2]);
+            this.scene.translate(this.scene.brownCone2Position[0], this.scene.brownCone2Position[1], this.scene.brownCone2Position[2]);
             break;
+            case "brownSpherePiece":
+            this.scene.translate(this.scene.brownSphere1Position[0], this.scene.brownSphere1Position[1], this.scene.brownSphere1Position[2]);
+            this.primitives[componentChildrenIDs].display();
+            this.scene.translate(-this.scene.brownSphere1Position[0], -this.scene.brownSphere1Position[1], -this.scene.brownSphere1Position[2]);
+            this.scene.translate(this.scene.brownSphere2Position[0], this.scene.brownSphere2Position[1], this.scene.brownSphere2Position[2]);
+            break;
+            case "brownCylinderPiece":
+            this.scene.translate(this.scene.brownCylinder1Position[0], this.scene.brownCylinder1Position[1], this.scene.brownCylinder1Position[2]);
+            this.primitives[componentChildrenIDs].display();
+            this.scene.translate(-this.scene.brownCylinder1Position[0], -this.scene.brownCylinder1Position[1], -this.scene.brownCylinder1Position[2]);
+            this.scene.translate(this.scene.brownCylinder2Position[0], this.scene.brownCylinder2Position[1], this.scene.brownCylinder2Position[2]);
+            break;
+            case "brownCubePiece":
+            this.scene.translate(this.scene.brownCube1Position[0], this.scene.brownCube1Position[1], this.scene.brownCube1Position[2]);
+            this.primitives[componentChildrenIDs].display();
+            this.scene.translate(-this.scene.brownCube1Position[0], -this.scene.brownCube1Position[1], -this.scene.brownCube1Position[2]);
+            this.scene.translate(this.scene.brownCube2Position[0], this.scene.brownCube2Position[1], this.scene.brownCube2Position[2]);
+            break;    
             default:
             break;
         }

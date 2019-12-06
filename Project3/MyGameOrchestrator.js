@@ -11,8 +11,6 @@ class MyGameOrchestrator {
         this.board = new MyGameBoard(scene);
 
         this.setupProlog();
-        //debugger;
-        //this.move();      
     }
 
     /**
@@ -25,7 +23,7 @@ class MyGameOrchestrator {
             "init_board",
             function (data) {
                 this_game.board.boardMatrix = JSON.parse(data.target.response);
-            }, function(data){}
+            }
         );
 
         /// Initialize white pieces
@@ -43,13 +41,13 @@ class MyGameOrchestrator {
                 this_game.board.brownPieces = JSON.parse(data.target.response);
             }
         );
+        
     }
 
     /**
      * Testing purposes
      */
     move() {
-        debugger;
         var this_game = this;
         var move = [1,1,11]; // move piece 11 (white-cone) to position 1-1 (top-left corner)
         var request = "move(" + JSON.stringify(move) + "," + JSON.stringify(this_game.board.boardMatrix) + ","
@@ -58,10 +56,8 @@ class MyGameOrchestrator {
         this.prologInterface.getPrologRequest(
             request,
             function (data) {
-                debugger;
                 var response = JSON.parse(data.target.response);
                 var validMove = response[0];
-                debugger;
                 if (validMove) {
                     this_game.board.boardMatrix = response[1];
                     this_game.board.whitePieces = response[2];

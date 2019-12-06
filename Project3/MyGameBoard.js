@@ -24,6 +24,10 @@ class MyGameBoard {
         this.brownPieces = []
     }
 
+    init() {
+        
+    }
+
     getPieceOnTile(tile) {
         
     }

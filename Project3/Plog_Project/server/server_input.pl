@@ -32,12 +32,11 @@ parse_input(init_brown_pieces, Board):-
 % ======================================================================================
 % Move -> [row, column, piece]
 % Player -> 1 (white pieces) or 2 (brown pieces)
+% valid move
 parse_input(move(Move, Board, White_Pieces, Brown_Pieces, Player), [ValidMove, New_Board, New_White_Pieces, New_Brown_Pieces]):-
     move(0, Move, Board, White_Pieces, Brown_Pieces, Player, New_Board, New_White_Pieces, New_Brown_Pieces),
     ValidMove = true.
-
+% invalid move
 parse_input(move(Move, Board, White_Pieces, Brown_Pieces, Player), [ValidMove, New_Board, New_White_Pieces, New_Brown_Pieces]):-
     \+move(0, Move, Board, White_Pieces, Brown_Pieces, Player, New_Board, New_White_Pieces, New_Brown_Pieces),
     ValidMove = false.
-
-	

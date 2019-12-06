@@ -36,6 +36,9 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
 
+        /* Game */
+        var game = new MyGameOrchestrator(this);
+
         /* White Pieces */
         this.whiteCube1Position = [-6, -8, 0];
         this.whiteCube2Position = [-6, -12, 0];

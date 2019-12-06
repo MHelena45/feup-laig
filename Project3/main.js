@@ -26,6 +26,9 @@ serialInclude(['../lib/CGF.js',
                 'Plane.js',
                 'Patch.js',
                 'MyCylinder2.js',
+                'MyGameOrchestrator.js',
+                'MyPrologInterface.js',
+                'MyGameBoard.js',
 
 main=function()
 {

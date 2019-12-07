@@ -119,61 +119,6 @@
                 <rotate angle_x="0" angle_y="0" angle_z="0" />
                 <scale x="1.50" y="1.50" z="1.50" /> 
             </keyframe> 
-
-            <keyframe instant="1">
-                <translate x="1" y="-1" z="-1" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1.35" y="1.35" z="1.35" /> 
-            </keyframe> 
-
-            <keyframe instant="2">
-                <translate x="2" y="-2" z="-2" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1.10" y="1.10" z="1.10" /> 
-            </keyframe>  
-
-            <keyframe instant="3">
-                <translate x="4" y="-3" z="-3.5" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1.00" y="1.00" z="1.00" /> 
-            </keyframe> 
-
-            <keyframe instant="4">
-                <translate x="6" y="-4" z="-5" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.90" y="0.90" z="0.50" /> 
-            </keyframe>  
-
-            <keyframe instant="5">
-                <translate x="9" y="-5" z="-6" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.80" y="0.80" z="1" /> 
-            </keyframe> 
-
-            <keyframe instant="6">
-                <translate x="12" y="-6" z="-7" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.70" y="0.70" z="1" /> 
-            </keyframe> 
-
-            <keyframe instant="7">
-                <translate x="16" y="-7" z="-8" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.60" y="0.60" z="1" /> 
-            </keyframe> 
-
-            <keyframe instant="8">
-                <translate x="21" y="-8" z="-9" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.50" y="0.50" z="1" /> 
-            </keyframe> 
-
-            <keyframe instant="9">
-                <translate x="27" y="-9" z="-10" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.40" y="0.40" z="1" /> 
-            </keyframe> 
-
         </animation> 
     </animations>
 
@@ -216,17 +161,13 @@
         <primitive id="sphere">
             <sphere radius="1" slices="18" stacks="18" />
         </primitive>
-
-        <primitive id="plane">
-            <plane npartsU="20" npartsV="20" />
-        </primitive> 
-
+        
         <primitive id="cube">
             <cube />
         </primitive> 
 
         <primitive id="board">
-            <board />
+            <gameboard />
         </primitive> 
 
         <primitive id="torus">
@@ -282,7 +223,7 @@
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="inherit"/>
+                <material id="whiteMaterial"/>
             </materials>
             <texture id="none"/>
             <children>
@@ -507,7 +448,7 @@
             <select enabled="0" />
         </component>
 
-        <!-- skybox below --> 
+          <!-- skybox below --> 
         <component id="skybox">
             <transformation>
                 <translate x="0" y="10" z="0"/>
@@ -524,7 +465,8 @@
                 <componentref id="bottomSkybox" />
                 <componentref id="backSkybox" />                
                 <componentref id="rightSkybox" />
-                <componentref id="leftSkybox" />
+                <componentref id="leftSkybox" /> 
+                <componentref id="ground" />
             </children>
             <visible enabled="1" />
             <select enabled="0" />
@@ -595,11 +537,27 @@
 
         <component id="bottomSkybox">
             <transformation>
-                <translate x="0" y="-0.06" z="0" />
+                <translate x="0" y="-0.50" z="0" />
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="brownMaterial" />
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="0" />
+        </component>  
+
+        <component id="ground">
+            <transformation>
+                <translate x="0" y="-0.056" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="brownMaterial1" />
             </materials>
             <texture id="grassTexture" length_s="0.1" length_t="0.1"/>
             <children>
@@ -732,6 +690,7 @@
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
+                <material id="whiteMaterial" />
                 <material id="inherit" />
             </materials>
             <texture id="redTexture" length_s="1" length_t="1"/>
@@ -748,6 +707,7 @@
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
+                <material id="whiteMaterial" />
                 <material id="inherit" />
             </materials>
             <texture id="redTexture" length_s="1" length_t="1"/>
@@ -764,7 +724,8 @@
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
-                <material id="inherit"/>
+                <material id="whiteMaterial"/>
+                <material id="inherit" />
             </materials>
             <texture id="redTexture" length_s="1" length_t="1"/>
             <children>
@@ -780,6 +741,7 @@
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
+                <material id="whiteMaterial" />
                 <material id="inherit" />
             </materials>
             <texture id="redTexture" length_s="1" length_t="1"/>
@@ -796,6 +758,7 @@
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
+                <material id="whiteMaterial" />
                 <material id="inherit" />
             </materials>
             <texture id="redTexture" length_s="1" length_t="1"/>
@@ -812,7 +775,8 @@
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
-                <material id="inherit"/>
+                <material id="whiteMaterial"/>
+                <material id="inherit" />
             </materials>
             <texture id="redTexture" length_s="1" length_t="1"/>
             <children>
@@ -828,6 +792,7 @@
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
+                <material id="whiteMaterial" />
                 <material id="inherit" />
             </materials>
             <texture id="redTexture" length_s="1" length_t="1"/>
@@ -844,6 +809,7 @@
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
+                <material id="whiteMaterial" />
                 <material id="inherit" />
             </materials>
             <texture id="redTexture" length_s="1" length_t="1"/>
@@ -860,7 +826,8 @@
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
-                <material id="inherit"/>
+                <material id="whiteMaterial"/>
+                <material id="inherit" />
             </materials>
             <texture id="redTexture" length_s="1" length_t="1"/>
             <children>
@@ -876,7 +843,8 @@
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
-                <material id="inherit"/>
+                <material id="whiteMaterial"/>
+                <material id="inherit" />
             </materials>
             <texture id="redTexture" length_s="1" length_t="1"/>
             <children>
@@ -892,7 +860,8 @@
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
-                <material id="inherit"/>
+                <material id="whiteMaterial"/>
+                <material id="inherit" />
             </materials>
             <texture id="redTexture" length_s="1" length_t="1"/>
             <children>
@@ -908,7 +877,8 @@
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
             <materials>
-                <material id="inherit"/>
+                <material id="whiteMaterial"/>
+                <material id="inherit" />
             </materials>
             <texture id="redTexture" length_s="1" length_t="1"/>
             <children>

@@ -35,38 +35,19 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
-
-        //Difficulty Level DropBox
-        this.difficultyLevel = 1;
-        this.whitePlayer = 0;
-        this.blackPlayer = 1;
-
-        // Labels and ID's for object selection on MyInterface
-        this.levels = { '1': 1, '2': 2, '3': 3 }; 
-        this.playerOptions = { 'human': 0, 'bot' : 1};
-         
+        
         this.pieces = new MyPiece(this);
         /* Game */
-        var game = new MyGameOrchestrator(this);
+        this.gameOrchestrator = new MyGameOrchestrator(this);
 
         this.mClick = false; //used to now when M/m is being press  
+        
+        this.setPickEnabled(true);
+
     }
 
-    updateLevel(){
-        console.log("Level change!");
-    }
 
-    updateBlackPlayer(){
-        if(this.blackPlayer == 1)
-            console.log("Play Bot");
-        else console.log("Play Human");
-    }
 
-    updateWhitePlayer(){
-        if(this.whitePlayer == 1)
-            console.log("Play Bot");
-        else console.log("Play Human");
-    }
 
     /**
      * Initializes the scene cameras.
@@ -146,7 +127,7 @@ class XMLscene extends CGFscene {
         this.initDefaultCamera();
     }
 
-     // controls if M/m is release
+    // controls if M/m is release
 	checkKeys() {
 		if (this.gui.isKeyPressed("KeyM")) {
             this.mClick = true;      
@@ -164,11 +145,27 @@ class XMLscene extends CGFscene {
         return CLICK_M;
     }
 
+    logPicking() {
+		if (this.pickMode == false) {
+			if (this.pickResults != null && this.pickResults.length > 0) {
+				for (var i = 0; i < this.pickResults.length; i++) {
+					var obj = this.pickResults[i][0];
+					if (obj) {
+						var customId = this.pickResults[i][1];
+						console.log("Picked object: " + obj + ", with pick id " + customId);						
+					}
+				}
+				this.pickResults.splice(0, this.pickResults.length);
+			}
+		}
+	}
+
     /**
      * Displays the scene.
      */
     display() {
-
+        this.logPicking();
+        this.clearPickRegistration();
         //this.gameOrchestrator.orchestrate();
 
         // ---- BEGIN Background, camera and axis setup
@@ -204,8 +201,8 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
-        
-        //this.gameOrchestrator.display();
+        this.gameOrchestrator.display();
+
     }
     
 }

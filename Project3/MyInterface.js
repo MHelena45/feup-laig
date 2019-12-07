@@ -22,9 +22,9 @@ class MyInterface extends CGFinterface {
 
         // add a group of controls (and open/expand by defult)
         //Dropdown for  difficulty level
-        this.gui.add(this.scene, 'difficultyLevel', this.scene.levels).name('Difficulty level').onChange(this.scene.updateLevel.bind(this.scene));
-        this.gui.add(this.scene, 'whitePlayer', this.scene.playerOptions).name('White Player').onChange(this.scene.updateWhitePlayer.bind(this.scene));
-        this.gui.add(this.scene, 'blackPlayer', this.scene.playerOptions).name('Black Player').onChange(this.scene.updateBlackPlayer.bind(this.scene));  
+        this.gui.add(this.scene.gameOrchestrator, 'difficultyLevel', this.scene.gameOrchestrator.levels).name('Difficulty level').onChange(this.scene.gameOrchestrator.updateLevel.bind(this.scene.gameOrchestrator));
+        this.gui.add(this.scene.gameOrchestrator, 'blackPlayer', this.scene.gameOrchestrator.playerOptions).name('Black Player').onChange(this.scene.gameOrchestrator.updateBlackPlayer.bind(this.scene.gameOrchestrator));  
+        this.gui.add(this.scene.gameOrchestrator, 'theme', this.scene.gameOrchestrator.themeOptions).name('Theme').onChange(this.scene.gameOrchestrator.updateTheme.bind(this.scene.gameOrchestrator));  
 
         this.initKeys();
 

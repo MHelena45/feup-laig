@@ -1,0 +1,561 @@
+<lxs>
+    <scene root="Root" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="0" y="45" z="30" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+    </views>
+
+    <globals>
+        <ambient r="0.30" g="0.30" b="0.30" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </globals>
+
+    <lights>
+        <omni id="BrownPiecesLight" enabled="1">
+            <location x="0" y="20" z="-10" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0" quadratic="0" /> 
+        </omni>
+
+        <omni id="WhitePiecesLight" enabled="1">
+            <location x="0" y="20" z="10" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0" quadratic="0" /> 
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="starTexture" file="scenes/images/star.jpg" />
+        <texture id="skyTexture" file="scenes/images/sky.jpg" />
+        <texture id="trunkTexture" file="scenes/images/tree.jpg" />
+        <texture id="pineTreeTexture" file="scenes/images/pineTree.jpg" />
+        <texture id="grassTexture" file="scenes/images/grass.jpg" />
+        <texture id="redTexture" file="scenes/images/red.jpg" />
+    </textures>
+
+    <materials>
+        <material id="blackMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="0.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+
+        <material id="brownMaterial" shininess="1">
+            <emission r="0.00" g="0.00" b="0.0" a="0.0" />
+            <ambient r="0.20" g="0.10" b="0.00" a="1.0" />
+            <diffuse r="0.50" g="0.15" b="0.00" a="1.0" />
+            <specular r="1.0" g="0.40" b="0.10" a="1.0" />
+        </material>
+
+        <material id="brownMaterial1" shininess="1">
+            <emission r="0.00" g="0.00" b="0.0" a="0.0" />
+            <ambient r="0.50" g="0.30" b="0.05" a="1.0" />
+            <diffuse r="1.0" g="0.40" b="0.10" a="1.0" />
+            <specular r="1.0" g="0.40" b="0.10" a="1.0" />
+        </material>
+
+        <material id="whiteMaterial" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="0.0" />
+            <ambient r="0.70" g="0.60" b="0.50" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </material>
+
+        <material id="orangeMaterial" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="0.0" />
+            <ambient r="1.00" g="0.40" b="0.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="0.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="0.0" a="1.0" />
+        </material>
+
+        <material id="redMaterial" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="0.0" />
+            <ambient r="1.00" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="1.00" g="0.0" b="0.0" a="1.0" />
+            <specular r="1.0" g="0.0" b="0.0" a="1.00" />
+        </material>
+
+        <material id="greenMaterial" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="0.0" />
+            <ambient r="0.00" g="0.10" b="0.05" a="1.0" />
+            <diffuse r="0.00" g="0.30" b="0.10" a="1.0" />
+            <specular r="0.00" g="0.60" b="0.0" a="1.0" />
+        </material>
+
+        <material id="greenMaterial1" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="0.0" />
+            <ambient r="0.00" g="0.30" b="0.10" a="1.0" />
+            <diffuse r="0.00" g="0.10" b="0.05" a="1.0" />
+            <specular r="0.10" g="1.00" b="0.30" a="1.0" />
+        </material>
+
+        <material id="greenMaterial2" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="0.0" />
+            <ambient r="0.00" g="0.60" b="0.0" a="1.0" />
+            <diffuse r="0.10" g="0.80" b="0.10" a="1.0" />
+            <specular r="0.10" g="1.00" b="0.30" a="1.0" />
+        </material>
+    </materials>
+
+    <!-- where are the transformations of complete objcts, to become easier to move them around -->
+    <transformations>
+        <transformation id="identityTransform" >
+            <scale x="1.0" y="1.0" z="1.0" /> 
+        </transformation>
+    </transformations>
+
+     <animations>
+        <animation id="starAnimation" >
+            <keyframe instant="0">
+                <translate x="0" y="0" z="0" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1.50" y="1.50" z="1.50" /> 
+            </keyframe> 
+
+            <keyframe instant="1">
+                <translate x="1" y="-1" z="-1" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1.35" y="1.35" z="1.35" /> 
+            </keyframe> 
+
+            <keyframe instant="2">
+                <translate x="2" y="-2" z="-2" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1.10" y="1.10" z="1.10" /> 
+            </keyframe>  
+
+            <keyframe instant="3">
+                <translate x="4" y="-3" z="-3.5" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="1.00" y="1.00" z="1.00" /> 
+            </keyframe> 
+
+            <keyframe instant="4">
+                <translate x="6" y="-4" z="-5" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.90" y="0.90" z="0.50" /> 
+            </keyframe>  
+
+            <keyframe instant="5">
+                <translate x="9" y="-5" z="-6" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.80" y="0.80" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="6">
+                <translate x="12" y="-6" z="-7" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.70" y="0.70" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="7">
+                <translate x="16" y="-7" z="-8" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.60" y="0.60" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="8">
+                <translate x="21" y="-8" z="-9" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.50" y="0.50" z="1" /> 
+            </keyframe> 
+
+            <keyframe instant="9">
+                <translate x="27" y="-9" z="-10" /> 
+                <rotate angle_x="0" angle_y="0" angle_z="0" />
+                <scale x="0.40" y="0.40" z="1" /> 
+            </keyframe> 
+
+        </animation> 
+    </animations>
+
+    <primitives>
+        <primitive id="rectangle">
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+        </primitive>
+
+        <primitive id="triangle3D">
+            <patch npointsU="3" npointsV="2" npartsU="2" npartsV="2" >
+                <controlpoint xx="0.0" yy="0.0" zz="0.0" />
+                <controlpoint xx="0.499" yy="0.8" zz="0.0" />
+                <controlpoint xx="0.5" yy="0.0" zz="0.2" />
+                <controlpoint xx="0.5" yy="0.8" zz="0.0" />
+                <controlpoint xx="1.0" yy="0.0" zz="0.0" />
+                <controlpoint xx="0.5001" yy="0.8" zz="0.0" />
+            </patch>
+        </primitive>
+
+        <primitive id="cylinder">
+            <cylinder base="1" top="1" height="2" slices="16" stacks="16" />
+        </primitive>
+
+        <primitive id="piece">
+            <cylinder base="1" top="0" height="2" slices="16" stacks="16" />
+        </primitive>
+
+        <primitive id="cone">
+            <cylinder base="2" top="0" height="3" slices="16" stacks="16" />
+        </primitive>
+
+        <primitive id="cone1">
+            <cylinder base="1.5" top="0" height="2.5" slices="16" stacks="16" />
+        </primitive>
+
+        <primitive id="cone2">
+            <cylinder base="1" top="0" height="1.5" slices="16" stacks="16" />
+        </primitive>
+
+        <primitive id="sphere">
+            <sphere radius="1" slices="18" stacks="18" />
+        </primitive>
+
+        <primitive id="plane">
+            <plane npartsU="20" npartsV="20" />
+        </primitive> 
+
+        <primitive id="cube">
+            <cube />
+        </primitive> 
+
+        <primitive id="board">
+            <gameboard />
+        </primitive> 
+
+        <primitive id="torus">
+            <torus inner="0.1" outer="1.2" slices="18" loops="18" />
+        </primitive>
+
+        <primitive id="rectangle2sides">
+            <cylinder base="0.5" top="0.5" height="3" slices="2" stacks="2" />
+        </primitive>
+    </primitives>
+
+    <components>
+        <component id="Root">
+            <transformation>
+                <transformationref id="identityTransform" />
+            </transformation>
+            <materials>
+                <material id="blackMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="skybox" />    
+                <componentref id="whitePieces" />
+                <componentref id="brownPieces" />
+                <primitiveref id="board" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="0" />
+        </component>
+
+        <component id="whitePieces" >
+            <transformation>
+                <transformationref id="identityTransform" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="whiteConePiece" />
+                <componentref id="whiteCylinderPiece" />
+                <componentref id="whiteSpherePiece"/>  
+                <componentref id="whiteCubePiece"/>  
+            </children>
+            <visible enabled="1" />
+            <select enabled="1" />
+        </component>
+
+        <component id="whiteConePiece">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="piece" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="1" />
+        </component>
+
+        <component id="whiteCylinderPiece">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="1" />
+        </component>
+
+        <component id="whiteSpherePiece">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+                <translate x="0.0" y="0" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="1" />
+        </component>
+
+        <component id="whiteCubePiece">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+                <translate x="0.0" y="0" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="cube" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="1" />
+        </component>
+
+        <component id="brownPieces" >
+            <transformation>
+                <transformationref id="identityTransform" />
+            </transformation>
+            <materials>
+                <material id="brownMaterial"/>
+                <material id="brownMaterial1"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="brownConePiece" />
+                <componentref id="brownCylinderPiece" />
+                <componentref id="brownSpherePiece"/>  
+                <componentref id="brownCubePiece"/>  
+            </children>
+            <visible enabled="1" />
+            <select enabled="1" />
+        </component>
+
+        <component id="brownConePiece">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+                <material id="brownMaterial1"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="piece" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="1" />
+        </component>
+
+        <component id="brownCylinderPiece">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+                <material id="brownMaterial1"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="1" />
+        </component>
+
+        <component id="brownSpherePiece">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+                <translate x="0.0" y="0" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+                <material id="brownMaterial1"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="1" />
+        </component>
+
+        <component id="brownCubePiece">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+                <translate x="0.0" y="0" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+                <material id="brownMaterial1"/>
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="cube" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="1" />
+        </component>
+
+        <!-- skybox below --> 
+        <component id="skybox">
+            <transformation>
+                <translate x="0" y="10" z="0"/>
+                <scale x="180" y="180" z="180" /> 
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+                <!-- length is so small for texture to repeat over and over -->
+                <texture id="skyTexture" length_s="1.0" length_t="1.0"/>
+            <children>
+                <componentref id="frontSkybox" />
+                <componentref id="topSkybox" />
+                <componentref id="bottomSkybox" />
+                <componentref id="backSkybox" />                
+                <componentref id="rightSkybox" />
+                <componentref id="leftSkybox" /> 
+                <componentref id="ground" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="0" />
+        </component>
+
+        <component id="frontSkybox">
+            <transformation>
+                <translate x="0" y="0" z="0.5" />
+                <rotate axis="y" angle="180" /> 
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="0" />
+        </component> 
+
+        <component id="topSkybox">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="0" />
+        </component> 
+
+       <component id="backSkybox">
+            <transformation>
+                <translate x="0" y="0" z="-0.5" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="0" />
+        </component>    
+
+        <component id="rightSkybox">
+            <transformation>
+                <translate x="-0.5" y="0" z="0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="0" />
+        </component>     
+
+        <component id="bottomSkybox">
+            <transformation>
+                <translate x="0" y="-0.50" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="0" />
+        </component>  
+
+        <component id="ground">
+            <transformation>
+                <translate x="0" y="-0.056" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="brownMaterial1" />
+            </materials>
+            <texture id="grassTexture" length_s="0.1" length_t="0.1"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <visible enabled="1" />
+            <select enabled="0" />
+        </component>  
+
+        <component id="leftSkybox">
+            <transformation>
+                <translate x="0.5" y="0" z="0" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="whiteMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle"  />
+            </children>
+            <visible enabled="1" />
+            <select enabled="0" />
+        </component>
+
+    </components>
+</lxs>

@@ -1029,7 +1029,7 @@ class MySceneGraph {
                     grandChildren[0].nodeName != 'cylinder' && grandChildren[0].nodeName != 'sphere' &&
                     grandChildren[0].nodeName != 'torus' && grandChildren[0].nodeName != 'plane' &&
                     grandChildren[0].nodeName != 'cylinder2' && grandChildren[0].nodeName != 'patch' &&
-                    grandChildren[0].nodeName != 'cube'&& grandChildren[0].nodeName != 'board')) {
+                    grandChildren[0].nodeName != 'cube'&& grandChildren[0].nodeName != 'gameboard')) {
                 return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere, torus, plane, patch, cylinder2 or cube)";
             }
 
@@ -1281,7 +1281,7 @@ class MySceneGraph {
                 this.primitives[primitiveId] = cube;
                 break;
             }
-            case 'board' :{
+            case 'gameboard' :{
                 let board = new MyBoard(this.scene, primitiveId);
                 this.primitives[primitiveId] = board;
                 break;
@@ -1303,9 +1303,7 @@ class MySceneGraph {
     parseComponents(componentsNode) {
         var children = componentsNode.children;
         var error;
-        this.components = [];   
-        this.visible = [];
-        this.select = [];     
+        this.components = [];    
 
         var grandChildren = [];
         var nodeNames = [];
@@ -1661,7 +1659,7 @@ class MySceneGraph {
         if(visibleEnabled != 1 && visibleEnabled != 0)
             return "enabled has to be 0 or 1 for visible";
 
-        this.visible[component.id] = visibleEnabled;
+        component.enabled = visibleEnabled;
     }
 
         /**
@@ -1684,7 +1682,7 @@ class MySceneGraph {
         if(selectEnabled != 1 && selectEnabled != 0)
             return "enabled has to be 0 or 1 for select";
 
-        this.select[component.id] = selectEnabled;
+        component.select = selectEnabled;
     }
 
     /**
@@ -1996,8 +1994,12 @@ class MySceneGraph {
             // if primitive
             if (this.primitives[component.childrenIDs[i]] != null) {
                 //the line below deals with nodes with components and primitives
-                this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
-                this.displayPrimitives(id, component.childrenIDs[i], length_s, length_t);
+                if(component.enabled == 1){
+                    this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
+                    this.displayPrimitives(id, component.childrenIDs[i], length_s, length_t);
+                } 
+                else displaySensor(id, component.childrenIDs[i]);
+
             }
             else //if component
             { 
@@ -2106,12 +2108,29 @@ class MySceneGraph {
             case "brownCubePiece":
                 this.scene.pieces.displayBrownCubePiece(this.primitives[componentChildrenIDs]);
                 break;    
-
             default:
                 this.primitives[componentChildrenIDs].updateTexCoords(length_s, length_t);
                 this.primitives[componentChildrenIDs].display();
                 break;
         }
 
+    }
+    displaySensor(id, componentChildrenIDs){
+        if(id == "sensor"){
+
+            for (var i = 0; i < this.objects.length; i++) {
+                this.pushMatrix();
+                this.translate(i * 2, 0, 0);
+    
+                //Id for pickable objects must be >= 1
+                this.registerForPick(i + 1, this.objects[i]);
+                this.primitives[componentChildrenIDs].display();
+                this.translate(0, 0, -2);
+                if (i != this.objects.length - 1)
+                    this.cylinder.display();
+                this.popMatrix();
+            }
+            
+        }
     }
 }

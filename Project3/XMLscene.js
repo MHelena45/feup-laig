@@ -36,25 +36,34 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
 
-        /* White Pieces */
-        this.whiteCube1Position = [-6, -12, 0];
-        this.whiteCube2Position = [-6, -16, 0];
-        this.whiteCylinder1Position = [-2, -12, 0];
-        this.whiteCylinder2Position = [-2, -16, 0];
-        this.whiteCone1Position = [2, -12, 0];
-        this.whiteCone2Position = [2, -16, 0];
-        this.whiteSphere1Position = [6, -12, 0];
-        this.whiteSphere2Position = [6, -16, 0];
+        //Difficulty Level DropBox
+        this.difficultyLevel = 1;
+        this.whitePlayer = 0;
+        this.blackPlayer = 1;
 
-        /* Brown Pieces */
-        this.brownCube1Position = [-6, 12, 0];
-        this.brownCube2Position = [-6, 16, 0];
-        this.brownCylinder1Position = [-2, 12, 0];
-        this.brownCylinder2Position = [-2, 16, 0];
-        this.brownCone1Position = [2, 12, 0];
-        this.brownCone2Position = [2, 16, 0];
-        this.brownSphere1Position = [6, 12, 0];
-        this.brownSphere2Position = [6, 16, 0];
+        // Labels and ID's for object selection on MyInterface
+        this.levels = { '1': 1, '2': 2, '3': 3 }; 
+        this.playerOptions = { 'human': 0, 'bot' : 1};
+         
+        this.pieces = new MyPiece(this);
+
+        this.mClick = false; //used to now when M/m is being press  
+    }
+
+    updateLevel(){
+        console.log("Level change!");
+    }
+
+    updateBlackPlayer(){
+        if(this.blackPlayer == 1)
+            console.log("Play Bot");
+        else console.log("Play Human");
+    }
+
+    updateWhitePlayer(){
+        if(this.whitePlayer == 1)
+            console.log("Play Bot");
+        else console.log("Play Human");
     }
 
     /**
@@ -138,7 +147,8 @@ class XMLscene extends CGFscene {
      // controls if M/m is release
 	checkKeys() {
 		if (this.gui.isKeyPressed("KeyM")) {
-            this.mClick = true;        
+            this.mClick = true;      
+            console.log("1");  
 		} else if(this.mClick) { /*increments when button is released */
             this.mClick = false;
             CLICK_M++;
@@ -156,6 +166,9 @@ class XMLscene extends CGFscene {
      * Displays the scene.
      */
     display() {
+
+        //this.gameOrchestrator.orchestrate();
+
         // ---- BEGIN Background, camera and axis setup
 
         // Clear image and depth buffer everytime we update the scene
@@ -172,6 +185,8 @@ class XMLscene extends CGFscene {
         this.pushMatrix();
         this.axis.display();
 
+        this.checkKeys();
+
         for (var i = 0; i < this.lights.length; i++) {
             this.lights[i].setVisible(true);
             this.lights[i].enable();
@@ -187,5 +202,8 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+        
+        //this.gameOrchestrator.display();
     }
+    
 }

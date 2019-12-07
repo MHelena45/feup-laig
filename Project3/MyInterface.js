@@ -21,6 +21,10 @@ class MyInterface extends CGFinterface {
         this.gui = new dat.GUI();
 
         // add a group of controls (and open/expand by defult)
+        //Dropdown for  difficulty level
+        this.gui.add(this.scene, 'difficultyLevel', this.scene.levels).name('Difficulty level').onChange(this.scene.updateLevel.bind(this.scene));
+        this.gui.add(this.scene, 'whitePlayer', this.scene.playerOptions).name('White Player').onChange(this.scene.updateWhitePlayer.bind(this.scene));
+        this.gui.add(this.scene, 'blackPlayer', this.scene.playerOptions).name('Black Player').onChange(this.scene.updateBlackPlayer.bind(this.scene));  
 
         this.initKeys();
 

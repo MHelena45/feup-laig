@@ -1303,7 +1303,9 @@ class MySceneGraph {
     parseComponents(componentsNode) {
         var children = componentsNode.children;
         var error;
-        this.components = [];        
+        this.components = [];   
+        this.visible = [];
+        this.select = [];     
 
         var grandChildren = [];
         var nodeNames = [];
@@ -1360,6 +1362,18 @@ class MySceneGraph {
             else if (childrenIndex < 0)
                 return "negative children index defined for children";
 
+            var visibleIndex = nodeNames.indexOf("visible");
+            if (visibleIndex == null)
+                return "no visible index defined for visible";
+            else if (visibleIndex < 0)
+                return "negative visible index defined for visible";
+
+            var selectIndex = nodeNames.indexOf("select");
+            if (selectIndex == null)
+                return "no select index defined for select";
+            else if (selectIndex < 0)
+                return "negative select index defined for select";
+
             // Create component
             var component = new MyComponent(componentID);
 
@@ -1392,6 +1406,18 @@ class MySceneGraph {
             // Children
             var childrenNode = grandChildren[childrenIndex];
             error = this.parseComponentChildren(component, childrenNode);
+            if (error != null)
+                return error + " for component with ID " + componentID;
+
+            // Visible
+            var visibleNode = grandChildren[visibleIndex];
+            error = this.parseComponentVisible(component, visibleNode);
+            if (error != null)
+                return error + " for component with ID " + componentID;
+
+            // select
+            var selectNode = grandChildren[selectIndex];
+            error = this.parseComponentSelect(component, selectNode);
             if (error != null)
                 return error + " for component with ID " + componentID;
 
@@ -1613,6 +1639,52 @@ class MySceneGraph {
             }
         }
         component.childrenIDs = componentChildren;
+    }
+
+    /**
+     * Parse the visibility of component with ID = componentID
+     * @param {block element} component
+     * @param {block element} visibleNode
+     */
+    parseComponentVisible(component, visibleNode) {
+
+        if (visibleNode.nodeName != "visible") {
+            this.onXMLMinorError("unknown tag <" + visibleNode.nodeName + ">");
+            return;
+        }
+
+        // Get id of the current visible.
+        var visibleEnabled = this.reader.getInteger(visibleNode, 'enabled');
+        if (!(visibleEnabled != null && !isNaN(visibleEnabled)))
+            return "enabled not defined for visible";
+
+        if(visibleEnabled != 1 && visibleEnabled != 0)
+            return "enabled has to be 0 or 1 for visible";
+
+        this.visible[component.id] = visibleEnabled;
+    }
+
+        /**
+     * Parse the visibility of component with ID = componentID
+     * @param {block element} component
+     * @param {block element} selectNode
+     */
+    parseComponentSelect(component, selectNode) {
+
+        if (selectNode.nodeName != "select") {
+            this.onXMLMinorError("unknown tag <" + selectNode.nodeName + ">");
+            return;
+        }
+
+        // Get id of the current select.
+        var selectEnabled = this.reader.getInteger(selectNode, 'enabled');
+        if (!(selectEnabled != null && !isNaN(selectEnabled)))
+            return "enabled not defined for select";
+
+        if(selectEnabled != 1 && selectEnabled != 0)
+            return "enabled has to be 0 or 1 for select";
+
+        this.select[component.id] = selectEnabled;
     }
 
     /**
@@ -1925,9 +1997,7 @@ class MySceneGraph {
             if (this.primitives[component.childrenIDs[i]] != null) {
                 //the line below deals with nodes with components and primitives
                 this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
-                this.displayPiece(id, component.childrenIDs[i]);
-                this.primitives[component.childrenIDs[i]].updateTexCoords(length_s, length_t);
-                this.primitives[component.childrenIDs[i]].display();
+                this.displayPrimitives(id, component.childrenIDs[i], length_s, length_t);
             }
             else //if component
             { 
@@ -2003,58 +2073,44 @@ class MySceneGraph {
         return [childMaterialID, textureID, length_s, length_t];
     }
 
-    displayPiece(id, componentChildrenIDs){
+    displayPrimitives(id, componentChildrenIDs, length_s, length_t){
         switch(id){
             case "whiteConePiece":
-            this.scene.translate(this.scene.whiteCone1Position[0], this.scene.whiteCone1Position[1], this.scene.whiteCone1Position[2]);
-            this.primitives[componentChildrenIDs].display();
-            this.scene.translate(-this.scene.whiteCone1Position[0], -this.scene.whiteCone1Position[1], -this.scene.whiteCone1Position[2]);
-            this.scene.translate(this.scene.whiteCone2Position[0], this.scene.whiteCone2Position[1], this.scene.whiteCone2Position[2]);
-            break;
+                this.scene.pieces.displayWhiteConePiece(this.primitives[componentChildrenIDs]);
+                break;
+
             case "whiteSpherePiece":
-            this.scene.translate(this.scene.whiteSphere1Position[0], this.scene.whiteSphere1Position[1], this.scene.whiteSphere1Position[2]);
-            this.primitives[componentChildrenIDs].display();
-            this.scene.translate(-this.scene.whiteSphere1Position[0], -this.scene.whiteSphere1Position[1], -this.scene.whiteSphere1Position[2]);
-            this.scene.translate(this.scene.whiteSphere2Position[0], this.scene.whiteSphere2Position[1], this.scene.whiteSphere2Position[2]);
-            break;
+                this.scene.pieces.displayWhiteSpherePiece(this.primitives[componentChildrenIDs]);
+                break;
+
             case "whiteCylinderPiece":
-            this.scene.translate(this.scene.whiteCylinder1Position[0], this.scene.whiteCylinder1Position[1], this.scene.whiteCylinder1Position[2]);
-            this.primitives[componentChildrenIDs].display();
-            this.scene.translate(-this.scene.whiteCylinder1Position[0], -this.scene.whiteCylinder1Position[1], -this.scene.whiteCylinder1Position[2]);
-            this.scene.translate(this.scene.whiteCylinder2Position[0], this.scene.whiteCylinder2Position[1], this.scene.whiteCylinder2Position[2]);
-            break;
+                this.scene.pieces.displayWhiteCylinderPiece(this.primitives[componentChildrenIDs]);
+                break;
+                
             case "whiteCubePiece":
-            this.scene.translate(this.scene.whiteCube1Position[0], this.scene.whiteCube1Position[1], this.scene.whiteCube1Position[2]);
-            this.primitives[componentChildrenIDs].display();
-            this.scene.translate(-this.scene.whiteCube1Position[0], -this.scene.whiteCube1Position[1], -this.scene.whiteCube1Position[2]);
-            this.scene.translate(this.scene.whiteCube2Position[0], this.scene.whiteCube2Position[1], this.scene.whiteCube2Position[2]);
-            break;     
+                this.scene.pieces.displayWhiteCubePiece(this.primitives[componentChildrenIDs]);
+                break;     
+
             case "brownConePiece":
-            this.scene.translate(this.scene.brownCone1Position[0], this.scene.brownCone1Position[1], this.scene.brownCone1Position[2]);
-            this.primitives[componentChildrenIDs].display();
-            this.scene.translate(-this.scene.brownCone1Position[0], -this.scene.brownCone1Position[1], -this.scene.brownCone1Position[2]);
-            this.scene.translate(this.scene.brownCone2Position[0], this.scene.brownCone2Position[1], this.scene.brownCone2Position[2]);
-            break;
+                this.scene.pieces.displayBrownConePiece(this.primitives[componentChildrenIDs]);
+                break;
+
             case "brownSpherePiece":
-            this.scene.translate(this.scene.brownSphere1Position[0], this.scene.brownSphere1Position[1], this.scene.brownSphere1Position[2]);
-            this.primitives[componentChildrenIDs].display();
-            this.scene.translate(-this.scene.brownSphere1Position[0], -this.scene.brownSphere1Position[1], -this.scene.brownSphere1Position[2]);
-            this.scene.translate(this.scene.brownSphere2Position[0], this.scene.brownSphere2Position[1], this.scene.brownSphere2Position[2]);
-            break;
+                this.scene.pieces.displayBrownSpherePiece(this.primitives[componentChildrenIDs]);
+                break;
+
             case "brownCylinderPiece":
-            this.scene.translate(this.scene.brownCylinder1Position[0], this.scene.brownCylinder1Position[1], this.scene.brownCylinder1Position[2]);
-            this.primitives[componentChildrenIDs].display();
-            this.scene.translate(-this.scene.brownCylinder1Position[0], -this.scene.brownCylinder1Position[1], -this.scene.brownCylinder1Position[2]);
-            this.scene.translate(this.scene.brownCylinder2Position[0], this.scene.brownCylinder2Position[1], this.scene.brownCylinder2Position[2]);
-            break;
+                this.scene.pieces.displayBrownCylinderPiece(this.primitives[componentChildrenIDs]);
+                break;
+
             case "brownCubePiece":
-            this.scene.translate(this.scene.brownCube1Position[0], this.scene.brownCube1Position[1], this.scene.brownCube1Position[2]);
-            this.primitives[componentChildrenIDs].display();
-            this.scene.translate(-this.scene.brownCube1Position[0], -this.scene.brownCube1Position[1], -this.scene.brownCube1Position[2]);
-            this.scene.translate(this.scene.brownCube2Position[0], this.scene.brownCube2Position[1], this.scene.brownCube2Position[2]);
-            break;    
+                this.scene.pieces.displayBrownCubePiece(this.primitives[componentChildrenIDs]);
+                break;    
+
             default:
-            break;
+                this.primitives[componentChildrenIDs].updateTexCoords(length_s, length_t);
+                this.primitives[componentChildrenIDs].display();
+                break;
         }
 
     }

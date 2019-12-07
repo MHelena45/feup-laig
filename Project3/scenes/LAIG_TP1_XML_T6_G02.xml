@@ -3,19 +3,27 @@
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
-            <from x="0" y="40" z="30" />
+            <from x="0" y="45" z="30" />
             <to x="0" y="0" z="0" />
         </perspective>
     </views>
 
     <globals>
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <ambient r="0.30" g="0.30" b="0.30" a="1.0" />
         <background r="0.0" g="0.0" b="0.0" a="1.0" />
     </globals>
 
     <lights>
-        <omni id="globalLight" enabled="1">
-            <location x="0" y="5" z="0" w="1.0" />
+        <omni id="BrownPiecesLight" enabled="1">
+            <location x="0" y="20" z="-10" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0" quadratic="0" /> 
+        </omni>
+
+        <omni id="WhitePiecesLight" enabled="1">
+            <location x="0" y="20" z="10" w="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -33,41 +41,68 @@
     </textures>
 
     <materials>
-        <material id="blackMaterial" shininess="10">
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+        <material id="blackMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="0.0" />
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
 
-        <material id="brownMaterial" shininess="10">
-            <emission r="0.10" g="0.05" b="0.0" a="1.0" />
+        <material id="brownMaterial" shininess="1">
+            <emission r="0.00" g="0.00" b="0.0" a="0.0" />
+            <ambient r="0.20" g="0.10" b="0.00" a="1.0" />
+            <diffuse r="0.50" g="0.15" b="0.00" a="1.0" />
+            <specular r="1.0" g="0.40" b="0.10" a="1.0" />
+        </material>
+
+        <material id="brownMaterial1" shininess="1">
+            <emission r="0.00" g="0.00" b="0.0" a="0.0" />
             <ambient r="0.50" g="0.30" b="0.05" a="1.0" />
             <diffuse r="1.0" g="0.40" b="0.10" a="1.0" />
             <specular r="1.0" g="0.40" b="0.10" a="1.0" />
         </material>
 
-        <material id="whiteMaterial" shininess="20">
-            <emission r="0.10" g="0.10" b="0.10" a="1.0" />
+        <material id="whiteMaterial" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="0.0" />
             <ambient r="0.70" g="0.60" b="0.50" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </material>
 
-        <material id="orangeMaterial" shininess="20">
-            <emission r="0.10" g="0.10" b="0.10" a="1.0" />
+        <material id="orangeMaterial" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="0.0" />
             <ambient r="1.00" g="0.40" b="0.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="0.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="0.0" a="0" />
+            <specular r="1.0" g="1.0" b="0.0" a="1.0" />
         </material>
 
-        <material id="redMaterial" shininess="20">
-            <emission r="0.10" g="0.10" b="0.10" a="1.0" />
+        <material id="redMaterial" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="0.0" />
             <ambient r="1.00" g="0.0" b="0.0" a="1.0" />
             <diffuse r="1.00" g="0.0" b="0.0" a="1.0" />
-            <specular r="1.0" g="0.0" b="0.0" a="0" />
+            <specular r="1.0" g="0.0" b="0.0" a="1.00" />
         </material>
 
+        <material id="greenMaterial" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="0.0" />
+            <ambient r="0.00" g="0.10" b="0.05" a="1.0" />
+            <diffuse r="0.00" g="0.30" b="0.10" a="1.0" />
+            <specular r="0.00" g="0.60" b="0.0" a="1.0" />
+        </material>
+
+        <material id="greenMaterial1" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="0.0" />
+            <ambient r="0.00" g="0.30" b="0.10" a="1.0" />
+            <diffuse r="0.00" g="0.10" b="0.05" a="1.0" />
+            <specular r="0.10" g="1.00" b="0.30" a="1.0" />
+        </material>
+
+        <material id="greenMaterial2" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="0.0" />
+            <ambient r="0.00" g="0.60" b="0.0" a="1.0" />
+            <diffuse r="0.10" g="0.80" b="0.10" a="1.0" />
+            <specular r="0.10" g="1.00" b="0.30" a="1.0" />
+        </material>
     </materials>
 
     <!-- where are the transformations of complete objcts, to become easier to move them around -->
@@ -220,6 +255,8 @@
                 <componentref id="brownPieces" />
                 <primitiveref id="board" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="whitePieces" >
@@ -236,6 +273,8 @@
                 <componentref id="whiteSpherePiece"/>  
                 <componentref id="whiteCubePiece"/>  
             </children>
+            <visible enabled="1" />
+            <select enabled="1" />
         </component>
 
         <component id="whiteConePiece">
@@ -249,6 +288,8 @@
             <children>
                 <primitiveref id="piece" />
             </children>
+            <visible enabled="1" />
+            <select enabled="1" />
         </component>
 
         <component id="whiteCylinderPiece">
@@ -262,6 +303,8 @@
             <children>
                 <primitiveref id="cylinder" />
             </children>
+            <visible enabled="1" />
+            <select enabled="1" />
         </component>
 
         <component id="whiteSpherePiece">
@@ -276,6 +319,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="1" />
         </component>
 
         <component id="whiteCubePiece">
@@ -290,6 +335,8 @@
             <children>
                 <primitiveref id="cube" />
             </children>
+            <visible enabled="1" />
+            <select enabled="1" />
         </component>
 
         <component id="brownPieces" >
@@ -298,6 +345,7 @@
             </transformation>
             <materials>
                 <material id="brownMaterial"/>
+                <material id="brownMaterial1"/>
             </materials>
             <texture id="none"/>
             <children>
@@ -306,6 +354,8 @@
                 <componentref id="brownSpherePiece"/>  
                 <componentref id="brownCubePiece"/>  
             </children>
+            <visible enabled="1" />
+            <select enabled="1" />
         </component>
 
         <component id="brownConePiece">
@@ -314,11 +364,14 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="brownMaterial1"/>
             </materials>
             <texture id="none"/>
             <children>
                 <primitiveref id="piece" />
             </children>
+            <visible enabled="1" />
+            <select enabled="1" />
         </component>
 
         <component id="brownCylinderPiece">
@@ -326,12 +379,15 @@
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="brownMaterial" />
+                <material id="inherit" />
+                <material id="brownMaterial1"/>
             </materials>
             <texture id="none"/>
             <children>
                 <primitiveref id="cylinder" />
             </children>
+            <visible enabled="1" />
+            <select enabled="1" />
         </component>
 
         <component id="brownSpherePiece">
@@ -340,12 +396,15 @@
                 <translate x="0.0" y="0" z="0.5" />
             </transformation>
             <materials>
-                <material id="brownMaterial" />
+                <material id="inherit" />
+                <material id="brownMaterial1"/>
             </materials>
             <texture id="none"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="1" />
         </component>
 
         <component id="brownCubePiece">
@@ -355,11 +414,14 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="brownMaterial1"/>
             </materials>
             <texture id="none"/>
             <children>
                 <primitiveref id="cube" />
             </children>
+            <visible enabled="1" />
+            <select enabled="1" />
         </component>
 
         <component id="star">
@@ -375,6 +437,8 @@
                 <componentref id="halfStarabove" />
                 <componentref id="halfStardown" />            
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="halfStardown">
@@ -390,6 +454,8 @@
                 <primitiveref id="triangle3D" />
                 <componentref id="backHalfStardown" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>     
 
         <!-- stars can be seen from both sides -->
@@ -405,6 +471,8 @@
             <children>
                 <primitiveref id="triangle3D" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="halfStarabove">
@@ -419,6 +487,8 @@
                 <primitiveref id="triangle3D" />
                 <componentref id="backHalfStarAbove" /> <!-- back of the star, in the same place, but seen from the other side -->
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="backHalfStarAbove">
@@ -433,6 +503,8 @@
             <children>
                 <primitiveref id="triangle3D" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <!-- skybox below --> 
@@ -454,6 +526,8 @@
                 <componentref id="rightSkybox" />
                 <componentref id="leftSkybox" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="frontSkybox">
@@ -468,6 +542,8 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component> 
 
         <component id="topSkybox">
@@ -482,6 +558,8 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component> 
 
        <component id="backSkybox">
@@ -495,6 +573,8 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>    
 
         <component id="rightSkybox">
@@ -509,6 +589,8 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>     
 
         <component id="bottomSkybox">
@@ -523,6 +605,8 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>  
 
         <component id="leftSkybox">
@@ -537,6 +621,8 @@
             <children>
                 <primitiveref id="rectangle"  />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="tree">
@@ -544,15 +630,17 @@
                 <translate x="-20" y="0" z="5" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="greenMaterial" />
             </materials>
-            <texture id="pineTreeTexture" length_s="0.25" length_t="0.25"/>
+            <texture id="none" />
             <children>
                 <componentref id="treeTrunk" />
                 <componentref id="treePart1" />
                 <componentref id="treePart2" />
                 <componentref id="treePart3" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="treeTrunk">
@@ -567,6 +655,8 @@
             <children>
                 <primitiveref id="cylinder" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="treePart1">
@@ -575,9 +665,11 @@
                 <translate x="0" y="0" z="4.3" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="inherit" />
+                <material id="greenMaterial1" />
+                <material id="greenMaterial2" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="cone2" />
                 <componentref id="ball1" />
@@ -585,6 +677,8 @@
                 <componentref id="ball3" />
                 <componentref id="star" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="treePart2">
@@ -593,15 +687,19 @@
                 <translate x="0" y="0" z="2.8" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="inherit" />
+                <material id="greenMaterial1" />
+                <material id="greenMaterial2" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="cone1" />
                 <componentref id="ball4" />
                 <componentref id="ball5" />
                 <componentref id="ball6" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="treePart3">
@@ -610,9 +708,11 @@
                 <translate x="0" y="0" z="1" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="inherit" />
+                <material id="greenMaterial1" />
+                <material id="greenMaterial2" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="cone" />
                 <componentref id="ball7" />
@@ -622,6 +722,8 @@
                 <componentref id="ball11" />
                 <componentref id="ball12" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="ball1">
@@ -636,6 +738,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="ball2">
@@ -650,6 +754,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="ball3">
@@ -664,6 +770,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="ball4">
@@ -678,6 +786,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="ball5">
@@ -692,6 +802,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="ball6">
@@ -706,6 +818,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="ball7">
@@ -720,6 +834,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="ball8">
@@ -734,6 +850,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="ball9">
@@ -748,6 +866,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="ball10">
@@ -762,6 +882,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="ball11">
@@ -776,6 +898,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="ball12">
@@ -790,6 +914,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="snowman">
@@ -810,6 +936,8 @@
                 <componentref id="scarfPart1" />
                 <componentref id="scarfPart2" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="snowmanPart1">
@@ -824,6 +952,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="snowmanPart2">
@@ -837,8 +967,9 @@
             <texture id="none" />
             <children>
                 <primitiveref id="sphere" />
-
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="nose">
@@ -854,6 +985,8 @@
             <children>
                 <primitiveref id="cone2" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="eye1">
@@ -868,6 +1001,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="eye2">
@@ -882,6 +1017,8 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="scarf">
@@ -897,6 +1034,8 @@
             <children>
                 <primitiveref id="torus" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="scarfPart1">
@@ -911,6 +1050,8 @@
             <children>
                 <primitiveref id="rectangle2sides" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
         <component id="scarfPart2">
@@ -927,6 +1068,8 @@
             <children>
                 <primitiveref id="rectangle2sides" />
             </children>
+            <visible enabled="1" />
+            <select enabled="0" />
         </component>
 
     </components>

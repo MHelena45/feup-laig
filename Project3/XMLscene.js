@@ -46,6 +46,8 @@ class XMLscene extends CGFscene {
         this.playerOptions = { 'human': 0, 'bot' : 1};
          
         this.pieces = new MyPiece(this);
+        /* Game */
+        var game = new MyGameOrchestrator(this);
 
         this.mClick = false; //used to now when M/m is being press  
     }

@@ -40,3 +40,17 @@ parse_input(move(Move, Board, White_Pieces, Brown_Pieces, Player), [ValidMove, N
 parse_input(move(Move, Board, White_Pieces, Brown_Pieces, Player), [ValidMove, New_Board, New_White_Pieces, New_Brown_Pieces]):-
     \+move(0, Move, Board, White_Pieces, Brown_Pieces, Player, New_Board, New_White_Pieces, New_Brown_Pieces),
     ValidMove = false.
+
+% ======================================================================================
+%   Game Over
+% ======================================================================================
+% game_over(_Show_Message, Board, _Winner, [Row|[Column|_Piece]], _White_Pieces, _Brown_Pieces, _Mode, _Difficulty_Level, _Score1, _Score2)
+% game_over 'returns' yes if game is not over
+% Move -> [Row|[Column|_Piece]]
+parse_input(game_over(Board, Move), [GameOver]):-
+    game_over(0, Board, _, Move, _, _, _, _, _, _),
+    GameOver = false.
+
+parse_input(game_over(Board, Move), [GameOver]):-
+    \+game_over(0, Board, _, Move, _, _, _, _, _, _),
+    GameOver = true.

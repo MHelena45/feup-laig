@@ -39,14 +39,11 @@ class XMLscene extends CGFscene {
         this.pieces = new MyPiece(this);
         /* Game */
         this.gameOrchestrator = new MyGameOrchestrator(this);
-
+        
         this.mClick = false; //used to now when M/m is being press  
         
         this.setPickEnabled(true);
-
     }
-
-
 
 
     /**

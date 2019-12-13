@@ -10,7 +10,7 @@ class MyPrologInterface {
         this.serverPort = port || 8081;
 
         this.successRequest = function (data) { console.log("Request successful. Reply: " + data.target.response); };
-        this.errorRequest = function () { console.log("Error waiting for response, check SICStus server (LMAO) config... Reply: " + data.target.response); };
+        this.errorRequest = function (data) { console.log("Error waiting for response, check SICStus server (LMAO) config... Reply: " + data.target.response); };
     }
 
     /**

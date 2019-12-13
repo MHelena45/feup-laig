@@ -198,7 +198,9 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+        this.pickMode = true;
         this.gameOrchestrator.display();
+        this.pickMode = false;
 
     }
     

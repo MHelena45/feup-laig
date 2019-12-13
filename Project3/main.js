@@ -35,6 +35,7 @@ serialInclude(['../lib/CGF.js',
                 'MyBoardQuarter.js',
                 'MyBoard.js',
                 'MyPiece.js',
+                'MyTile.js',
 
 main=function()
 {

@@ -21,8 +21,8 @@ class MyGameOrchestrator {
         this.playerOptions = { 'human': 0, 'bot' : 1};
         this.themeOptions = {'Christmas': 0, 'Indoor': 1};
         
-        this.board = new MyGameBoard(scene);
         this.setupProlog();
+
     }
 
     /**

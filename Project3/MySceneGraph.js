@@ -1996,7 +1996,7 @@ class MySceneGraph {
                 //the line below deals with nodes with components and primitives
                 if(component.enabled == 1){
                     this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
-                    this.displayPrimitives(id, component.childrenIDs[i], length_s, length_t);
+                    this.displayPrimitives(id, parentMaterialID, component.childrenIDs[i], length_s, length_t);
                 } 
                 else displaySensor(id, component.childrenIDs[i]);
 
@@ -2075,38 +2075,62 @@ class MySceneGraph {
         return [childMaterialID, textureID, length_s, length_t];
     }
 
-    displayPrimitives(id, componentChildrenIDs, length_s, length_t){
+    displayPrimitives(id, parentMaterialID, componentChildrenIDs, length_s, length_t){
         switch(id){
             case "whiteConePiece":
                 this.scene.pieces.displayWhiteConePiece(this.primitives[componentChildrenIDs]);
+                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
+                this.scene.pieces.displayWhiteConePiece1(this.primitives[componentChildrenIDs]);
+                this.scene.clearPickRegistration();
                 break;
 
             case "whiteSpherePiece":
                 this.scene.pieces.displayWhiteSpherePiece(this.primitives[componentChildrenIDs]);
+                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
+                this.scene.pieces.displayWhiteSpherePiece1(this.primitives[componentChildrenIDs]);
+                this.scene.clearPickRegistration();
                 break;
 
             case "whiteCylinderPiece":
                 this.scene.pieces.displayWhiteCylinderPiece(this.primitives[componentChildrenIDs]);
+                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
+                this.scene.pieces.displayWhiteCylinderPiece1(this.primitives[componentChildrenIDs]);
+                this.scene.clearPickRegistration();
                 break;
                 
             case "whiteCubePiece":
                 this.scene.pieces.displayWhiteCubePiece(this.primitives[componentChildrenIDs]);
+                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
+                this.scene.pieces.displayWhiteCubePiece1(this.primitives[componentChildrenIDs]);
+                this.scene.clearPickRegistration();
                 break;     
 
             case "brownConePiece":
                 this.scene.pieces.displayBrownConePiece(this.primitives[componentChildrenIDs]);
+                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
+                this.scene.pieces.displayBrownConePiece1(this.primitives[componentChildrenIDs]);
+                this.scene.clearPickRegistration();
                 break;
 
             case "brownSpherePiece":
                 this.scene.pieces.displayBrownSpherePiece(this.primitives[componentChildrenIDs]);
+                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
+                this.scene.pieces.displayBrownSpherePiece1(this.primitives[componentChildrenIDs]);
+                this.scene.clearPickRegistration();
                 break;
 
             case "brownCylinderPiece":
                 this.scene.pieces.displayBrownCylinderPiece(this.primitives[componentChildrenIDs]);
+                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
+                this.scene.pieces.displayBrownCylinderPiece1(this.primitives[componentChildrenIDs]);
+                this.scene.clearPickRegistration();
                 break;
 
             case "brownCubePiece":
                 this.scene.pieces.displayBrownCubePiece(this.primitives[componentChildrenIDs]);
+                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
+                this.scene.pieces.displayBrownCubePiece1(this.primitives[componentChildrenIDs]);
+                this.scene.clearPickRegistration();
                 break;    
             default:
                 this.primitives[componentChildrenIDs].updateTexCoords(length_s, length_t);

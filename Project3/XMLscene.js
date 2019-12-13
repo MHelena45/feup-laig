@@ -145,11 +145,16 @@ class XMLscene extends CGFscene {
     logPicking() {
 		if (this.pickMode == false) {
 			if (this.pickResults != null && this.pickResults.length > 0) {
-				for (var i = 0; i < this.pickResults.length; i++) {
+				for (let i = 0; i < this.pickResults.length; i++) {
 					var obj = this.pickResults[i][0];
 					if (obj) {
 						var customId = this.pickResults[i][1];
-						console.log("Picked object: " + obj + ", with pick id " + customId);						
+                        console.log("Picked object: " + obj + ", with pick id " + customId);
+                        if(customId >= 17 && !this.pieces.isSelected() ){
+                            this.pieces.selected[customId - 17] = 1;	
+                        } else if(customId >= 17 && this.pieces.selected[customId - 17] == 1)
+                            this.pieces.selected[customId - 17] = 0;		
+                            			
 					}
 				}
 				this.pickResults.splice(0, this.pickResults.length);

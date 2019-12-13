@@ -24,7 +24,6 @@ class MyGameBoard {
         this.brownPieces = [];
         
         this.sphere = new MySphere(scene, 1, 0.15, 10, 10);
-
         this.square = new Plane(this.scene, 2, 2);
         this.specialTile = new MyTile(scene);
         this.specialTile.initBuffers();
@@ -47,24 +46,25 @@ class MyGameBoard {
         
     }
 
-    movePiece(piece, startingTile, destinationTile) {
+    movePiece(piece, row, column) {
         // remove piece from starting tile
 
         // add piece on destination tile
 
         // update piece tile pointer
+       this.piece.movePiece(piece, row, column);
     }
 
 
     display(){
 
-        let h = 0;
+        let h = 1;
         /* Down squares */
-        for(let i = 1; i <= 2; i++){
-            for(let j= 1; j <= 2; j++){
+        for(let j = 1; j <= 2; j++){
+            for(let i = 1; i <= 2; i++){
                 this.scene.pushMatrix();
                 if(i == 1 && j == 1){
-                    this.scene.registerForPick(h + 1, this.specialTile);
+                    this.scene.registerForPick(h, this.specialTile);
                     this.scene.pushMatrix();
                     this.scene.rotate(Math.PI, 0, 1, 0);
                     this.specialTile.display();
@@ -76,22 +76,25 @@ class MyGameBoard {
                     this.scene.translate(-10 + i * 4, 0, -10 + j * 4); 
                     this.scene.scale(4, 1.5, 4);
                     //Id for pickable objects is >= 1
-                    this.scene.registerForPick(h + 1, this.square);
+                    this.scene.registerForPick(h, this.square);
                     this.square.display();
                 }
                           
                 this.sphere.display(); 
                 h++;
                 this.scene.popMatrix();
-            }           
+            }       
+            h += 2;    
         } 
 
+        h = 3;
+
         /* Upper squares */
-        for(let i = 1; i <= 2; i++){
-            for(let j= 3; j <= 4; j++){
+        for(let j = 1; j <= 2; j++){
+            for(let i= 3; i <= 4; i++){
                 this.scene.pushMatrix();                
-                if(i == 1 && j == 4){
-                    this.scene.registerForPick(h + 1, this.specialTile);
+                if(j == 1 && i == 4){
+                    this.scene.registerForPick(h, this.specialTile);
                     this.scene.pushMatrix();
                     this.scene.rotate(-Math.PI/2, 0, 1, 0);
                     this.scene.translate(0, 0.5, 0);
@@ -104,21 +107,24 @@ class MyGameBoard {
                     this.scene.translate(-10 + i * 4, 0.5, -10 + j * 4); 
                     this.scene.scale(4, 1.5, 4);
                     //Id for pickable objects is >= 1
-                    this.scene.registerForPick(h + 1, this.square);
+                    this.scene.registerForPick(h, this.square);
                     this.square.display();
                 }
                           
                 this.sphere.display(); 
                 h++;
                 this.scene.popMatrix();
-            }           
+            }     
+            h += 2;      
         } 
 
-        for(let i = 3; i <= 4; i++){
-            for(let j=1; j <= 2; j++){
+        h = 9;
+        
+        for(let j = 3; j <= 4; j++){
+            for(let i=1; i <= 2; i++){
                 this.scene.pushMatrix();                
-                if(i == 4 && j == 1){
-                    this.scene.registerForPick(h + 1, this.specialTile);
+                if(j == 4 && i == 1){
+                    this.scene.registerForPick(h, this.specialTile);
                     this.scene.pushMatrix();
                     this.scene.rotate(Math.PI/2, 0, 1, 0);
                     this.scene.translate(0, 0.5, 0);
@@ -131,21 +137,25 @@ class MyGameBoard {
                     this.scene.translate(-10 + i * 4, 0.5, -10 + j * 4); 
                     this.scene.scale(4, 1.5, 4);
                     //Id for pickable objects is >= 1
-                    this.scene.registerForPick(h + 1, this.square);
+                    this.scene.registerForPick(h, this.square);
                     this.square.display();
                 }
                           
                 this.sphere.display(); 
                 h++;
                 this.scene.popMatrix();
-            }           
+            }   
+            h += 2;        
         } 
+        
+        h = 11;
 
-    for(let i = 3; i <= 4; i++){
-            for(let j = 3; j <= 4; j++){
+
+        for(let j = 3; j <= 4; j++){
+            for(let i = 3; i <= 4; i++){
                 this.scene.pushMatrix();
                   if(i == 4 && j == 4){
-                    this.scene.registerForPick(h + 1, this.specialTile);
+                    this.scene.registerForPick(h, this.specialTile);
                     this.scene.pushMatrix();
                     this.specialTile.display();
                     this.scene.popMatrix();
@@ -156,14 +166,16 @@ class MyGameBoard {
                     this.scene.translate(-10 + i * 4, 0, -10 + j * 4); 
                     this.scene.scale(4, 1.5, 4);
                     //Id for pickable objects is >= 1
-                    this.scene.registerForPick(h + 1, this.square);
+                    this.scene.registerForPick(h, this.square);
                     this.square.display();
                 }
                           
                 this.sphere.display(); 
                 h++;
                 this.scene.popMatrix();
-            }           
+            }     
+            h += 2;      
         } 
     }
+
 }

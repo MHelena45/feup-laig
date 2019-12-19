@@ -2078,58 +2078,58 @@ class MySceneGraph {
     displayPrimitives(id, parentMaterialID, componentChildrenIDs, length_s, length_t){
         switch(id){
             case "whiteConePiece":
-                this.scene.pieces.displayWhiteConePiece(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 21);
                 this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.pieces.displayWhiteConePiece1(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 22);
                 this.scene.clearPickRegistration();
                 break;
 
             case "whiteSpherePiece":
-                this.scene.pieces.displayWhiteSpherePiece(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 23);
                 this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.pieces.displayWhiteSpherePiece1(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 24);
                 this.scene.clearPickRegistration();
                 break;
 
             case "whiteCylinderPiece":
-                this.scene.pieces.displayWhiteCylinderPiece(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 19);
                 this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.pieces.displayWhiteCylinderPiece1(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 20);
                 this.scene.clearPickRegistration();
                 break;
                 
             case "whiteCubePiece":
-                this.scene.pieces.displayWhiteCubePiece(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 17);
                 this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.pieces.displayWhiteCubePiece1(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 18);
                 this.scene.clearPickRegistration();
                 break;     
 
             case "brownConePiece":
-                this.scene.pieces.displayBrownConePiece(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 29);
                 this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.pieces.displayBrownConePiece1(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 30);
                 this.scene.clearPickRegistration();
                 break;
 
             case "brownSpherePiece":
-                this.scene.pieces.displayBrownSpherePiece(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 31);
                 this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.pieces.displayBrownSpherePiece1(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 32);
                 this.scene.clearPickRegistration();
                 break;
 
             case "brownCylinderPiece":
-                this.scene.pieces.displayBrownCylinderPiece(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 27);
                 this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.pieces.displayBrownCylinderPiece1(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 28);
                 this.scene.clearPickRegistration();
                 break;
 
             case "brownCubePiece":
-                this.scene.pieces.displayBrownCubePiece(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 25);
                 this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.pieces.displayBrownCubePiece1(this.primitives[componentChildrenIDs]);
+                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 26);
                 this.scene.clearPickRegistration();
                 break;    
             default:

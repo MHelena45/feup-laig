@@ -36,7 +36,6 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
         
-        this.pieces = new MyPiece(this);
         /* Game */
         this.gameOrchestrator = new MyGameOrchestrator(this);
         
@@ -150,10 +149,14 @@ class XMLscene extends CGFscene {
 					if (obj) {
 						var customId = this.pickResults[i][1];
                         console.log("Picked object: " + obj + ", with pick id " + customId);
-                        if(customId >= 17 && !this.pieces.isSelected() ){
-                            this.pieces.selected[customId - 17] = 1;	
-                        } else if(customId >= 17 && this.pieces.selected[customId - 17] == 1)
-                            this.pieces.selected[customId - 17] = 0;		
+                        if(customId >= 17 && !this.gameOrchestrator.pieces.isSelected() ){
+                            this.gameOrchestrator.pieces.selected[customId - 17] = 1;	
+                        } else if(customId >= 17 && this.gameOrchestrator.pieces.selected[customId - 17] == 1){
+                            this.gameOrchestrator.pieces.selected[customId - 17] = 0;	
+                        } else if(customId >= 1 && customId < 17) {
+                            //board tile selected
+                        }
+                            	
                             			
 					}
 				}

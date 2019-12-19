@@ -42,10 +42,14 @@ class MyCylinder extends CGFobject {
             delta = (deltaRadius * i) + this.base;
             for (var j = 0; j < this.slices; j++) {
                 this.vertices.push(delta * Math.cos(ang * j), delta * Math.sin(ang * j), tz);
-                //size is calculated to normalize the normals
-                var size = Math.sqrt(Math.pow(Math.cos(j * ang),2) + Math.pow(Math.sin(j * ang),2) + Math.pow( Math.atan((this.base - this.top) / this.height),2));
-                this.normals.push(Math.cos(j * ang)/size, Math.sin(j * ang)/size, Math.atan((this.base - this.top) / this.height))/size;
-                
+                if(this.height > 0) {
+                    //size is calculated to normalize the normals
+                    var temp = Math.atan(Math.abs(this.top - this.base)/this.height);
+                    var size = Math.sqrt(Math.pow(Math.cos(j * ang) * Math.cos(temp),2) + Math.pow(Math.sin(j * ang) * Math.cos(temp),2) + Math.pow(Math.sin(temp),2));
+                    this.normals.push(Math.cos(j * ang) * Math.cos(temp) / size, Math.sin(j * ang) * Math.cos(temp) / size, Math.sin(temp)/ size);
+                } else {
+                    this.normals.push(0, 0, 1);
+                }
                 this.texCoords.push(tx, ty);
                 tx += lengthx;
             }

@@ -9,6 +9,7 @@ class MyGameOrchestrator {
         this.prologInterface = new MyPrologInterface();
         /// Board
         this.board = new MyGameBoard(scene);
+        this.pieces = new MyPiece(this.scene);  //All the pieces
 
          //Difficulty Level DropBox
         this.difficultyLevel = 1;
@@ -22,6 +23,16 @@ class MyGameOrchestrator {
         this.themeOptions = {'Christmas': 0, 'Indoor': 1};
         
         this.setupProlog();
+
+        this.game_state_ENUM = {
+            Menu: 0, // show menu and handle settings
+            Person1_turn: 1, //player 1 turn to play
+            Person2_turn: 2, //player 2 turn to play
+            Computer1_turn: 3, //player 1 turn to play
+            Computer2_turn: 4, //player 2 turn to play            
+            Load_scenario: 5, // (keep game state), load file, render scene, board, pieces, etc
+            Moving_Piece: 6
+        }
 
     }
 

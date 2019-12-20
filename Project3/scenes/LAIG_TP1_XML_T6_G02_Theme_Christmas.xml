@@ -143,11 +143,11 @@
         </primitive>
 
         <primitive id="piece">
-            <cylinder base="1" top="0" height="2" slices="16" stacks="16" />
+            <cylinder base="1" top="0" height="3" slices="16" stacks="16" />
         </primitive>
 
         <primitive id="cone">
-            <cylinder base="2" top="0" height="4" slices="16" stacks="16" />
+            <cylinder base="2" top="0" height="3" slices="16" stacks="16" />
         </primitive>
 
         <primitive id="cone1">
@@ -165,6 +165,7 @@
         <primitive id="cube">
             <cube />
         </primitive> 
+
 
         <primitive id="torus">
             <torus inner="0.1" outer="1.2" slices="18" loops="18" />

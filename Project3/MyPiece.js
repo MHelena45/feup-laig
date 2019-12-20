@@ -8,6 +8,7 @@ class MyPiece extends CGFobject {
     constructor(scene) {
         super(scene);
 
+        //[x, y, z] of the initial visual positions of all pieces
         this.initialPositions = [
             /* White Pieces initial positions */
             [-6, -12, 0], //whiteCube1Position
@@ -80,12 +81,18 @@ class MyPiece extends CGFobject {
         this.selectMaterial.setShininess(10.0);       
     }
 
+    /**
+     * restart puts all the pieces in the initial positions
+     */
     restart(){
         for(let i=0; i< this.initialPositions.length; i++){
             this.currentPositions[i] = this.initialPositions[i];
         }
     }
 
+    /**
+     * checks if there is a pieces selected
+     */
     isSelected() {
         for(let i = 0; i < this.selected.length; i++)
             if(this.selected[i] == 1)
@@ -94,8 +101,8 @@ class MyPiece extends CGFobject {
     }
 
     deselect(){
-        for(let i = 0; i < this.selected.length; i++)
-            this.selected[i] = 0;
+        for(let j = 0; j < this.selected.length; j++)
+            this.selected[j] = 0;
     }
 
     pieceSelected() {

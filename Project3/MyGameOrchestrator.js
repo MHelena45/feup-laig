@@ -20,8 +20,9 @@ class MyGameOrchestrator {
         this.scene = scene;
         /// Prolog interface for communication
         this.prologInterface = new MyPrologInterface();
+
         /// Board
-        this.board = new MyGameBoard(scene);
+        this.board = new MyGameBoard(this.scene);
         this.pieces = new MyPiece(this.scene);  //All the pieces
 
         /// Difficulty Level DropBox
@@ -89,7 +90,7 @@ class MyGameOrchestrator {
      * @param {Number} row row where the piece is going to be moved
      * @param {Number} piece which piece is going to be moved
      */
-    move(column, row, piece) {
+    move(row, column, piece) {
         // build request
         let thisGame = this;
         let move = [column, row, piece];
@@ -108,10 +109,12 @@ class MyGameOrchestrator {
                     thisGame.board.whitePieces = response[2];
                     thisGame.board.brownPieces = response[3];
                     thisGame.gameState = ANIMATING_PIECE;
+                    return true;
                 }
                 // move is not valid (ask player to play again)
                 else {
                     thisGame.gameState = currentPlayer;
+                    return false;
                 }
             }
         );
@@ -212,14 +215,15 @@ class MyGameOrchestrator {
 			}
         }
 
-        if(this.board.isSelected() && this.board.isSelected()) {
+        if(this.board.isSelected() && this.pieces.isSelected()) {
             let piece = this.pieces.pieceSelected();
             let coordinates = this.board.tileSelected();
-            this.move(coordinates[0], coordinates[1], piece); //piece is a prolog number  
-            this.pieces.movePiece(this.selectedPieceId, coordinates[0], coordinates[1]);
+            if(this.move(coordinates[0], coordinates[1], piece)) //piece is a prolog number  
+                this.pieces.movePiece(this.selectedPieceId, coordinates[0], coordinates[1]);
             this.pieces.deselect();
             this.board.deselect();
-        }
+            console.log(this.board.selected);
+        } 
     }
 
     display() {

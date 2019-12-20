@@ -1,3 +1,16 @@
+const gameStateEnum = {
+    MENU: 0,                // show menu and handle settings
+    LOADING: 1,             // load file, render and request scene, board, pieces, etc
+    PLAYER_CHOOSING: 2,     // player is choosing what to play
+    ANIMATING_PIECE: 3,     // moving piece for animation
+    GAME_OVER: 4            // game is over play again
+}
+
+const playerTurnEnum = {
+    PLAYER1_TURN: 0,        // player 1 is playing
+    PLAYER2_TURN: 1         // player 2 is playing
+}
+
 class MyGameOrchestrator {
     /**
      * Constructor
@@ -11,80 +24,135 @@ class MyGameOrchestrator {
         this.board = new MyGameBoard(scene);
         this.pieces = new MyPiece(this.scene);  //All the pieces
 
-         //Difficulty Level DropBox
+        /// Difficulty Level DropBox
         this.difficultyLevel = 1;
         this.whitePlayer = 0;
         this.blackPlayer = 1;
         this.theme = 0;
 
-        // Labels and ID's for object selection on MyInterface
+        /// Labels and ID's for object selection on MyInterface
         this.levels = { '1': 1, '2': 2, '3': 3 }; 
         this.playerOptions = { 'human': 0, 'bot' : 1};
         this.themeOptions = {'Christmas': 0, 'Indoor': 1};
-        
+
+        /// Setup game states and initial arrays
+        this.gameState;
+        this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
+
         this.setupProlog();
-
-        this.game_state_ENUM = {
-            Menu: 0, // show menu and handle settings
-            Person1_turn: 1, //player 1 turn to play
-            Person2_turn: 2, //player 2 turn to play
-            Computer1_turn: 3, //player 1 turn to play
-            Computer2_turn: 4, //player 2 turn to play            
-            Load_scenario: 5, // (keep game state), load file, render scene, board, pieces, etc
-            Moving_Piece: 6
-        }
-
     }
 
     /**
-     * Gets initial board and pieces from prolog
+     * Setup initial board and pieces arrays
+     * requested from Prolog Server
      */
     setupProlog() {
-        var this_game = this;
+        this.gameState = gameStateEnum.LOADING;
+
+        let thisGame = this;
         /// Initialize board
         this.prologInterface.getPrologRequest(
             "init_board",
             function (data) {
-                this_game.board.boardMatrix = JSON.parse(data.target.response);
+                thisGame.board.boardMatrix = JSON.parse(data.target.response);
+                /// Initialize white pieces
+                thisGame.prologInterface.getPrologRequest(
+                    "init_white_pieces",
+                    function (data) {
+                        thisGame.board.whitePieces = JSON.parse(data.target.response);
+                        /// Initialize brown pieces
+                        thisGame.prologInterface.getPrologRequest(
+                            "init_brown_pieces",
+                            function (data) {
+                                thisGame.board.brownPieces = JSON.parse(data.target.response);
+                                thisGame.gameState = gameStateEnum.PLAYER_CHOOSING;
+                            }
+                        );
+                    }
+                );
             }
         );
-
-        /// Initialize white pieces
-        this.prologInterface.getPrologRequest(
-            "init_white_pieces",
-            function (data) {
-                this_game.board.whitePieces = JSON.parse(data.target.response);
-            }
-        );
-        
-        /// Initialize brown pieces
-        this.prologInterface.getPrologRequest(
-            "init_brown_pieces",
-            function (data) {
-                this_game.board.brownPieces = JSON.parse(data.target.response);
-            }
-        );
-        
     }
 
     /**
-     * Testing purposes
+     * Set states to begin playing
      */
-    move() {
-        var this_game = this;
-        var move = [1,1,11]; // move piece 11 (white-cone) to position 1-1 (top-left corner)
-        var request = "move(" + JSON.stringify(move) + "," + JSON.stringify(this_game.board.boardMatrix) + ","
-        + JSON.stringify(this_game.board.whitePieces) + "," + JSON.stringify(this_game.board.brownPieces) + "," + JSON.stringify(1) + ")";
+    startGame() {
+        this.gameState = gameStateEnum.PLAYER_CHOOSING;
+        this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
+    }
 
+    /**
+     * moves piece to coordinate column row
+     * @param {Number} column column where the piece is going to be moved
+     * @param {Number} row row where the piece is going to be moved
+     * @param {Number} piece which piece is going to be moved
+     */
+    move(column, row, piece) {
+        // build request
+        let thisGame = this;
+        let move = [column, row, piece];
+        let request = "move(" + JSON.stringify(move) + "," + JSON.stringify(thisGame.board.boardMatrix) + ","
+        + JSON.stringify(thisGame.board.whitePieces) + "," + JSON.stringify(thisGame.board.brownPieces) + ","
+        + JSON.stringify(this.currentPlayer + 1) + ")";
+        // send request
         this.prologInterface.getPrologRequest(
             request,
             function (data) {
-                var response = JSON.parse(data.target.response);
-                var validMove = response[0];
+                let response = JSON.parse(data.target.response);
+                let validMove = response[0];
+                // move is valid
                 if (validMove) {
-                    this_game.board.boardMatrix = response[1];
-                    this_game.board.whitePieces = response[2];
-                    this_game.board.brownPieces = response[3];
+                    thisGame.board.boardMatrix = response[1];
+                    thisGame.board.whitePieces = response[2];
+                    thisGame.board.brownPieces = response[3];
+                    thisGame.gameState = ANIMATING_PIECE;
+                }
+                // move is not valid (ask player to play again)
+                else {
+                    thisGame.gameState = currentPlayer;
+                }
+            }
+        );
+    }
+
+    /**
+     * animates piece
+     */
+    animate() {
+
+    }
+
+    /**
+     * verifies if game is over
+     * @param {Number} column last move column
+     * @param {Number} row last move row
+     * @param {Number} piece last move piece
+     */
+    isGameOver(column, row, piece) {
+        // change game state to loading
+        this.gameState = gameStateEnum.LOADING;
+
+        // build request
+        let thisGame = this;
+        let move = [column, row, piece];
+        let request = "game_over(" + JSON.stringify(thisGame.board.boardMatrix)
+        + ","+ JSON.stringify(move) + ")";
+        // send request
+        this.prologInterface.getPrologRequest(
+            request,
+            function (data) {
+                let response = JSON.parse(data.target.response);
+                let gameOver = response[0];
+                // game is over
+                if (gameOver) {
+                    thisGame.gameState = gameStateEnum.GAME_OVER;
+                }
+                else {
+                    // update game state
+                    thisGame.gameState = gameStateEnum.PLAYER_CHOOSING;
+                    // update current player (0 -> 1, 1 -> 0)
+                    this.currentPlayer = !this.currentPlayer;
                 }
             }
         );

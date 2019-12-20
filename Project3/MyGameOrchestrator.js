@@ -1,3 +1,14 @@
+const gameStateEnum = {
+    /// --- show game menu
+    MENU: 0,            // show menu and handle settings
+    /// --- loading an asset of waiting for prolog reply
+    LOADING: 1,   // (keep game state), load file, render scene, board, pieces, etc
+    /// --- game is playable
+    PLAYER1_TURN: 2,    // player 1 turn to play
+    PLAYER2_TURN: 3,    // player 2 turn to play         
+    MOVING_PIECE: 4     // moving piece for animation
+}
+
 class MyGameOrchestrator {
     /**
      * Constructor
@@ -21,25 +32,17 @@ class MyGameOrchestrator {
         this.levels = { '1': 1, '2': 2, '3': 3 }; 
         this.playerOptions = { 'human': 0, 'bot' : 1};
         this.themeOptions = {'Christmas': 0, 'Indoor': 1};
+
+        this.gameState = gameStateEnum.LOADING;
         
         this.setupProlog();
-
-        this.game_state_ENUM = {
-            Menu: 0, // show menu and handle settings
-            Person1_turn: 1, //player 1 turn to play
-            Person2_turn: 2, //player 2 turn to play
-            Computer1_turn: 3, //player 1 turn to play
-            Computer2_turn: 4, //player 2 turn to play            
-            Load_scenario: 5, // (keep game state), load file, render scene, board, pieces, etc
-            Moving_Piece: 6
-        }
-
     }
 
     /**
      * Gets initial board and pieces from prolog
      */
     setupProlog() {
+        this.gameState = gameStateEnum.LOADING;
         var this_game = this;
         /// Initialize board
         this.prologInterface.getPrologRequest(
@@ -62,8 +65,10 @@ class MyGameOrchestrator {
             "init_brown_pieces",
             function (data) {
                 this_game.board.brownPieces = JSON.parse(data.target.response);
+                this_game.gameState = gameStateEnum.
             }
         );
+
         
     }
 

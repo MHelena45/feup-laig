@@ -127,7 +127,6 @@ class XMLscene extends CGFscene {
 	checkKeys() {
 		if (this.gui.isKeyPressed("KeyM")) {
             this.mClick = true;      
-            console.log("1");  
 		} else if(this.mClick) { /*increments when button is released */
             this.mClick = false;
             CLICK_M++;
@@ -151,18 +150,26 @@ class XMLscene extends CGFscene {
                         console.log("Picked object: " + obj + ", with pick id " + customId);
                         if(customId >= 17 && !this.gameOrchestrator.pieces.isSelected() ){
                             this.gameOrchestrator.pieces.selected[customId - 17] = 1;	
+                            if(this.gameOrchestrator.board.isSelected()){
+                                let piece = this.gameOrchestrator.pieces.pieceSelected();
+                                let coordinates = this.gameOrchestrator.board.tileSelected();
+                                //this.gameOrchestrator.move(coordinates[0], coordinates[1], piece);
+                                this.gameOrchestrator.pieces.movePiece(customId, coordinates[0], coordinates[1]);
+                            }
                         } else if(customId >= 17 && this.gameOrchestrator.pieces.selected[customId - 17] == 1){
                             this.gameOrchestrator.pieces.selected[customId - 17] = 0;	
-                        } else if(customId >= 1 && customId < 17) {
+                        } else if(!this.gameOrchestrator.board.isSelected() && customId < 17) {
                             //board tile selected
-                        }
-                            	
-                            			
+                            this.gameOrchestrator.board.selected[customId-1] = 1;
+                        } else if(customId < 17 && this.gameOrchestrator.board.selected[customId-1] == 1){
+                            this.gameOrchestrator.board.selected[customId-1] = 0;	
+                        }                     			
 					}
 				}
 				this.pickResults.splice(0, this.pickResults.length);
 			}
-		}
+        }
+            
 	}
 
     /**

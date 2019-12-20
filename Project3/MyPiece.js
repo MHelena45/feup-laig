@@ -77,9 +77,13 @@ class MyPiece extends CGFobject {
         this.selectMaterial.setAmbient(1, 0, 0, 1);
         this.selectMaterial.setDiffuse(1, 0, 0, 1);
         this.selectMaterial.setSpecular(0.9, 0.1, 0.1, 1);
-        this.selectMaterial.setShininess(10.0);
+        this.selectMaterial.setShininess(10.0);       
+    }
 
-
+    restart(){
+        for(let i=0; i< this.initialPositions.length; i++){
+            this.currentPositions[i] = this.initialPositions[i];
+        }
     }
 
     isSelected() {
@@ -89,10 +93,32 @@ class MyPiece extends CGFobject {
         return false;
     }
 
-    setPiece(piece, row, column) {
+    pieceSelected() {
+        if((this.selected[0] == 1) || (this.selected[1] == 1)) {
+            return 51;
+        }
+        if(this.selected[2] == 1 || this.selected[3] == 1){
+            return 71;
+        }
+        if(this.selected[4] == 1 || this.selected[5] == 1)
+            return 11;
+        if(this.selected[6] == 1 || this.selected[7] == 1)
+            return 91;
+        if(this.selected[7] || this.selected[8])
+            return 52;
+        if(this.selected[9] || this.selected[10])
+            return 72;
+        if(this.selected[11] || this.selected[12])
+            return 12;
+        if(this.selected[13] || this.selected[14])
+            return 92;
+    }
+
+    movePiece(piece, row, column) {
         let calc = (4 * (row - 1)) + (column - 1);
-        //first piece id is 17
+        //first piece id is 17 an the others are sequential
         this.currentPositions[piece-17] = this.positionTile[calc];
+
     }
 
     checkPicked(piece) {

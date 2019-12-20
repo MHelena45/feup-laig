@@ -33,7 +33,6 @@ serialInclude(['../lib/CGF.js',
                 'MyCylinderCover.js',
                 'MyCircle.js',
                 'MyBoardQuarter.js',
-                'MyBoard.js',
                 'MyPiece.js',
                 'MyTile.js',
 

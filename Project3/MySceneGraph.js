@@ -1282,7 +1282,7 @@ class MySceneGraph {
                 break;
             }
             case 'gameboard' :{
-                let board = new MyBoard(this.scene, primitiveId);
+                let board = new MyGameBoard(this.scene, primitiveId);
                 this.primitives[primitiveId] = board;
                 break;
             }

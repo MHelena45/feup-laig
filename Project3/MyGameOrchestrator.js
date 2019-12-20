@@ -33,7 +33,7 @@ class MyGameOrchestrator {
         this.playerOptions = { 'human': 0, 'bot' : 1};
         this.themeOptions = {'Christmas': 0, 'Indoor': 1};
 
-        this.gameState = gameStateEnum.LOADING;
+        this.gameState;
         
         this.setupProlog();
     }
@@ -43,33 +43,30 @@ class MyGameOrchestrator {
      */
     setupProlog() {
         this.gameState = gameStateEnum.LOADING;
+
         var this_game = this;
         /// Initialize board
         this.prologInterface.getPrologRequest(
             "init_board",
             function (data) {
                 this_game.board.boardMatrix = JSON.parse(data.target.response);
+                /// Initialize white pieces
+                this_game.prologInterface.getPrologRequest(
+                    "init_white_pieces",
+                    function (data) {
+                        this_game.board.whitePieces = JSON.parse(data.target.response);
+                        /// Initialize brown pieces
+                        this_game.prologInterface.getPrologRequest(
+                            "init_brown_pieces",
+                            function (data) {
+                                this_game.board.brownPieces = JSON.parse(data.target.response);
+                                this_game.gameState = gameStateEnum.PLAYER1_TURN;
+                            }
+                        );
+                    }
+                );
             }
         );
-
-        /// Initialize white pieces
-        this.prologInterface.getPrologRequest(
-            "init_white_pieces",
-            function (data) {
-                this_game.board.whitePieces = JSON.parse(data.target.response);
-            }
-        );
-        
-        /// Initialize brown pieces
-        this.prologInterface.getPrologRequest(
-            "init_brown_pieces",
-            function (data) {
-                this_game.board.brownPieces = JSON.parse(data.target.response);
-                this_game.gameState = gameStateEnum.
-            }
-        );
-
-        
     }
 
     /**

@@ -68,7 +68,10 @@ class MyGameBoard {
        this.piece.movePiece(piece, row, column);
     }
 
-    numberOfInter
+    deselect(){
+        for(let i = 0; i < this.selected.length; i++)
+            this.selected[i] = 0;
+    }
 
     tileSelected() {
         let i;
@@ -89,7 +92,8 @@ class MyGameBoard {
     }
 
     display(){
-
+        
+        this.notSelectMaterial.apply();
         this.board.display();
 
         this.scene.pushMatrix();

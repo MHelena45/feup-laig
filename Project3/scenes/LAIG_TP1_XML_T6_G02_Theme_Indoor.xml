@@ -225,10 +225,6 @@
             <cube />
         </primitive> 
 
-        <primitive id="board">
-            <gameboard />
-        </primitive> 
-
         <primitive id="torus">
             <torus inner="0.1" outer="1.2" slices="18" loops="18" />
         </primitive>
@@ -251,7 +247,6 @@
                 <componentref id="skybox" />    
                 <componentref id="whitePieces" />
                 <componentref id="brownPieces" />
-                <primitiveref id="board" />
             </children>
             <visible enabled="1" />
             <select enabled="0" />

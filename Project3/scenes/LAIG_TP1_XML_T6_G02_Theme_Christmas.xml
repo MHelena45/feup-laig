@@ -147,7 +147,7 @@
         </primitive>
 
         <primitive id="cone">
-            <cylinder base="2" top="0" height="3" slices="16" stacks="16" />
+            <cylinder base="2" top="0" height="4" slices="16" stacks="16" />
         </primitive>
 
         <primitive id="cone1">
@@ -164,10 +164,6 @@
         
         <primitive id="cube">
             <cube />
-        </primitive> 
-
-        <primitive id="board">
-            <gameboard />
         </primitive> 
 
         <primitive id="torus">
@@ -194,7 +190,6 @@
                 <componentref id="snowman" /> 
                 <componentref id="whitePieces" />
                 <componentref id="brownPieces" />
-                <primitiveref id="board" />
             </children>
             <visible enabled="1" />
             <select enabled="0" />

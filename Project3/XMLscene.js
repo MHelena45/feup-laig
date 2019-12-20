@@ -140,45 +140,12 @@ class XMLscene extends CGFscene {
         return CLICK_M;
     }
 
-    logPicking() {
-		if (this.pickMode == false) {
-			if (this.pickResults != null && this.pickResults.length > 0) {
-				for (let i = 0; i < this.pickResults.length; i++) {
-					var obj = this.pickResults[i][0];
-					if (obj) {
-						var customId = this.pickResults[i][1];
-                        console.log("Picked object: " + obj + ", with pick id " + customId);
-                        if(customId >= 17 && !this.gameOrchestrator.pieces.isSelected() ){
-                            this.gameOrchestrator.pieces.selected[customId - 17] = 1;	
-                            if(this.gameOrchestrator.board.isSelected()){
-                                let piece = this.gameOrchestrator.pieces.pieceSelected();
-                                let coordinates = this.gameOrchestrator.board.tileSelected();
-                                //this.gameOrchestrator.move(coordinates[0], coordinates[1], piece);
-                                this.gameOrchestrator.pieces.movePiece(customId, coordinates[0], coordinates[1]);
-                            }
-                        } else if(customId >= 17 && this.gameOrchestrator.pieces.selected[customId - 17] == 1){
-                            this.gameOrchestrator.pieces.selected[customId - 17] = 0;	
-                        } else if(!this.gameOrchestrator.board.isSelected() && customId < 17) {
-                            //board tile selected
-                            this.gameOrchestrator.board.selected[customId-1] = 1;
-                        } else if(customId < 17 && this.gameOrchestrator.board.selected[customId-1] == 1){
-                            this.gameOrchestrator.board.selected[customId-1] = 0;	
-                        }                     			
-					}
-				}
-				this.pickResults.splice(0, this.pickResults.length);
-			}
-        }
-            
-	}
-
     /**
      * Displays the scene.
      */
     display() {
-        this.logPicking();
         this.clearPickRegistration();
-        //this.gameOrchestrator.orchestrate();
+        this.gameOrchestrator.orchestrate();
 
         // ---- BEGIN Background, camera and axis setup
 

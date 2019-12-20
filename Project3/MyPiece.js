@@ -93,6 +93,11 @@ class MyPiece extends CGFobject {
         return false;
     }
 
+    deselect(){
+        for(let i = 0; i < this.selected.length; i++)
+            this.selected[i] = 0;
+    }
+
     pieceSelected() {
         if((this.selected[0] == 1) || (this.selected[1] == 1)) {
             return 51;

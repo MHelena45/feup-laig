@@ -38,6 +38,7 @@ class MyGameOrchestrator {
         /// Setup game states and initial arrays
         this.gameState;
         this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
+        this.selectedPieceId;
 
         this.setupProlog();
     }
@@ -186,8 +187,43 @@ class MyGameOrchestrator {
         else console.log("Play Human");
     }
 
+    orchestrate() {
+        if (this.scene.pickMode == false) {
+			if (this.scene.pickResults != null && this.scene.pickResults.length > 0) {
+				for (let i = 0; i < this.scene.pickResults.length; i++) {
+					let obj = this.scene.pickResults[i][0];
+					if (obj) {
+						let customId = this.scene.pickResults[i][1];
+                        console.log("Picked object: " + obj + ", with pick id " + customId);
+                        if(customId >= 17 && !this.pieces.isSelected() ){
+                            this.selectedPieceId = customId;
+                            this.pieces.selected[customId - 17] = 1;	
+                        } else if(customId >= 17 && this.pieces.selected[customId - 17] == 1){
+                            this.pieces.selected[customId - 17] = 0;	
+                        } else if(!this.board.isSelected() && customId < 17) {
+                            //board tile selected
+                            this.board.selected[customId-1] = 1;
+                        } else if(customId < 17 && this.board.selected[customId-1] == 1){
+                            this.board.selected[customId-1] = 0;	
+                        }                     			
+					}
+				}
+				this.scene.pickResults.splice(0, this.scene.pickResults.length);
+			}
+        }
+
+        if(this.board.isSelected() && this.board.isSelected()) {
+            let piece = this.pieces.pieceSelected();
+            let coordinates = this.board.tileSelected();
+            this.move(coordinates[0], coordinates[1], piece); //piece is a prolog number  
+            this.pieces.movePiece(this.selectedPieceId, coordinates[0], coordinates[1]);
+            this.pieces.deselect();
+            this.board.deselect();
+        }
+    }
+
     display() {
-        this.board.display();
+       this.board.display();
     }
 
 }

@@ -40,6 +40,7 @@ class MyGameOrchestrator {
         this.whiteAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, 101, this.whiteMaterial, 10, 16);
         this.brownAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, 102, this.brownMaterial, -20, 24);
 
+        //Todo remove this and get it from the Prolog response
         this.whiteAuxiliaryBoard.pieces = [11, 11, 51, 51, 71, 71, 91, 91];
         this.brownAuxiliaryBoard.pieces = [12, 12, 52, 52, 72, 72, 92, 92];
 

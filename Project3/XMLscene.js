@@ -44,6 +44,11 @@ class XMLscene extends CGFscene {
         this.setPickEnabled(true);
     }
 
+    update(t) {
+        if(this.sceneInited)
+            this.graph.update(t);
+    }
+
 
     /**
      * Initializes the scene cameras.

@@ -1,9 +1,9 @@
 /**
- * MyUnitCube
+ * MyCube
  * @constructor
  * @param scene - Reference to MyScene object
  */
-class MyUnitCube extends CGFobject {
+class MyCube extends CGFobject {
 	constructor(scene, id) {
 		super(scene);
 		this.initBuffers();

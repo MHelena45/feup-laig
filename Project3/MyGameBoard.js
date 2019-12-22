@@ -20,16 +20,19 @@ class MyGameBoard {
         this.boardMatrix = [];
         
         this.sphere = new MySphere(scene, 1, 0.15, 10, 10);
-        this.square = new Plane(this.scene, 2, 2);
+        this.square = new Plane(this.scene, 2, 2);       
+
         this.specialTile = new MyTile(scene);
         this.specialTile.initBuffers();
     
+        // red Material
         this.selectMaterial = new CGFappearance(this.scene);
         this.selectMaterial.setAmbient(1, 0, 0, 1);
         this.selectMaterial.setDiffuse(1, 0, 0, 1);
         this.selectMaterial.setSpecular(0.9, 0.1, 0.1, 1);
         this.selectMaterial.setShininess(10.0);  
         
+        // black Material
         this.notSelectMaterial = new CGFappearance(this.scene);
         this.notSelectMaterial.setAmbient(0, 0, 0, 1);
         this.notSelectMaterial.setDiffuse(0.1, 0.1, 0.1, 1);
@@ -92,7 +95,7 @@ class MyGameBoard {
     }
 
     display(){
-        
+
         this.notSelectMaterial.apply();
         this.board.display();
 
@@ -243,6 +246,7 @@ class MyGameBoard {
             }     
             h += 2;      
         }  
+        this.scene.clearPickRegistration();
     }
    
 	/**

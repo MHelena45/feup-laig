@@ -21,9 +21,27 @@ class MyGameOrchestrator {
         /// Prolog interface for communication
         this.prologInterface = new MyPrologInterface();
 
+        // white Material
+        this.whiteMaterial = new CGFappearance(this.scene);
+        this.whiteMaterial.setAmbient(0.7, 0.7, 0.7, 1);
+        this.whiteMaterial.setDiffuse(1, 0, 0, 1);
+        this.whiteMaterial.setSpecular(0.9, 0.1, 0.1, 1);
+        this.whiteMaterial.setShininess(10.0);  
+        
+        // brown Material
+        this.brownMaterial = new CGFappearance(this.scene);
+        this.brownMaterial.setAmbient(0.20, 0.10, 0, 1);
+        this.brownMaterial.setDiffuse(0.50, 0.15, 0.00, 1);
+        this.brownMaterial.setSpecular(1.0, 0.40, 0.10, 1);
+        this.brownMaterial.setShininess(1.0); 
+
         /// Board
         this.board = new MyGameBoard(this.scene);
-        this.pieces = new MyPiece(this.scene);  //All the pieces
+        this.whiteAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, 101, this.whiteMaterial, 10, 16);
+        this.brownAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, 102, this.brownMaterial, -20, 24);
+
+        this.whiteAuxiliaryBoard.pieces = [11, 11, 51, 51, 71, 71, 91, 91];
+        this.brownAuxiliaryBoard.pieces = [12, 12, 52, 52, 72, 72, 92, 92];
 
         /// Difficulty Level DropBox
         this.difficultyLevel = 1;
@@ -34,12 +52,13 @@ class MyGameOrchestrator {
         /// Labels and ID's for object selection on MyInterface
         this.levels = { '1': 1, '2': 2, '3': 3 }; 
         this.playerOptions = { 'human': 0, 'bot' : 1};
-        this.themeOptions = {'Christmas': 0, 'Indoor': 1};
+        this.themeOptions = {'Christmas': 0, 'Space': 1};
 
         /// Setup game states and initial arrays
         this.gameState;
         this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
         this.selectedPieceId;
+
 
         this.setupProlog();
     }
@@ -68,6 +87,8 @@ class MyGameOrchestrator {
                             function (data) {
                                 thisGame.board.brownPieces = JSON.parse(data.target.response);
                                 thisGame.gameState = gameStateEnum.PLAYER_CHOOSING;
+                              //  this.whiteAuxiliaryBoard.pieces = thisGame.board.whitePieces;
+                              //  this.brownAuxiliaryBoard.pieces = thisGame.board.brownPieces;
                             }
                         );
                     }
@@ -108,13 +129,11 @@ class MyGameOrchestrator {
                     thisGame.board.boardMatrix = response[1];
                     thisGame.board.whitePieces = response[2];
                     thisGame.board.brownPieces = response[3];
-                    thisGame.gameState = ANIMATING_PIECE;
-                    return true;
+                    thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
                 }
                 // move is not valid (ask player to play again)
                 else {
                     thisGame.gameState = currentPlayer;
-                    return false;
                 }
             }
         );
@@ -123,9 +142,10 @@ class MyGameOrchestrator {
     /**
      * animates piece
      */
-    animate() {
-
+    animate(initialPosition, finalPosition) {
+        
     }
+
 
     /**
      * verifies if game is over
@@ -166,9 +186,9 @@ class MyGameOrchestrator {
     updateTheme(){
         let filename;
         if(this.theme == 0){
-            filename="LAIG_TP1_XML_T6_G02_Theme_Christmas.xml";
+            filename="LAIG_TP3_XML_T6_G02_Theme_Christmas.xml";
         } else if(this.theme == 1){
-            filename="LAIG_TP1_XML_T6_G02_Theme_Indoor.xml";
+            filename="LAIG_TP3_XML_T6_G02_Theme_Space.xml";
         }
         this.scene.graph = new MySceneGraph(filename, this.scene);
         this.scene.sceneInited = false;
@@ -191,43 +211,76 @@ class MyGameOrchestrator {
     }
 
     orchestrate() {
-        if (this.scene.pickMode == false) {
-			if (this.scene.pickResults != null && this.scene.pickResults.length > 0) {
-				for (let i = 0; i < this.scene.pickResults.length; i++) {
-					let obj = this.scene.pickResults[i][0];
-					if (obj) {
-						let customId = this.scene.pickResults[i][1];
-                        console.log("Picked object: " + obj + ", with pick id " + customId);
-                        if(customId >= 17 && !this.pieces.isSelected() ){
-                            this.selectedPieceId = customId;
-                            this.pieces.selected[customId - 17] = 1;	
-                        } else if(customId >= 17 && this.pieces.selected[customId - 17] == 1){
-                            this.pieces.selected[customId - 17] = 0;	
-                        } else if(!this.board.isSelected() && customId < 17) {
-                            //board tile selected
-                            this.board.selected[customId-1] = 1;
-                        } else if(customId < 17 && this.board.selected[customId-1] == 1){
-                            this.board.selected[customId-1] = 0;	
-                        }                     			
-					}
-				}
-				this.scene.pickResults.splice(0, this.scene.pickResults.length);
-			}
-        }
+        if(gameStateEnum.PLAYER_CHOOSING) {
+            if (this.scene.pickMode == false) {
+                if (this.scene.pickResults != null && this.scene.pickResults.length > 0) {
+                    for (let i = 0; i < this.scene.pickResults.length; i++) {
+                        let obj = this.scene.pickResults[i][0];
+                        if (obj) {
+                            let customId = this.scene.pickResults[i][1];
+                            console.log("Picked object: " + obj + ", with pick id " + customId);
+                            this.selectItems(customId);         			
+                        }
+                    }
+                    this.scene.pickResults.splice(0, this.scene.pickResults.length);
+                }
+            }
 
-        if(this.board.isSelected() && this.pieces.isSelected()) {
-            let piece = this.pieces.pieceSelected();
-            let coordinates = this.board.tileSelected();
-            if(this.move(coordinates[0], coordinates[1], piece)) //piece is a prolog number  
-                this.pieces.movePiece(this.selectedPieceId, coordinates[0], coordinates[1]);
-            this.pieces.deselect();
-            this.board.deselect();
-            console.log(this.board.selected);
-        } 
+            //checks if there is a piece and a tile selected to move the piece to there
+            if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN) {
+                if(this.whiteAuxiliaryBoard.isSelected() && this.board.isSelected()) {
+                    let piece = this.whiteAuxiliaryBoard.pieceSelected();
+                    let coordinates = this.board.tileSelected();
+                    this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
+                    this.gameState == gameStateEnum.LOADING;      
+                    this.whiteAuxiliaryBoard.deselect();
+                    this.board.deselect();
+                }
+            }
+            else if(this.currentPlayer == playerTurnEnum.PLAYER2_TURN) {
+                if(this.brownAuxiliaryBoard.isSelected() && this.board.isSelected()) {
+                    let piece = this.whiteAuxiliaryBoard.pieceSelected();
+                    let coordinates = this.board.tileSelected();
+                    this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
+                    this.gameState == gameStateEnum.LOADING;       
+                    this.brownAuxiliaryBoard.deselect();
+                    this.board.deselect();
+                }
+            }
+
+        }
+    }
+
+    selectItems(customId) {      
+        //white Pieces have pick Number = [17,24]
+        if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN && customId >= 17 && customId <= 24){
+            if(!this.whiteAuxiliaryBoard.isSelected() ){
+                this.selectedPieceId = customId;
+                this.whiteAuxiliaryBoard.selected[customId - 17] = 1;	
+            } else if(customId >= 17 && this.whiteAuxiliaryBoard.selected[customId - 17] == 1){
+                this.whiteAuxiliaryBoard.selected[customId - 17] = 0;	
+            } 
+        } else if (this.currentPlayer == playerTurnEnum.PLAYER2_TURN && customId > 24) {
+            if(!this.brownAuxiliaryBoard.isSelected() ){
+                this.selectedPieceId = customId;
+                this.brownAuxiliaryBoard.selected[customId - 25] = 1;	
+            } else if(this.brownAuxiliaryBoard.selected[customId - 25] == 1){
+                this.whiteAuxiliaryBoard.selected[customId - 25] = 0;	
+            } 
+        }
+        //selected a piece          
+        else if(!this.board.isSelected() && customId < 17) {
+            //board tile selected
+            this.board.selected[customId-1] = 1;
+        } else if(customId < 17 && this.board.selected[customId-1] == 1){
+            this.board.selected[customId-1] = 0;	
+        }         
     }
 
     display() {
-       this.board.display();
+        this.board.display();
+        this.whiteAuxiliaryBoard.display();
+        this.brownAuxiliaryBoard.display();
     }
 
 }

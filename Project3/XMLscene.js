@@ -144,7 +144,6 @@ class XMLscene extends CGFscene {
      * Displays the scene.
      */
     display() {
-        this.clearPickRegistration();
         this.gameOrchestrator.orchestrate();
 
         // ---- BEGIN Background, camera and axis setup
@@ -180,9 +179,7 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
-        this.pickMode = true;
         this.gameOrchestrator.display();
-        this.pickMode = false;
 
     }
     

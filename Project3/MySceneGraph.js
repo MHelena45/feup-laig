@@ -1028,9 +1028,8 @@ class MySceneGraph {
                 (grandChildren[0].nodeName != 'rectangle' && grandChildren[0].nodeName != 'triangle' &&
                     grandChildren[0].nodeName != 'cylinder' && grandChildren[0].nodeName != 'sphere' &&
                     grandChildren[0].nodeName != 'torus' && grandChildren[0].nodeName != 'plane' &&
-                    grandChildren[0].nodeName != 'cylinder2' && grandChildren[0].nodeName != 'patch' &&
-                    grandChildren[0].nodeName != 'cube'&& grandChildren[0].nodeName != 'gameboard')) {
-                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere, torus, plane, patch, cylinder2 or cube)";
+                    grandChildren[0].nodeName != 'cylinder2' && grandChildren[0].nodeName != 'patch')) {
+                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere, torus, plane, patch or cylinder2)";
             }
 
             // Specifications for the current primitive.
@@ -1144,7 +1143,7 @@ class MySceneGraph {
 
                 let cylinder;
                 if(primitiveType == "cylinder")
-                    cylinder = new MyCylinderCover(this.scene, primitiveId, base, top, height, slices, stacks);
+                    cylinder = new MyCylinder(this.scene, primitiveId, base, top, height, slices, stacks);
                 else
                     cylinder = new MyCylinder2(this.scene, primitiveId, base, top, height, slices, stacks);
 
@@ -1271,23 +1270,13 @@ class MySceneGraph {
                     controlpoints.push(...[controlpointsAux]);
                 }
                 
-                let patch = new Patch(this.scene, primitiveId, npointsU, npointsV, npartsU, npartsV, controlpoints);
+                var patch = new Patch(this.scene, primitiveId, npointsU, npointsV, npartsU, npartsV, controlpoints);
                 this.primitives[primitiveId] = patch;
 
                 break;
             }
-            case 'cube' :{
-                let cube = new MyUnitCube(this.scene, primitiveId);
-                this.primitives[primitiveId] = cube;
-                break;
-            }
-            case 'gameboard' :{
-                let board = new MyGameBoard(this.scene, primitiveId);
-                this.primitives[primitiveId] = board;
-                break;
-            }
             default:
-                console.warn("To do: Parse other primitives. Primitive with Id=" + primitiveId + " doesn't exists");
+                console.warn("To do: Parse other primitives.");
                 break;
             }
         }
@@ -1303,7 +1292,7 @@ class MySceneGraph {
     parseComponents(componentsNode) {
         var children = componentsNode.children;
         var error;
-        this.components = [];    
+        this.components = [];        
 
         var grandChildren = [];
         var nodeNames = [];
@@ -1360,18 +1349,6 @@ class MySceneGraph {
             else if (childrenIndex < 0)
                 return "negative children index defined for children";
 
-            var visibleIndex = nodeNames.indexOf("visible");
-            if (visibleIndex == null)
-                return "no visible index defined for visible";
-            else if (visibleIndex < 0)
-                return "negative visible index defined for visible";
-
-            var selectIndex = nodeNames.indexOf("select");
-            if (selectIndex == null)
-                return "no select index defined for select";
-            else if (selectIndex < 0)
-                return "negative select index defined for select";
-
             // Create component
             var component = new MyComponent(componentID);
 
@@ -1404,18 +1381,6 @@ class MySceneGraph {
             // Children
             var childrenNode = grandChildren[childrenIndex];
             error = this.parseComponentChildren(component, childrenNode);
-            if (error != null)
-                return error + " for component with ID " + componentID;
-
-            // Visible
-            var visibleNode = grandChildren[visibleIndex];
-            error = this.parseComponentVisible(component, visibleNode);
-            if (error != null)
-                return error + " for component with ID " + componentID;
-
-            // select
-            var selectNode = grandChildren[selectIndex];
-            error = this.parseComponentSelect(component, selectNode);
             if (error != null)
                 return error + " for component with ID " + componentID;
 
@@ -1637,52 +1602,6 @@ class MySceneGraph {
             }
         }
         component.childrenIDs = componentChildren;
-    }
-
-    /**
-     * Parse the visibility of component with ID = componentID
-     * @param {block element} component
-     * @param {block element} visibleNode
-     */
-    parseComponentVisible(component, visibleNode) {
-
-        if (visibleNode.nodeName != "visible") {
-            this.onXMLMinorError("unknown tag <" + visibleNode.nodeName + ">");
-            return;
-        }
-
-        // Get id of the current visible.
-        var visibleEnabled = this.reader.getInteger(visibleNode, 'enabled');
-        if (!(visibleEnabled != null && !isNaN(visibleEnabled)))
-            return "enabled not defined for visible";
-
-        if(visibleEnabled != 1 && visibleEnabled != 0)
-            return "enabled has to be 0 or 1 for visible";
-
-        component.enabled = visibleEnabled;
-    }
-
-        /**
-     * Parse the visibility of component with ID = componentID
-     * @param {block element} component
-     * @param {block element} selectNode
-     */
-    parseComponentSelect(component, selectNode) {
-
-        if (selectNode.nodeName != "select") {
-            this.onXMLMinorError("unknown tag <" + selectNode.nodeName + ">");
-            return;
-        }
-
-        // Get id of the current select.
-        var selectEnabled = this.reader.getInteger(selectNode, 'enabled');
-        if (!(selectEnabled != null && !isNaN(selectEnabled)))
-            return "enabled not defined for select";
-
-        if(selectEnabled != 1 && selectEnabled != 0)
-            return "enabled has to be 0 or 1 for select";
-
-        component.select = selectEnabled;
     }
 
     /**
@@ -1952,7 +1871,6 @@ class MySceneGraph {
     displayScene() {
         let root = this.components[this.idRoot];
         this.processNode(root.componentID, root.materialIDs[0], root.textureID, root.length_s, root.length_t);
-        
     }
 
     /**
@@ -1994,12 +1912,9 @@ class MySceneGraph {
             // if primitive
             if (this.primitives[component.childrenIDs[i]] != null) {
                 //the line below deals with nodes with components and primitives
-                if(component.enabled == 1){
-                    this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
-                    this.displayPrimitives(id, parentMaterialID, component.childrenIDs[i], length_s, length_t);
-                } 
-                else displaySensor(id, component.childrenIDs[i]);
-
+                this.setTextureAndMaterial(id, parentMaterialID, parentTextureID, parentLength_s, parentLength_t);
+                this.primitives[component.childrenIDs[i]].updateTexCoords(length_s, length_t);
+                this.primitives[component.childrenIDs[i]].display();
             }
             else //if component
             { 
@@ -2073,88 +1988,5 @@ class MySceneGraph {
         appliedMaterial.apply();
 
         return [childMaterialID, textureID, length_s, length_t];
-    }
-
-    displayPrimitives(id, parentMaterialID, componentChildrenIDs, length_s, length_t){
-        switch(id){
-            case "whiteConePiece":
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 21);
-                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 22);
-                this.scene.clearPickRegistration();
-                break;
-
-            case "whiteSpherePiece":
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 23);
-                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 24);
-                this.scene.clearPickRegistration();
-                break;
-
-            case "whiteCylinderPiece":
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 19);
-                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 20);
-                this.scene.clearPickRegistration();
-                break;
-                
-            case "whiteCubePiece":
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 17);
-                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 18);
-                this.scene.clearPickRegistration();
-                break;     
-
-            case "brownConePiece":
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 29);
-                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 30);
-                this.scene.clearPickRegistration();
-                break;
-
-            case "brownSpherePiece":
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 31);
-                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 32);
-                this.scene.clearPickRegistration();
-                break;
-
-            case "brownCylinderPiece":
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 27);
-                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 28);
-                this.scene.clearPickRegistration();
-                break;
-
-            case "brownCubePiece":
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 25);
-                this.setTextureAndMaterial(id, parentMaterialID, null, length_s, length_t);
-                this.scene.gameOrchestrator.pieces.displayPiece(this.primitives[componentChildrenIDs], 26);
-                this.scene.clearPickRegistration();
-                break;    
-            default:
-                this.primitives[componentChildrenIDs].updateTexCoords(length_s, length_t);
-                this.primitives[componentChildrenIDs].display();
-                break;
-        }
-
-    }
-    displaySensor(id, componentChildrenIDs){
-        if(id == "sensor"){
-
-            for (var i = 0; i < this.objects.length; i++) {
-                this.pushMatrix();
-                this.translate(i * 2, 0, 0);
-    
-                //Id for pickable objects must be >= 1
-                this.registerForPick(i + 1, this.objects[i]);
-                this.primitives[componentChildrenIDs].display();
-                this.translate(0, 0, -2);
-                if (i != this.objects.length - 1)
-                    this.cylinder.display();
-                this.popMatrix();
-            }
-            
-        }
     }
 }

@@ -29,12 +29,13 @@ serialInclude(['../lib/CGF.js',
                 'MyGameOrchestrator.js',
                 'MyPrologInterface.js',
                 'MyGameBoard.js',
-                'MyUnitCube.js',
+                'MyCube.js',
                 'MyCylinderCover.js',
                 'MyCircle.js',
                 'MyBoardQuarter.js',
                 'MyPiece.js',
                 'MyTile.js',
+                'MyAuxiliaryBoard.js ',
 
 main=function()
 {
@@ -51,7 +52,7 @@ main=function()
     myInterface.setActiveCamera(myScene.camera);
 
 	// get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 
-    var filename=getUrlVars()['file'] || "LAIG_TP1_XML_T6_G02_Theme_Christmas.xml";
+    var filename=getUrlVars()['file'] || "LAIG_TP3_XML_T6_G02_Theme_Christmas.xml";
 
 	// create and load graph, and associate it to scene. 
 	// Check console for loading errors

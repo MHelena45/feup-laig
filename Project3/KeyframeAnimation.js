@@ -142,6 +142,11 @@ class KeyframeAnimation extends Animation {
         return pow;
     }
 
+    restart() {
+        this.firstTime = new Date().getTime();
+        this.instances = [];
+        this.animations = new Map();
+    }
 }
 
 

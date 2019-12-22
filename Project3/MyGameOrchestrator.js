@@ -49,6 +49,13 @@ class MyGameOrchestrator {
         this.whitePlayer = 0;
         this.blackPlayer = 1;
         this.theme = 0;
+        //undo a play
+        this.undo = { undo:function(){ console.log("undo") }};
+        // Set states to begin playing
+        this.startGame = { start: function() {
+            this.gameState = gameStateEnum.PLAYER_CHOOSING;
+            this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
+        }};
 
         /// Labels and ID's for object selection on MyInterface
         this.levels = { '1': 1, '2': 2, '3': 3 }; 
@@ -56,10 +63,9 @@ class MyGameOrchestrator {
         this.themeOptions = {'Christmas': 0, 'Space': 1};
 
         /// Setup game states and initial arrays
-        this.gameState;
+        this.gameState = gameStateEnum.LOADING;
         this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
         this.selectedPieceId;
-
 
         this.setupProlog();
     }
@@ -96,14 +102,6 @@ class MyGameOrchestrator {
                 );
             }
         );
-    }
-
-    /**
-     * Set states to begin playing
-     */
-    startGame() {
-        this.gameState = gameStateEnum.PLAYER_CHOOSING;
-        this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
     }
 
     /**
@@ -209,6 +207,10 @@ class MyGameOrchestrator {
         if(this.whitePlayer == 1)
             console.log("Play Bot");
         else console.log("Play Human");
+    }
+
+    undo(){
+        console.log("Undo");
     }
 
     orchestrate() {

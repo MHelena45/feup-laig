@@ -17,7 +17,7 @@ class MyInterface extends CGFinterface {
         super.init(application);
         // init GUI. For more information on the methods, check:
         //  http://workshop.chromeexperiments.com/examples/gui
-
+        
         this.gui = new dat.GUI();
 
         // add a group of controls (and open/expand by defult)
@@ -25,6 +25,9 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene.gameOrchestrator, 'difficultyLevel', this.scene.gameOrchestrator.levels).name('Difficulty level').onChange(this.scene.gameOrchestrator.updateLevel.bind(this.scene.gameOrchestrator));
         this.gui.add(this.scene.gameOrchestrator, 'blackPlayer', this.scene.gameOrchestrator.playerOptions).name('Black Player').onChange(this.scene.gameOrchestrator.updateBlackPlayer.bind(this.scene.gameOrchestrator));  
         this.gui.add(this.scene.gameOrchestrator, 'theme', this.scene.gameOrchestrator.themeOptions).name('Theme').onChange(this.scene.gameOrchestrator.updateTheme.bind(this.scene.gameOrchestrator));  
+
+        this.gui.add(this.scene.gameOrchestrator.undo,'undo').name('Undo');
+        this.gui.add(this.scene.gameOrchestrator.startGame , 'start').name('Start');
 
         this.initKeys();
 

@@ -17,10 +17,12 @@ class MyGameBoard {
     constructor(scene) {
         this.scene = scene;
         /// internal matrix representation of the board
-        this.boardMatrix = [];
+        this.boardMatrix = [11, 11, 11, 0, 71, 71, 91, 91, 72, 91, 71, 92, 92, 92, 91, 92];
         
         this.sphere = new MySphere(scene, 1, 0.15, 10, 10);
-        this.square = new Plane(this.scene, 2, 2);       
+        this.square = new Plane(this.scene, 2, 2);   
+        
+        this.piece = new MyPiece(this.scene);
 
         this.specialTile = new MyTile(scene);
         this.specialTile.initBuffers();
@@ -44,31 +46,6 @@ class MyGameBoard {
         this.board = new MyBoardQuarter(scene);
         this.board.initBuffers();
 
-    }
-
-    init() {
-        
-    }
-
-    getPieceOnTile(tile) {
-        
-    }
-
-    getTileByPiece(piece) {
-
-    }
-
-    getTileByCoords(piece) {
-        
-    }
-
-    movePiece(piece, row, column) {
-        // remove piece from starting tile
-
-        // add piece on destination tile
-
-        // update piece tile pointer
-       this.piece.movePiece(piece, row, column);
     }
 
     deselect(){
@@ -124,19 +101,23 @@ class MyGameBoard {
                     this.selectMaterial.apply();
                 this.scene.pushMatrix();
                 if(i == 1 && j == 1){
-                    this.scene.registerForPick(h, this.specialTile);
                     this.scene.pushMatrix();
                     this.scene.rotate(Math.PI, 0, 1, 0);
                     this.specialTile.display();
                     this.scene.popMatrix();
-                    this.scene.translate(-10 + i * 4, 0, -10 + j * 4); 
+                    this.scene.translate(-10 + i * 4, 0, -10 + j * 4);
+                    if(this.boardMatrix[h-1] == 0)
+                        this.scene.registerForPick(h, this.specialTile);
+                    else this.piece.displayPiece(this.boardMatrix[h-1]);                      
                     this.scene.scale(4, 1.5, 4);
                 }
                 else {
                     this.scene.translate(-10 + i * 4, 0, -10 + j * 4); 
-                    this.scene.scale(4, 1.5, 4);
+                    if(this.boardMatrix[h-1] == 0)
                     //Id for pickable objects is >= 1
-                    this.scene.registerForPick(h, this.square);
+                        this.scene.registerForPick(h, this.square);
+                    else this.piece.displayPiece(this.boardMatrix[h-1]); 
+                    this.scene.scale(4, 1.5, 4);
                     this.square.display();
                 }
                           
@@ -156,21 +137,25 @@ class MyGameBoard {
                 if(this.selected[h-1] == 1)
                     this.selectMaterial.apply();
                 this.scene.pushMatrix();                
-                if(j == 1 && i == 4){
-                    this.scene.registerForPick(h, this.specialTile);
+                if(j == 1 && i == 4){ 
                     this.scene.pushMatrix();
                     this.scene.rotate(Math.PI/2, 0, 1, 0);
                     this.scene.translate(0, 0.5, 0);
                     this.specialTile.display();
                     this.scene.popMatrix();
                     this.scene.translate(-10 + i * 4, 0.5, -10 + j * 4); 
+                    if(this.boardMatrix[h-1] == 0)
+                        this.scene.registerForPick(h, this.specialTile);
+                    else this.piece.displayPiece(this.boardMatrix[h-1]);  
                     this.scene.scale(4, 1.5, 4);
                 }
                 else {
                     this.scene.translate(-10 + i * 4, 0.5, -10 + j * 4); 
-                    this.scene.scale(4, 1.5, 4);
+                    if(this.boardMatrix[h-1] == 0)
                     //Id for pickable objects is >= 1
-                    this.scene.registerForPick(h, this.square);
+                        this.scene.registerForPick(h, this.square);
+                    else this.piece.displayPiece(this.boardMatrix[h-1]); 
+                    this.scene.scale(4, 1.5, 4);
                     this.square.display();
                 }
                           
@@ -189,21 +174,25 @@ class MyGameBoard {
                 if(this.selected[h-1] == 1)
                     this.selectMaterial.apply();
                 this.scene.pushMatrix();                
-                if(j == 4 && i == 1){
-                    this.scene.registerForPick(h, this.specialTile);
+                if(j == 4 && i == 1){ 
                     this.scene.pushMatrix();
                     this.scene.rotate(-Math.PI/2, 0, 1, 0);
                     this.scene.translate(0, 0.5, 0);
                     this.specialTile.display();
                     this.scene.popMatrix();
                     this.scene.translate(-10 + i * 4, 0.5, -10 + j * 4); 
+                    if(this.boardMatrix[h-1] == 0)
+                        this.scene.registerForPick(h, this.specialTile);
+                    else this.piece.displayPiece(this.boardMatrix[h-1]);  
                     this.scene.scale(4, 1.5, 4);
                 }
                 else {
                     this.scene.translate(-10 + i * 4, 0.5, -10 + j * 4); 
-                    this.scene.scale(4, 1.5, 4);
+                    if(this.boardMatrix[h-1] == 0)
                     //Id for pickable objects is >= 1
-                    this.scene.registerForPick(h, this.square);
+                        this.scene.registerForPick(h, this.square);
+                    else this.piece.displayPiece(this.boardMatrix[h-1]); 
+                    this.scene.scale(4, 1.5, 4);
                     this.square.display();
                 }
                           
@@ -223,19 +212,23 @@ class MyGameBoard {
                 if(this.selected[h-1] == 1)
                     this.selectMaterial.apply();
                 this.scene.pushMatrix();
-                  if(i == 4 && j == 4){
-                    this.scene.registerForPick(h, this.specialTile);
+                  if(i == 4 && j == 4){ 
                     this.scene.pushMatrix();
                     this.specialTile.display();
                     this.scene.popMatrix();
                     this.scene.translate(-10 + i * 4, 0, -10 + j * 4); 
+                    if(this.boardMatrix[h-1] == 0)
+                        this.scene.registerForPick(h, this.specialTile);
+                    else this.piece.displayPiece(this.boardMatrix[h-1]);  
                     this.scene.scale(4, 1.5, 4);
                 }
                 else {
                     this.scene.translate(-10 + i * 4, 0, -10 + j * 4); 
-                    this.scene.scale(4, 1.5, 4);
+                    if(this.boardMatrix[h-1] == 0)
                     //Id for pickable objects is >= 1
-                    this.scene.registerForPick(h, this.square);
+                        this.scene.registerForPick(h, this.square);
+                    else this.piece.displayPiece(this.boardMatrix[h-1]); 
+                    this.scene.scale(4, 1.5, 4);
                     this.square.display();
                 }
                           

@@ -55,6 +55,8 @@ class MyGameOrchestrator {
         this.cameraMovement = 100;
 
         this.gameOver = false;
+        this.scoreboard = new MyScoreboard(this.scene);
+
         this.moves = [];
         this.setupProlog();
     }
@@ -351,6 +353,7 @@ class MyGameOrchestrator {
         this.board.display();
         this.whiteAuxiliaryBoard.display();
         this.brownAuxiliaryBoard.display();
+        this.scoreboard.display();
         if(this.gameState == gameStateEnum.ANIMATING_PIECE) {
             this.pieceAnimation.display();
         }

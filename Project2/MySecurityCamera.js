@@ -22,7 +22,6 @@ class MySecurityCamera extends CGFobject {
 		
 		this.cameraShader = new CGFshader(this.scene.gl, "shaders/camera.vert", "shaders/camera.frag");
 		this.cameraShader.setUniformsValues({ timeFactor: 0 });
-
 	}
 
 	update(t) {

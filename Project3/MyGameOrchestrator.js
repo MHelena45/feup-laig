@@ -4,7 +4,8 @@ const gameStateEnum = {
     PLAYER_CHOOSING: 2,     // player is choosing what to play
     ANIMATING_PIECE: 3,     // moving piece for animation
     GAME_OVER: 4,           // game is over play again
-    CHANGE_PLAYER: 5        //used to animate camera and change between players
+    CHANGE_PLAYER: 5,        //used to animate camera and change between players
+    PLAYING_FILM: 6
 }
 
 const playerTurnEnum = {
@@ -34,12 +35,8 @@ class MyGameOrchestrator {
         this.whitePlayer = 0;
         this.theme = 0;
 
-        //undo a play
-        this.undo = { undo:function(){ console.log("undo") }};
-        // Set states to begin playing
-        this.startGame = { start: function() {
-            console.log("Start");
-        }};
+        //used for buttons (variable doesn't have a value because is a button)
+        this.interface = { interface: function(){ }};
 
         /// Labels and ID's for object selection on MyInterface
         this.levels = { '1': 1, '2': 2, '3': 3 }; 
@@ -47,7 +44,7 @@ class MyGameOrchestrator {
         this.themeOptions = {'Christmas': 0, 'Space': 1};
 
         /// Setup game states and initial arrays
-        this.gameState;
+        this.gameState= gameStateEnum.LOADING;
         this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
         this.selectedPieceId;
 
@@ -140,22 +137,16 @@ class MyGameOrchestrator {
                 // move is not valid (ask player to play again)
                 else {
                     alert("Invalid play! The other player has a piece with the same shape!");
+                    thisGame.gameState = gameStateEnum.PLAYER_CHOOSING;
                 }
             }
         );
     }
 
     /**
-     * animates piece
-     */
-    animate(initialPosition, finalPosition) {
-        
-    }
-
-    /**
      * 
      */
-    undo() {
+    Undo() {
         // get last move and remove it from the moves array
         let lastMove = this.moves.pop();
         // lastMove => [Row, Column, Piece]
@@ -163,7 +154,7 @@ class MyGameOrchestrator {
         let lastColumn = lastMove[1];
         let lastPiece = lastMove[2];
         // update game board
-        this.board[lastRow][lastColumn] = 0;
+        this.board.boardMatrix[lastRow-1][lastColumn-1] = 0;
         // update auxilary board
         let pieceColor = lastPiece % 10;
         switch(pieceColor) {
@@ -262,6 +253,11 @@ class MyGameOrchestrator {
             this.scoreboard.update(time / 1000);
         }
     }
+
+    movie() {
+        this.gameState == gameStateEnum.PLAYING_FILM;
+    }
+
     orchestrate() {
         if(this.gameState == gameStateEnum.PLAYER_CHOOSING) {
             if (this.scene.pickMode == false) {
@@ -284,7 +280,7 @@ class MyGameOrchestrator {
                     let piece = this.whiteAuxiliaryBoard.pieceSelected();
                     let coordinates = this.board.tileSelected();
                     this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
-                    this.gameState = gameStateEnum.ANIMATING_PIECE;     
+                    this.gameState = gameStateEnum.LOADING;     
                     this.pieceAnimation.calculateFrames(this.selectedPieceId, this.board.pickNumberSelected(), piece);
                     this.whiteAuxiliaryBoard.deselect();
                     this.board.deselect();
@@ -295,7 +291,7 @@ class MyGameOrchestrator {
                     let piece = this.brownAuxiliaryBoard.pieceSelected();
                     let coordinates = this.board.tileSelected();
                     this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
-                    this.gameState = gameStateEnum.ANIMATING_PIECE; 
+                    this.gameState = gameStateEnum.LOADING; 
                     this.pieceAnimation.calculateFrames(this.selectedPieceId, this.board.pickNumberSelected(), piece);       
                     this.brownAuxiliaryBoard.deselect();
                     this.board.deselect();
@@ -366,6 +362,9 @@ class MyGameOrchestrator {
         }
         if(this.gameState == gameStateEnum.GAME_OVER) {
             alert("Game Over!");
+            if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN)
+                this.scoreboard.whitePlayerWins++;
+            else this.scoreboard.brownPlayerWins++;
             this.reset();
             this.gameState == gameStateEnum.LOADING;
         }

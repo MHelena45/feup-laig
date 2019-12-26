@@ -27,9 +27,10 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene.gameOrchestrator, 'whitePlayer', this.scene.gameOrchestrator.playerOptions).name('White Player').onChange(this.scene.gameOrchestrator.updateWhitePlayer.bind(this.scene.gameOrchestrator));  
         this.gui.add(this.scene.gameOrchestrator, 'theme', this.scene.gameOrchestrator.themeOptions).name('Theme').onChange(this.scene.gameOrchestrator.updateTheme.bind(this.scene.gameOrchestrator));  
 
-        this.gui.add(this.scene.gameOrchestrator.undo,'undo').name('Undo');
-        this.gui.add(this.scene.gameOrchestrator.startGame , 'start').name('Start').onChange(this.scene.gameOrchestrator.start.bind(this.scene.gameOrchestrator));
-        this.gui.add(this.scene.gameOrchestrator.startGame , 'start').name('Reset').onChange(this.scene.gameOrchestrator.reset.bind(this.scene.gameOrchestrator));
+        this.gui.add(this.scene.gameOrchestrator.interface, 'interface').name('Undo').onChange(this.scene.gameOrchestrator.Undo.bind(this.scene.gameOrchestrator));
+        this.gui.add(this.scene.gameOrchestrator.interface , 'interface').name('Start').onChange(this.scene.gameOrchestrator.start.bind(this.scene.gameOrchestrator));
+        this.gui.add(this.scene.gameOrchestrator.interface , 'interface').name('Reset').onChange(this.scene.gameOrchestrator.reset.bind(this.scene.gameOrchestrator));
+        this.gui.add(this.scene.gameOrchestrator.interface , 'interface').name('See movie').onChange(this.scene.gameOrchestrator.movie.bind(this.scene.gameOrchestrator));
 
         this.initKeys();
 

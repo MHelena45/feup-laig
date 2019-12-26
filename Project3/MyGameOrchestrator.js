@@ -256,18 +256,11 @@ class MyGameOrchestrator {
         else console.log("Play Human");
     }
 
-<<<<<<< HEAD
-    undo(){
-        console.log("Undo");
-    }
-
     update(time) {
         if(this.gameState == gameStateEnum.ANIMATING_PIECE) {
             this.pieceAnimation.update(time);
         }
     }
-=======
->>>>>>> 5daaa0a342cb71fc01cf72359c1da4a20e110e1b
     orchestrate() {
         if(this.gameState == gameStateEnum.PLAYER_CHOOSING) {
             if (this.scene.pickMode == false) {

@@ -9,7 +9,7 @@ class MyAuxiliaryBoard extends CGFobject {
      */
     constructor(scene, beginningPosition, firstPickNumber) {
         super(scene); 
-        this.pieces;
+        this.pieces = [];
         this.beginningPosition = beginningPosition;
         this.firstPickNumber = firstPickNumber;
         this.piece = new MyPiece(this.scene);

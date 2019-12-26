@@ -64,6 +64,15 @@ class MyGameBoard {
         return [row, column];
     }
 
+    pickNumberSelected() {
+        let i;
+        for(i = 0; i < this.selected.length; i++) {
+            if(this.selected[i] == 1)
+                break;
+        }
+        return i++;
+    }
+
     isSelected() {
         for(let i = 0; i < this.selected.length; i++)
             if(this.selected[i] == 1)

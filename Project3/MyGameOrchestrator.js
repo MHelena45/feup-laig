@@ -24,8 +24,10 @@ class MyGameOrchestrator {
 
         /// Board
         this.board = new MyGameBoard(this.scene);
+        this.tempBoard;
         this.whiteAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, 10, 16);
         this.brownAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, -20, 24);
+        this.pieceAnimation = new PieceAnimation(this.scene);
 
         /// Difficulty Level DropBox
         this.difficultyLevel = 1;
@@ -45,7 +47,7 @@ class MyGameOrchestrator {
         this.themeOptions = {'Christmas': 0, 'Space': 1};
 
         /// Setup game states and initial arrays
-        this.gameState = gameStateEnum.LOADING;
+        this.gameState;
         this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
         this.selectedPieceId;
 
@@ -68,7 +70,7 @@ class MyGameOrchestrator {
         this.prologInterface.getPrologRequest(
             "init_board",
             function (data) {
-                thisGame.board.boardMatrix = JSON.parse(data.target.response);
+                thisGame.tempBoard = JSON.parse(data.target.response);
                 /// Initialize white pieces
                 thisGame.prologInterface.getPrologRequest(
                     "init_white_pieces",
@@ -124,9 +126,9 @@ class MyGameOrchestrator {
                     thisGame.board.boardMatrix = response[1];
                     thisGame.whiteAuxiliaryBoard.pieces = response[2];
                     thisGame.brownAuxiliaryBoard.pieces = response[3];
-                    //thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
-                    thisGame.gameState = gameStateEnum.CHANGE_PLAYER;
-                    this.moves.push(...move);
+                    thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
+                   // thisGame.gameState = gameStateEnum.CHANGE_PLAYER;
+                    thisGame.moves.push(...move);
                     // thisGame.isGameOver(row, column, piece);
                 
                 }
@@ -207,6 +209,11 @@ class MyGameOrchestrator {
         console.log("Undo");
     }
 
+    update(time) {
+        if(this.gameState == gameStateEnum.ANIMATING_PIECE) {
+            this.pieceAnimation.update(time);
+        }
+    }
     orchestrate() {
         if(this.gameState == gameStateEnum.PLAYER_CHOOSING) {
             if (this.scene.pickMode == false) {
@@ -229,7 +236,8 @@ class MyGameOrchestrator {
                     let piece = this.whiteAuxiliaryBoard.pieceSelected();
                     let coordinates = this.board.tileSelected();
                     this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
-                    this.gameState == gameStateEnum.LOADING;     
+                    this.gameState = gameStateEnum.ANIMATING_PIECE;     
+                    this.pieceAnimation.calculateFrames(this.selectedPieceId, this.board.pickNumberSelected(), piece);
                     this.whiteAuxiliaryBoard.deselect();
                     this.board.deselect();
                 }
@@ -239,7 +247,8 @@ class MyGameOrchestrator {
                     let piece = this.brownAuxiliaryBoard.pieceSelected();
                     let coordinates = this.board.tileSelected();
                     this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
-                    this.gameState == gameStateEnum.LOADING;        
+                    this.gameState = gameStateEnum.ANIMATING_PIECE; 
+                    this.pieceAnimation.calculateFrames(this.selectedPieceId, this.board.pickNumberSelected(), piece);       
                     this.brownAuxiliaryBoard.deselect();
                     this.board.deselect();
                 }
@@ -248,7 +257,7 @@ class MyGameOrchestrator {
         } else if(this.gameState == gameStateEnum.CHANGE_PLAYER) {
             // update current player (0 -> 1, 1 -> 0)
             this.changePlayer(!this.currentPlayer);
-        } 
+        }
     }
 
     selectItems(customId) {      
@@ -301,6 +310,9 @@ class MyGameOrchestrator {
         this.board.display();
         this.whiteAuxiliaryBoard.display();
         this.brownAuxiliaryBoard.display();
+        if(this.gameState == gameStateEnum.ANIMATING_PIECE) {
+            this.pieceAnimation.display();
+        }
     }
 
 }

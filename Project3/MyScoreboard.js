@@ -10,12 +10,12 @@ class MyScoreboard extends CGFobject {
         this.whitePlayerWins = 0;
         this.brownPlayerWins = 0;
         this.timePerPlay = 20;
-        this.time;
+        this.firstTime;
 
         // ---- scoreboard primitives
         // label
         this.label = new MyRectangle(this.scene, 'label',  0.15, -0.25, 1, 0.70);
-        // time
+        // deltaTime
         this.timeTens = new MyRectangle(this.scene, 'timeTens',  0.20, 0.15, 0.80, 0.70);
         this.timeUnits = new MyRectangle(this.scene, 'timeUnits',  0.25, 0.20, 0.80, 0.70);
         // white player score
@@ -28,7 +28,7 @@ class MyScoreboard extends CGFobject {
         // ---- material
         // label
         this.labelMaterial = new CGFappearance(this.scene);
-        // time
+        // deltaTime
         this.timeTensMaterial = new CGFappearance(this.scene);
         this.timeUnitsMaterial = new CGFappearance(this.scene);
         // white player
@@ -54,15 +54,28 @@ class MyScoreboard extends CGFobject {
         // ---- set texture for label material
         this.labelMaterial.setTexture(this.labelTexture);
 
+         // deltaTime
+         this.timeTensMaterial.setTexture(this.numbersTextures[0]);
+         this.timeUnitsMaterial.setTexture(this.numbersTextures[0]);
+         // white player wins
+         this.whiteTensMaterial.setTexture(this.numbersTextures[0]);
+         this.whiteUnitsMaterial.setTexture(this.numbersTextures[0]);
+         // brown player wins
+         this.brownTensMaterial.setTexture(this.numbersTextures[0]);
+         this.brownUnitsMaterial.setTexture(this.numbersTextures[0]);
+
         // ---- shaders
         this.scoreboardShader = new CGFshader(this.scene.gl, "shaders/scoreboard.vert", "shaders/scoreboard.frag");
     }
 
-    update(t) {
-        this.time = Math.floor(t % 20);
-        // time
-        this.timeTensMaterial.setTexture(this.numbersTextures[Math.floor(this.time / 10)]);
-        this.timeUnitsMaterial.setTexture(this.numbersTextures[this.time % 10]);
+    update() {
+        this.firstTime = this.firstTime || new Date().getTime();
+        let currentTime = new Date().getTime();
+        let deltaTime = (currentTime - this.firstTime) / 1000;
+        let stopwatch = this.timePerPlay - Math.floor(deltaTime % 20);
+        // deltaTime
+        this.timeTensMaterial.setTexture(this.numbersTextures[Math.floor(stopwatch / 10)]);
+        this.timeUnitsMaterial.setTexture(this.numbersTextures[stopwatch % 10]);
         // white player wins
         this.whiteTensMaterial.setTexture(this.numbersTextures[Math.floor(this.whitePlayerWins / 10)]);
         this.whiteUnitsMaterial.setTexture(this.numbersTextures[this.whitePlayerWins % 10]);
@@ -72,7 +85,7 @@ class MyScoreboard extends CGFobject {
     }
     
     reset() {
-        this.time = this.timePerPlay;
+        this.firstTime = new Date().getTime();
     }
 
 	display() {
@@ -86,7 +99,7 @@ class MyScoreboard extends CGFobject {
         // label
         this.labelMaterial.apply();
         this.label.display();
-        // time
+        // deltaTime
         this.timeTensMaterial.apply();
         this.timeTens.display();
         this.timeUnitsMaterial.apply();

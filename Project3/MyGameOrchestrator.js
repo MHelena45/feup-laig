@@ -101,6 +101,7 @@ class MyGameOrchestrator {
                 this.gameState = gameStateEnum.PLAYER_CHOOSING;
                 this.cameraMovement = 100;
                 this.currentPlayer = player;
+                this.scoreboard.reset();
             }
         }
     }
@@ -352,6 +353,7 @@ class MyGameOrchestrator {
 
     reset() {
         this.setupProlog();
+        this.scoreboard.reset();
     }
 
     display() {

@@ -7,20 +7,12 @@ class MyAuxiliaryBoard extends CGFobject {
      * Constructor
      * @param {Scene} scene 
      */
-    constructor(scene, id, PieceMaterial, beginningPosition, firstPickNumber) {
+    constructor(scene, beginningPosition, firstPickNumber) {
         super(scene); 
         this.pieces;
-        this.pieceMaterial = PieceMaterial;
         this.beginningPosition = beginningPosition;
         this.firstPickNumber = firstPickNumber;
         this.piece = new MyPiece(this.scene);
-
-        // red Material
-        this.selectMaterial = new CGFappearance(this.scene);
-        this.selectMaterial.setAmbient(1, 0, 0, 1);
-        this.selectMaterial.setDiffuse(1, 0, 0, 1);
-        this.selectMaterial.setSpecular(0.9, 0.1, 0.1, 1);
-        this.selectMaterial.setShininess(10.0);  
 
         this.selected = [0, 0, 0, 0, 0, 0, 0, 0 ];
 
@@ -52,17 +44,14 @@ class MyAuxiliaryBoard extends CGFobject {
         let h = 1;
         /* Down squares */
         for(let j = 1; j <= 2; j++){
-            for(let i = 1; i <= 4; i++){  
-                this.pieceMaterial.apply();    
+            for(let i = 1; i <= 4; i++){   
                 //checks if the piece i
                 if(this.pieces[h-1] != null && this.pieces[h-1] != 0){             
-                    if(this.selected[h-1] == 1)
-                        this.selectMaterial.apply();
                     this.scene.pushMatrix();
                     this.scene.translate(-10 + i * 4, 0, this.beginningPosition + j * 4); 
                     //Id for pickable objects is >= 1
                     this.scene.registerForPick(h + this.firstPickNumber, this.piece.getPiece(this.pieces[h-1]));
-                    this.piece.displayPiece(this.pieces[h-1]);       
+                    this.piece.displayPiece(this.pieces[h-1], this.selected[h-1]);       
                     this.scene.popMatrix();           
                     h += 2;
                 }

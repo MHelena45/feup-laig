@@ -17,7 +17,7 @@ class MyGameBoard {
     constructor(scene) {
         this.scene = scene;
         /// internal matrix representation of the board
-        this.boardMatrix = [11, 11, 11, 0, 71, 71, 91, 91, 72, 91, 71, 92, 92, 92, 91, 92];
+        this.boardMatrix;
         
         this.sphere = new MySphere(scene, 1, 0.15, 10, 10);
         this.square = new Plane(this.scene, 2, 2);   
@@ -103,28 +103,36 @@ class MyGameBoard {
                 if(i == 1 && j == 1){
                     this.scene.pushMatrix();
                     this.scene.rotate(Math.PI, 0, 1, 0);
+                    if(this.boardMatrix == null || this.boardMatrix[i-1][j-1] == 0){
+                        this.scene.registerForPick(h, this.specialTile);
+                    } 
                     this.specialTile.display();
                     this.scene.popMatrix();
-                    this.scene.translate(-10 + i * 4, 0, -10 + j * 4);
-                    if(this.boardMatrix[h-1] == 0)
-                        this.scene.registerForPick(h, this.specialTile);
-                    else this.piece.displayPiece(this.boardMatrix[h-1]);                      
+                    this.scene.translate(-10 + i * 4, 0, -10 + j * 4);   
+                    if(this.boardMatrix != null && this.boardMatrix[i-1][j-1] != 0) {//there is a piece to display                 
+                        this.piece.displayPiece(this.boardMatrix[i-1][j-1], this.selected[h-1]);   
+                        this.notSelectMaterial.apply(); 
+                    }                   
                     this.scene.scale(4, 1.5, 4);
                 }
                 else {
                     this.scene.translate(-10 + i * 4, 0, -10 + j * 4); 
-                    if(this.boardMatrix[h-1] == 0)
+                    if(this.boardMatrix == null || this.boardMatrix[i-1][j-1] == 0)
                     //Id for pickable objects is >= 1
                         this.scene.registerForPick(h, this.square);
-                    else this.piece.displayPiece(this.boardMatrix[h-1]); 
+                    else {
+                        this.piece.displayPiece(this.boardMatrix[i-1][j-1], this.selected[h-1]); 
+                        this.notSelectMaterial.apply(); 
+                    } 
                     this.scene.scale(4, 1.5, 4);
                     this.square.display();
-                }
-                          
+                }      
                 this.sphere.display(); 
                 h++;
                 this.scene.popMatrix();
-                this.notSelectMaterial.apply();
+                this.notSelectMaterial.apply(); //if a tile is selected only that should be red 
+                //used because if there is a piece in the previous other tile of the board can have a wrong pick id
+                this.scene.clearPickRegistration();
             }       
             h += 2;    
         } 
@@ -141,20 +149,26 @@ class MyGameBoard {
                     this.scene.pushMatrix();
                     this.scene.rotate(Math.PI/2, 0, 1, 0);
                     this.scene.translate(0, 0.5, 0);
+                    if(this.boardMatrix == null || this.boardMatrix[i-1][j-1] == 0)
+                        this.scene.registerForPick(h, this.specialTile);
                     this.specialTile.display();
                     this.scene.popMatrix();
                     this.scene.translate(-10 + i * 4, 0.5, -10 + j * 4); 
-                    if(this.boardMatrix[h-1] == 0)
-                        this.scene.registerForPick(h, this.specialTile);
-                    else this.piece.displayPiece(this.boardMatrix[h-1]);  
+                    if(this.boardMatrix != null && this.boardMatrix[i-1][j-1] != 0) { //there is a piece to display
+                        this.piece.displayPiece(this.boardMatrix[i-1][j-1], this.selected[h-1]); 
+                        this.notSelectMaterial.apply(); //display of the piece change material being applied
+                    } 
                     this.scene.scale(4, 1.5, 4);
                 }
                 else {
                     this.scene.translate(-10 + i * 4, 0.5, -10 + j * 4); 
-                    if(this.boardMatrix[h-1] == 0)
+                    if( this.boardMatrix == null ||this.boardMatrix[i-1][j-1] == 0)
                     //Id for pickable objects is >= 1
                         this.scene.registerForPick(h, this.square);
-                    else this.piece.displayPiece(this.boardMatrix[h-1]); 
+                    else {
+                        this.piece.displayPiece(this.boardMatrix[i-1][j-1], this.selected[h-1]); 
+                        this.notSelectMaterial.apply();
+                    }
                     this.scene.scale(4, 1.5, 4);
                     this.square.display();
                 }
@@ -162,7 +176,9 @@ class MyGameBoard {
                 this.sphere.display(); 
                 h++;
                 this.scene.popMatrix();
-                this.notSelectMaterial.apply();
+                this.notSelectMaterial.apply(); //if a tile is selected only that should be red 
+                //used because if there is a piece in the previous other tile of the board can have a wrong pick id
+                this.scene.clearPickRegistration();
             }     
             h += 2;      
         } 
@@ -178,20 +194,26 @@ class MyGameBoard {
                     this.scene.pushMatrix();
                     this.scene.rotate(-Math.PI/2, 0, 1, 0);
                     this.scene.translate(0, 0.5, 0);
+                    if(this.boardMatrix == null || this.boardMatrix[i-1][j-1] == 0)
+                        this.scene.registerForPick(h, this.specialTile);
                     this.specialTile.display();
                     this.scene.popMatrix();
                     this.scene.translate(-10 + i * 4, 0.5, -10 + j * 4); 
-                    if(this.boardMatrix[h-1] == 0)
-                        this.scene.registerForPick(h, this.specialTile);
-                    else this.piece.displayPiece(this.boardMatrix[h-1]);  
+                    if(this.boardMatrix != null && this.boardMatrix[i-1][j-1] != 0) { //there is a piece to display
+                        this.piece.displayPiece(this.boardMatrix[i-1][j-1], this.selected[h-1]); 
+                        this.notSelectMaterial.apply(); //display of the piece change material being applied
+                    }
                     this.scene.scale(4, 1.5, 4);
                 }
                 else {
                     this.scene.translate(-10 + i * 4, 0.5, -10 + j * 4); 
-                    if(this.boardMatrix[h-1] == 0)
+                    if(this.boardMatrix == null || this.boardMatrix[i-1][j-1] == 0)
                     //Id for pickable objects is >= 1
                         this.scene.registerForPick(h, this.square);
-                    else this.piece.displayPiece(this.boardMatrix[h-1]); 
+                    else {
+                        this.piece.displayPiece(this.boardMatrix[i-1][j-1], this.selected[h-1]); 
+                        this.notSelectMaterial.apply();
+                    }
                     this.scene.scale(4, 1.5, 4);
                     this.square.display();
                 }
@@ -199,7 +221,9 @@ class MyGameBoard {
                 this.sphere.display(); 
                 h++;
                 this.scene.popMatrix();
-                this.notSelectMaterial.apply();
+                this.notSelectMaterial.apply(); //if a tile is selected only that should be red 
+                //used because if there is a piece in the previous other tile of the board can have a wrong pick id
+                this.scene.clearPickRegistration();
             }   
             h += 2;        
         } 
@@ -214,20 +238,26 @@ class MyGameBoard {
                 this.scene.pushMatrix();
                   if(i == 4 && j == 4){ 
                     this.scene.pushMatrix();
+                    if(this.boardMatrix == null || this.boardMatrix[i-1][j-1] == 0)
+                        this.scene.registerForPick(h, this.specialTile);
                     this.specialTile.display();
                     this.scene.popMatrix();
                     this.scene.translate(-10 + i * 4, 0, -10 + j * 4); 
-                    if(this.boardMatrix[h-1] == 0)
-                        this.scene.registerForPick(h, this.specialTile);
-                    else this.piece.displayPiece(this.boardMatrix[h-1]);  
+                    if(this.boardMatrix != null && this.boardMatrix[i-1][j-1] != 0) { //there is a piece to display
+                        this.piece.displayPiece(this.boardMatrix[i-1][j-1], this.selected[h-1]);  
+                        this.notSelectMaterial.apply();
+                    }
                     this.scene.scale(4, 1.5, 4);
                 }
                 else {
                     this.scene.translate(-10 + i * 4, 0, -10 + j * 4); 
-                    if(this.boardMatrix[h-1] == 0)
+                    if(this.boardMatrix == null || this.boardMatrix[i-1][j-1] == 0)
                     //Id for pickable objects is >= 1
                         this.scene.registerForPick(h, this.square);
-                    else this.piece.displayPiece(this.boardMatrix[h-1]); 
+                    else {
+                        this.piece.displayPiece(this.boardMatrix[i-1][j-1], this.selected[h-1]); 
+                        this.notSelectMaterial.apply();
+                    }
                     this.scene.scale(4, 1.5, 4);
                     this.square.display();
                 }
@@ -235,21 +265,12 @@ class MyGameBoard {
                 this.sphere.display(); 
                 h++;
                 this.scene.popMatrix();
-                this.notSelectMaterial.apply();
+                this.notSelectMaterial.apply(); //if a tile is selected only that should be red 
+                //used because if there is a piece in the previous other tile of the board can have a wrong pick id
+                this.scene.clearPickRegistration();
             }     
             h += 2;      
         }  
-        this.scene.clearPickRegistration();
     }
    
-	/**
-     * @method updateTexCoords
-	 * Updates the list of texture coordinates of the triangle
-     * @param {value of the length_u in texture} length_u 
-     * @param {value of the length_v in texture} length_v 
-     */
-	updateTexCoords(length_u, length_v) {		
-
-	}
-
 }

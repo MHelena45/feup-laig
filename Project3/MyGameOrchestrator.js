@@ -3,7 +3,8 @@ const gameStateEnum = {
     LOADING: 1,             // load file, render and request scene, board, pieces, etc
     PLAYER_CHOOSING: 2,     // player is choosing what to play
     ANIMATING_PIECE: 3,     // moving piece for animation
-    GAME_OVER: 4            // game is over play again
+    GAME_OVER: 4,           // game is over play again
+    CHANGE_PLAYER: 5        //used to animate camera and change between players
 }
 
 const playerTurnEnum = {
@@ -21,24 +22,11 @@ class MyGameOrchestrator {
         /// Prolog interface for communication
         this.prologInterface = new MyPrologInterface();
 
-        // white Material
-        this.whiteMaterial = new CGFappearance(this.scene);
-        this.whiteMaterial.setAmbient(0.7, 0.7, 0.7, 1);
-        this.whiteMaterial.setDiffuse(1, 0, 0, 1);
-        this.whiteMaterial.setSpecular(0.9, 0.1, 0.1, 1);
-        this.whiteMaterial.setShininess(10.0);  
-        
-        // brown Material
-        this.brownMaterial = new CGFappearance(this.scene);
-        this.brownMaterial.setAmbient(0.20, 0.10, 0, 1);
-        this.brownMaterial.setDiffuse(0.50, 0.15, 0.00, 1);
-        this.brownMaterial.setSpecular(1.0, 0.40, 0.10, 1);
-        this.brownMaterial.setShininess(1.0); 
 
         /// Board
         this.board = new MyGameBoard(this.scene);
-        this.whiteAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, 101, this.whiteMaterial, 10, 16);
-        this.brownAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, 102, this.brownMaterial, -20, 24);
+        this.whiteAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, 10, 16);
+        this.brownAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, -20, 24);
 
         //Todo remove this and get it from the Prolog response
         this.whiteAuxiliaryBoard.pieces = [11, 11, 51, 51, 71, 71, 91, 91];
@@ -53,6 +41,7 @@ class MyGameOrchestrator {
         this.undo = { undo:function(){ console.log("undo") }};
         // Set states to begin playing
         this.startGame = { start: function() {
+            console.log("Start");
             this.gameState = gameStateEnum.PLAYER_CHOOSING;
             this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
         }};
@@ -66,6 +55,9 @@ class MyGameOrchestrator {
         this.gameState = gameStateEnum.LOADING;
         this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
         this.selectedPieceId;
+
+        //used for animated movement of the camera and not just a change of 2 points
+        this.cameraMovement = 100;
 
         this.setupProlog();
     }
@@ -94,14 +86,24 @@ class MyGameOrchestrator {
                             function (data) {
                                 thisGame.board.brownPieces = JSON.parse(data.target.response);
                                 thisGame.gameState = gameStateEnum.PLAYER_CHOOSING;
-                              //  this.whiteAuxiliaryBoard.pieces = thisGame.board.whitePieces;
-                              //  this.brownAuxiliaryBoard.pieces = thisGame.board.brownPieces;
                             }
                         );
                     }
                 );
             }
         );
+    }
+
+    changePlayer(player) {
+        if(this.gameState == gameStateEnum.CHANGE_PLAYER) {         
+            this.scene.camera.orbit(vec3.fromValues(0, 1, 0), Math.PI/100);
+            this.cameraMovement--;
+            if(this.cameraMovement == 0){
+                this.gameState = gameStateEnum.PLAYER_CHOOSING;
+                this.cameraMovement = 100;
+                this.currentPlayer = player;
+            }
+        }
     }
 
     /**
@@ -128,7 +130,9 @@ class MyGameOrchestrator {
                     thisGame.board.boardMatrix = response[1];
                     thisGame.board.whitePieces = response[2];
                     thisGame.board.brownPieces = response[3];
-                    thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
+                    //thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
+                    thisGame.gameState = gameStateEnum.CHANGE_PLAYER;
+                
                 }
                 // move is not valid (ask player to play again)
                 else {
@@ -214,7 +218,7 @@ class MyGameOrchestrator {
     }
 
     orchestrate() {
-        if(gameStateEnum.PLAYER_CHOOSING) {
+        if(this.gameState == gameStateEnum.PLAYER_CHOOSING) {
             if (this.scene.pickMode == false) {
                 if (this.scene.pickResults != null && this.scene.pickResults.length > 0) {
                     for (let i = 0; i < this.scene.pickResults.length; i++) {
@@ -235,22 +239,26 @@ class MyGameOrchestrator {
                     let piece = this.whiteAuxiliaryBoard.pieceSelected();
                     let coordinates = this.board.tileSelected();
                     this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
-                    this.gameState == gameStateEnum.LOADING;      
+                    this.gameState == gameStateEnum.LOADING;     
                     this.whiteAuxiliaryBoard.deselect();
                     this.board.deselect();
                 }
             }
             else if(this.currentPlayer == playerTurnEnum.PLAYER2_TURN) {
                 if(this.brownAuxiliaryBoard.isSelected() && this.board.isSelected()) {
-                    let piece = this.whiteAuxiliaryBoard.pieceSelected();
+                    let piece = this.brownAuxiliaryBoard.pieceSelected();
                     let coordinates = this.board.tileSelected();
                     this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
-                    this.gameState == gameStateEnum.LOADING;       
+                    this.gameState == gameStateEnum.LOADING;        
                     this.brownAuxiliaryBoard.deselect();
                     this.board.deselect();
                 }
             }
 
+        } else if(this.gameState == gameStateEnum.CHANGE_PLAYER) {
+            if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN)
+                this.changePlayer(playerTurnEnum.PLAYER2_TURN);
+            else this.changePlayer(playerTurnEnum.PLAYER1_TURN);
         }
     }
 

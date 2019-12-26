@@ -8,6 +8,28 @@ class MyPiece extends CGFobject {
     constructor(scene) {
         super(scene);
 
+        // white Material
+        this.whiteMaterial = new CGFappearance(this.scene);
+        this.whiteMaterial.setAmbient(0.7, 0.7, 0.7, 1);
+        this.whiteMaterial.setDiffuse(1, 0, 0, 1);
+        this.whiteMaterial.setSpecular(0.9, 0.1, 0.1, 1);
+        this.whiteMaterial.setShininess(10.0);  
+        
+        // brown Material
+        this.brownMaterial = new CGFappearance(this.scene);
+        this.brownMaterial.setAmbient(0.20, 0.10, 0, 1);
+        this.brownMaterial.setDiffuse(0.50, 0.15, 0.00, 1);
+        this.brownMaterial.setSpecular(1.0, 0.40, 0.10, 1);
+        this.brownMaterial.setShininess(1.0); 
+
+        // red Material
+        this.selectMaterial = new CGFappearance(this.scene);
+        this.selectMaterial.setAmbient(1, 0, 0, 1);
+        this.selectMaterial.setDiffuse(1, 0, 0, 1);
+        this.selectMaterial.setSpecular(0.9, 0.1, 0.1, 1);
+        this.selectMaterial.setShininess(10.0);  
+
+
         this.cylinder = new MyCylinderCover(this.scene, 100, 1, 1, 2, 10, 10);
         this.cone = new MyCylinder(this.scene, 101, 1, 0, 3, 10, 10);
         this.cube = new MyCube(this.scene, 102 );
@@ -30,12 +52,17 @@ class MyPiece extends CGFobject {
                 return this.sphere;
                 break;
             default:
-                console.log("Auxiliary Board with invalid Piece");
                 break;
         }
     }
 
-    displayPiece(prologNumberPiece) {
+    displayPiece(prologNumberPiece, selected) {
+        //pieces of player 1 end with 1 and of player 2 end with 2 always in prolog representation
+        if(selected == 1)
+            this.selectMaterial.apply();
+        else if(prologNumberPiece % 2 == 0)
+            this.brownMaterial.apply();
+        else this.whiteMaterial.apply();
         this.scene.pushMatrix();
         this.scene.rotate(-Math.PI/2, 1, 0, 0);
         switch(prologNumberPiece){
@@ -54,7 +81,6 @@ class MyPiece extends CGFobject {
                 this.sphere.display();
                 break;
             default:
-                console.log("Auxiliary Board with invalid Piece");
                 break;
         }
         this.scene.popMatrix();

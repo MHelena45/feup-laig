@@ -14,8 +14,7 @@ class MyAuxiliaryBoard extends CGFobject {
         this.firstPickNumber = firstPickNumber;
         this.piece = new MyPiece(this.scene);
 
-        this.selected = [0, 0, 0, 0, 0, 0, 0, 0 ];
-
+        this.selected = [0, 0, 0, 0, 0, 0, 0, 0];
     }
 
     deselect() {
@@ -34,13 +33,44 @@ class MyAuxiliaryBoard extends CGFobject {
         this.pieces = newPieces; 
     }
 
-    pieceSelected(){
+    pieceSelected() {
         for(let i = 0; i < this.selected.length; i++)
             if(this.selected[i] == 1)
                 return this.pieces[i];
     }
 
-    display(){
+    /**
+     * Places piece in correct position of pieces array
+     * @param {int} piece two digit number containing information about the piece
+     */
+    undo(piece) {
+        let pieceCode = Math.ceil(piece / 10);
+
+        switch(pieceCode) {
+            // CONE - first and second position
+            case 1:
+                if (this.pieces[1] == 0) this.pieces[1] = piece;
+                else this.pieces[0] = piece;
+                break;
+            // CUBE - third and fourth position
+            case 5:
+                if (this.pieces[3] == 0) this.pieces[3] = piece;
+                else this.pieces[2] = piece;
+                break;
+            // CYLINDER - fifth and sixth position
+            case 7:
+                if (this.pieces[5] == 0) this.pieces[5] = piece;
+                else this.pieces[4] = piece;
+                break;
+            // SPHERE - seventh and eighth position
+            case 9:
+                if (this.pieces[7] == 0) this.pieces[7] = piece;
+                else this.pieces[6] = piece;
+                break;
+        }
+    }
+
+    display() {
         let h = 1;
         /* Down squares */
         for(let j = 1; j <= 2; j++){
@@ -59,7 +89,6 @@ class MyAuxiliaryBoard extends CGFobject {
             }       
             h = 2;    
         } 
-  
     }
    
 	/**

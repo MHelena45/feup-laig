@@ -34,6 +34,7 @@ class MyGameOrchestrator {
         this.brownPlayer = 1;
         this.whitePlayer = 0;
         this.theme = 0;
+
         //undo a play
         this.undo = { undo:function(){ console.log("undo") }};
         // Set states to begin playing
@@ -108,10 +109,10 @@ class MyGameOrchestrator {
      * @param {Number} row row where the piece is going to be moved
      * @param {Number} piece which piece is going to be moved
      */
-    move(row, column, piece) {
+    move(column, row, piece) {
         // build request
         let thisGame = this;
-        let move = [column, row, piece];
+        let move = [row, column, piece];
         let request = "move(" + JSON.stringify(move) + "," + JSON.stringify(thisGame.board.boardMatrix) + ","
         + JSON.stringify(thisGame.whiteAuxiliaryBoard.pieces) + "," + JSON.stringify(thisGame.brownAuxiliaryBoard.pieces) + ","
         + JSON.stringify(this.currentPlayer + 1) + ")";
@@ -127,14 +128,14 @@ class MyGameOrchestrator {
                     thisGame.whiteAuxiliaryBoard.pieces = response[2];
                     thisGame.brownAuxiliaryBoard.pieces = response[3];
                     thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
-                   // thisGame.gameState = gameStateEnum.CHANGE_PLAYER;
-                    thisGame.moves.push(...move);
+                    
+                    this.moves.push(move);
                     // thisGame.isGameOver(row, column, piece);
                 
                 }
                 // move is not valid (ask player to play again)
                 else {
-                    alert("Invalid play! The other player have a piece with the same form!");
+                    alert("Invalid play! The other player has a piece with the same shape!");
                 }
             }
         );
@@ -147,20 +148,70 @@ class MyGameOrchestrator {
         
     }
 
+    /**
+     * 
+     */
+    undo() {
+        // get last move and remove it from the moves array
+        let lastMove = this.moves.pop();
+        // lastMove => [Row, Column, Piece]
+        let lastRow = lastMove[0];
+        let lastColumn = lastMove[1];
+        let lastPiece = lastMove[2];
+        // update game board
+        this.board[lastRow][lastColumn] = 0;
+        // update auxilary board
+        let pieceColor = lastPiece % 10;
+        switch(pieceColor) {
+            // WHITE
+            case 1:
+                this.whiteAuxiliaryBoard.undo(lastPiece);
+                break;
+            // BROWN
+            case 2:
+                this.brownAuxiliaryBoard.undo(lastPiece);
+                break;
+        }
+        // change player
+        this.gameState = gameStateEnum.CHANGE_PLAYER;
+    }
+
+    /**
+     * 
+     */
+    botMove() {
+        // build request
+        let thisGame = this;
+        let request = "bot_move(" + JSON.stringify(this.difficultyLevel) + "," + JSON.stringify(thisGame.board.boardMatrix) + ","
+        + JSON.stringify(thisGame.whiteAuxiliaryBoard.pieces) + "," + JSON.stringify(thisGame.brownAuxiliaryBoard.pieces) + ","
+        + JSON.stringify(this.currentPlayer + 1) + ")";
+        // send request
+        this.prologInterface.getPrologRequest(
+            request,
+            function (data) {
+                let response = JSON.parse(data.target.response);
+                thisGame.board.boardMatrix = response[0];
+                thisGame.whiteAuxiliaryBoard.pieces = response[1];
+                thisGame.brownAuxiliaryBoard.pieces = response[2];
+                thisGame.gameState = gameStateEnum.CHANGE_PLAYER;
+                this.moves.push(move);
+            }
+        );
+    }
 
     /**
      * verifies if game is over
-     * @param {Number} row last move row
      * @param {Number} column last move column
+     * @param {Number} row last move row
      * @param {Number} piece last move piece
      */
-    isGameOver(row, column, piece) {
+    isGameOver(column, row, piece) {
         // change game state to loading
         //this.gameState = gameStateEnum.LOADING;
 
         // build request
         let thisGame = this;
-        let move = [column, row, piece];
+        let move = [row, column, piece];
         let request = "game_over(" + JSON.stringify(thisGame.board.boardMatrix)
         + ","+ JSON.stringify(move) + ")";
         // send request
@@ -205,6 +256,7 @@ class MyGameOrchestrator {
         else console.log("Play Human");
     }
 
+<<<<<<< HEAD
     undo(){
         console.log("Undo");
     }
@@ -214,6 +266,8 @@ class MyGameOrchestrator {
             this.pieceAnimation.update(time);
         }
     }
+=======
+>>>>>>> 5daaa0a342cb71fc01cf72359c1da4a20e110e1b
     orchestrate() {
         if(this.gameState == gameStateEnum.PLAYER_CHOOSING) {
             if (this.scene.pickMode == false) {

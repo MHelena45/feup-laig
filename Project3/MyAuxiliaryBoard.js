@@ -44,7 +44,7 @@ class MyAuxiliaryBoard extends CGFobject {
      * @param {int} piece two digit number containing information about the piece
      */
     undo(piece) {
-        let pieceCode = Math.ceil(piece / 10);
+        let pieceCode = Math.floor(piece / 10);
 
         switch(pieceCode) {
             // CONE - first and second position

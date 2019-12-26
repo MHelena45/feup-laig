@@ -20,8 +20,8 @@ parse_input(init_board, Board):-
     init_board(Board).
 
 % white pieces
-parse_input(init_white_pieces, Board):-
-    init_white_pieces(Board).
+parse_input(init_white_pieces, White_Board):-
+    init_white_pieces(White_Board).
 
 % brown pieces
 parse_input(init_brown_pieces, Board):-

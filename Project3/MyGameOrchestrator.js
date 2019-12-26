@@ -35,15 +35,13 @@ class MyGameOrchestrator {
         /// Difficulty Level DropBox
         this.difficultyLevel = 1;
         this.whitePlayer = 0;
-        this.blackPlayer = 1;
+        this.brownPlayer = 1;
         this.theme = 0;
         //undo a play
         this.undo = { undo:function(){ console.log("undo") }};
         // Set states to begin playing
         this.startGame = { start: function() {
             console.log("Start");
-            this.gameState = gameStateEnum.PLAYER_CHOOSING;
-            this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
         }};
 
         /// Labels and ID's for object selection on MyInterface
@@ -85,7 +83,7 @@ class MyGameOrchestrator {
                             "init_brown_pieces",
                             function (data) {
                                 thisGame.board.brownPieces = JSON.parse(data.target.response);
-                                thisGame.gameState = gameStateEnum.PLAYER_CHOOSING;
+                                thisGame.gameState = gameStateEnum.MENU;
                             }
                         );
                     }
@@ -96,7 +94,7 @@ class MyGameOrchestrator {
 
     changePlayer(player) {
         if(this.gameState == gameStateEnum.CHANGE_PLAYER) {         
-            this.scene.camera.orbit(vec3.fromValues(0, 1, 0), Math.PI/100);
+            this.scene.camera.orbit(vec3.fromValues(1, 0, 1), Math.PI/100);
             this.cameraMovement--;
             if(this.cameraMovement == 0){
                 this.gameState = gameStateEnum.PLAYER_CHOOSING;
@@ -137,6 +135,7 @@ class MyGameOrchestrator {
                 // move is not valid (ask player to play again)
                 else {
                     thisGame.gameState = currentPlayer;
+                    alert("Invalid play! The other player have a piece with the same form!");
                 }
             }
         );
@@ -201,8 +200,8 @@ class MyGameOrchestrator {
         console.log("Level change!");
     }
 
-    updateBlackPlayer(){
-        if(this.blackPlayer == 1)
+    updateBrownPlayer(){
+        if(this.brownPlayer == 1)
             console.log("Play Bot");
         else console.log("Play Human");
     }
@@ -286,6 +285,22 @@ class MyGameOrchestrator {
         } else if(customId < 17 && this.board.selected[customId-1] == 1){
             this.board.selected[customId-1] = 0;	
         }         
+    }
+
+    start() {
+        if(this.gameState == gameStateEnum.MENU) {
+            this.gameState = gameStateEnum.PLAYER_CHOOSING;
+            this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
+            this.whiteAuxiliaryBoard.deselect();
+            this.board.deselect();
+        } else {
+            alert("Board is loading. Wait 3 seconds!");
+        }
+
+    }
+
+    reset() {
+        this.setupProlog();
     }
 
     display() {

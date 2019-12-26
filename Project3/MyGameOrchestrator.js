@@ -28,10 +28,6 @@ class MyGameOrchestrator {
         this.whiteAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, 10, 16);
         this.brownAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, -20, 24);
 
-        //Todo remove this and get it from the Prolog response
-        this.whiteAuxiliaryBoard.pieces = [11, 11, 51, 51, 71, 71, 91, 91];
-        this.brownAuxiliaryBoard.pieces = [12, 12, 52, 52, 72, 72, 92, 92];
-
         /// Difficulty Level DropBox
         this.difficultyLevel = 1;
         this.whitePlayer = 0;
@@ -77,12 +73,12 @@ class MyGameOrchestrator {
                 thisGame.prologInterface.getPrologRequest(
                     "init_white_pieces",
                     function (data) {
-                        thisGame.board.whitePieces = JSON.parse(data.target.response);
+                        thisGame.whiteAuxiliaryBoard.pieces = JSON.parse(data.target.response);
                         /// Initialize brown pieces
                         thisGame.prologInterface.getPrologRequest(
                             "init_brown_pieces",
                             function (data) {
-                                thisGame.board.brownPieces = JSON.parse(data.target.response);
+                                thisGame.brownAuxiliaryBoard.pieces = JSON.parse(data.target.response);
                                 thisGame.gameState = gameStateEnum.MENU;
                             }
                         );
@@ -115,19 +111,22 @@ class MyGameOrchestrator {
         let thisGame = this;
         let move = [column, row, piece];
         let request = "move(" + JSON.stringify(move) + "," + JSON.stringify(thisGame.board.boardMatrix) + ","
-        + JSON.stringify(thisGame.board.whitePieces) + "," + JSON.stringify(thisGame.board.brownPieces) + ","
+        + JSON.stringify(thisGame.whiteAuxiliaryBoard.pieces) + "," + JSON.stringify(thisGame.brownAuxiliaryBoard.pieces) + ","
         + JSON.stringify(this.currentPlayer + 1) + ")";
         // send request
         this.prologInterface.getPrologRequest(
             request,
             function (data) {
+                debugger;
                 let response = JSON.parse(data.target.response);
                 let validMove = response[0];
+                debugger;
                 // move is valid
                 if (validMove) {
+                    debugger;
                     thisGame.board.boardMatrix = response[1];
-                    thisGame.board.whitePieces = response[2];
-                    thisGame.board.brownPieces = response[3];
+                    thisGame.whiteAuxiliaryBoard.pieces = response[2];
+                    thisGame.brownAuxiliaryBoard.pieces = response[3];
                     //thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
                     thisGame.gameState = gameStateEnum.CHANGE_PLAYER;
                 

@@ -37,7 +37,7 @@ parse_input(move(Move, Board, White_Pieces, Brown_Pieces, Player), [ValidMove, N
     move(0, Move, Board, White_Pieces, Brown_Pieces, Player, New_Board, New_White_Pieces, New_Brown_Pieces),
     ValidMove = true.
 % invalid move
-parse_input(move(Move, Board, White_Pieces, Brown_Pieces, Player), [ValidMove, New_Board, New_White_Pieces, New_Brown_Pieces]):-
+parse_input(move(Move, Board, White_Pieces, Brown_Pieces, Player), [ValidMove, [], [], []]):-
     \+move(0, Move, Board, White_Pieces, Brown_Pieces, Player, New_Board, New_White_Pieces, New_Brown_Pieces),
     ValidMove = false.
 

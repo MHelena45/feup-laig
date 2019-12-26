@@ -262,6 +262,10 @@ class MyGameOrchestrator {
         if(this.gameState == gameStateEnum.ANIMATING_PIECE) {
             this.pieceAnimation.update(time);
         }
+
+        if (this.gameState == gameStateEnum.PLAYER_CHOOSING) {
+            this.scoreboard.update(time / 1000);
+        }
     }
     orchestrate() {
         if(this.gameState == gameStateEnum.PLAYER_CHOOSING) {
@@ -345,6 +349,7 @@ class MyGameOrchestrator {
             this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
             this.whiteAuxiliaryBoard.deselect();
             this.board.deselect();
+            this.scoreboard.reset();
         } else {
             alert("Board is loading. Wait 3 seconds!");
         }

@@ -53,6 +53,8 @@ class MyGameOrchestrator {
         //used for animated movement of the camera and not just a change of 2 points
         this.cameraMovement = 100;
 
+        this.scoreboard = new MyScoreboard(this.scene);
+
         this.moves = [];
         this.setupProlog();
     }
@@ -347,6 +349,7 @@ class MyGameOrchestrator {
         this.board.display();
         this.whiteAuxiliaryBoard.display();
         this.brownAuxiliaryBoard.display();
+        this.scoreboard.display();
     }
 
 }

@@ -5,7 +5,7 @@ const gameStateEnum = {
     ANIMATING_PIECE: 3,     // moving piece for animation
     GAME_OVER: 4,           // game is over play again
     CHANGE_PLAYER: 5,        //used to animate camera and change between players
-    PLAYING_FILM: 6
+    ANIMATING_PIECE_MOVIE: 6
 }
 
 const playerTurnEnum = {
@@ -55,6 +55,7 @@ class MyGameOrchestrator {
         this.scoreboard = new MyScoreboard(this.scene);
 
         this.moves = [];
+        this.currentFrame = 0;
         this.setupProlog();
     }
 
@@ -130,6 +131,7 @@ class MyGameOrchestrator {
                     else thisGame.brownAuxiliaryBoard.removePiece(thisGame.selectedPieceId);
                     thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
                     
+                    move = [row, column, piece, thisGame.selectedPieceId];
                     thisGame.moves.push(move);
                     thisGame.isGameOver(row, column, piece);
                 
@@ -245,7 +247,7 @@ class MyGameOrchestrator {
     }
 
     update(time) {
-        if(this.gameState == gameStateEnum.ANIMATING_PIECE) {
+        if(this.gameState == gameStateEnum.ANIMATING_PIECE || this.gameState == gameStateEnum.ANIMATING_PIECE_MOVIE) {
             this.pieceAnimation.update(time);
         }
 
@@ -255,7 +257,42 @@ class MyGameOrchestrator {
     }
 
     movie() {
-        this.gameState == gameStateEnum.PLAYING_FILM;
+        if(this.gameState != gameStateEnum.ANIMATING_PIECE_MOVIE) {
+            this.board.boardMatrix = [ [0, 0, 0, 0] , [0, 0, 0, 0], [0, 0, 0, 0] , [0, 0, 0, 0]];
+            this.board.tempBoard = [ [0, 0, 0, 0] , [0, 0, 0, 0], [0, 0, 0, 0] , [0, 0, 0, 0]];
+            this.whiteAuxiliaryBoard.pieces = [11, 11, 51, 51, 71, 71, 91, 91];
+            this.brownAuxiliaryBoard.pieces = [12, 12, 52, 52, 72, 72, 92, 92];
+            this.next_frame_movie();
+            this.gameState = gameStateEnum.ANIMATING_PIECE_MOVIE;
+        }         
+    }
+
+    next_frame_movie() {
+        if(this.currentFrame < this.moves.length) {
+            //changes board
+            if(this.currentFrame >= 1) {
+                let move = this.moves[this.currentFrame-1];
+                this.board.boardMatrix[ move[0] -1][move[1] - 1] = move[2];
+            }
+
+            //calculates the nest frames to do the move
+            let move = this.moves[this.currentFrame];
+            let column = move[0];
+            let row = move[1];
+            let tilePickNumber = (row- 1) * 4 + column;
+            let prologPiece = move[2];
+            this.pieceAnimation.calculateFrames(move[3], tilePickNumber, prologPiece);
+
+            if( prologPiece % 2 == 0)
+                this.brownAuxiliaryBoard.removePiece(move[3]);
+            else this.whiteAuxiliaryBoard.removePiece(move[3]);
+
+            this.currentFrame++;  
+        } else {
+            this.reset();
+            alert("Movie Finished");
+        }
+                
     }
 
     orchestrate() {
@@ -357,10 +394,10 @@ class MyGameOrchestrator {
         this.whiteAuxiliaryBoard.display();
         this.brownAuxiliaryBoard.display();
         this.scoreboard.display();
-        if(this.gameState == gameStateEnum.ANIMATING_PIECE) {
+        if(this.gameState == gameStateEnum.ANIMATING_PIECE || this.gameState == gameStateEnum.ANIMATING_PIECE_MOVIE) {
             this.pieceAnimation.display();
         }
-        if(this.gameState == gameStateEnum.GAME_OVER) {
+        else if(this.gameState == gameStateEnum.GAME_OVER) {
             alert("Game Over!");
             if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN)
                 this.scoreboard.whitePlayerWins++;

@@ -86,13 +86,19 @@ class PieceAnimation extends CGFobject {
     }
 
     update(time){
+        console.log(this.pieceMoving);
         this.animation.update();
         //if animation end, check if the game ended with that play
         if(this.animation.end == true) {
-            this.scene.gameOrchestrator.board.boardMatrix = this.scene.gameOrchestrator.board.tempBoard;
-            if(this.scene.gameOrchestrator.gameOver == true)
-                this.scene.gameOrchestrator.gameState = gameStateEnum.GAME_OVER
-            else this.scene.gameOrchestrator.gameState = gameStateEnum.CHANGE_PLAYER;
+            if(this.scene.gameOrchestrator.gameState == gameStateEnum.ANIMATING_PIECE) {
+                this.scene.gameOrchestrator.board.boardMatrix = this.scene.gameOrchestrator.board.tempBoard;
+                if(this.scene.gameOrchestrator.gameOver == true)
+                    this.scene.gameOrchestrator.gameState = gameStateEnum.GAME_OVER
+                else this.scene.gameOrchestrator.gameState = gameStateEnum.CHANGE_PLAYER;
+            } else { //when gameStateEnum.ANIMATING_PIECE_MOVIE
+                this.scene.gameOrchestrator.next_frame_movie();
+            }
+
         }
             
     }

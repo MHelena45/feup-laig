@@ -22,7 +22,6 @@ class MyGameOrchestrator {
         /// Prolog interface for communication
         this.prologInterface = new MyPrologInterface();
 
-
         /// Board
         this.board = new MyGameBoard(this.scene);
         this.whiteAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, 10, 16);
@@ -34,8 +33,8 @@ class MyGameOrchestrator {
 
         /// Difficulty Level DropBox
         this.difficultyLevel = 1;
-        this.whitePlayer = 0;
         this.brownPlayer = 1;
+        this.whitePlayer = 0;
         this.theme = 0;
         //undo a play
         this.undo = { undo:function(){ console.log("undo") }};
@@ -57,6 +56,7 @@ class MyGameOrchestrator {
         //used for animated movement of the camera and not just a change of 2 points
         this.cameraMovement = 100;
 
+        this.moves = [];
         this.setupProlog();
     }
 
@@ -94,7 +94,7 @@ class MyGameOrchestrator {
 
     changePlayer(player) {
         if(this.gameState == gameStateEnum.CHANGE_PLAYER) {         
-            this.scene.camera.orbit(vec3.fromValues(1, 0, 1), Math.PI/100);
+            this.scene.camera.orbit([0, 1, 0], Math.PI/100);
             this.cameraMovement--;
             if(this.cameraMovement == 0){
                 this.gameState = gameStateEnum.PLAYER_CHOOSING;
@@ -130,11 +130,12 @@ class MyGameOrchestrator {
                     thisGame.board.brownPieces = response[3];
                     //thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
                     thisGame.gameState = gameStateEnum.CHANGE_PLAYER;
+                    this.moves.push(...move);
+                  //  thisGame.isGameOver(row, column, piece);
                 
                 }
                 // move is not valid (ask player to play again)
                 else {
-                    thisGame.gameState = currentPlayer;
                     alert("Invalid play! The other player have a piece with the same form!");
                 }
             }
@@ -151,13 +152,13 @@ class MyGameOrchestrator {
 
     /**
      * verifies if game is over
-     * @param {Number} column last move column
      * @param {Number} row last move row
+     * @param {Number} column last move column
      * @param {Number} piece last move piece
      */
-    isGameOver(column, row, piece) {
+    isGameOver(row, column, piece) {
         // change game state to loading
-        this.gameState = gameStateEnum.LOADING;
+        //this.gameState = gameStateEnum.LOADING;
 
         // build request
         let thisGame = this;
@@ -173,13 +174,7 @@ class MyGameOrchestrator {
                 // game is over
                 if (gameOver) {
                     thisGame.gameState = gameStateEnum.GAME_OVER;
-                }
-                else {
-                    // update game state
-                    thisGame.gameState = gameStateEnum.PLAYER_CHOOSING;
-                    // update current player (0 -> 1, 1 -> 0)
-                    this.currentPlayer = !this.currentPlayer;
-                }
+                } 
             }
         );
     }
@@ -255,27 +250,30 @@ class MyGameOrchestrator {
             }
 
         } else if(this.gameState == gameStateEnum.CHANGE_PLAYER) {
-            if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN)
-                this.changePlayer(playerTurnEnum.PLAYER2_TURN);
-            else this.changePlayer(playerTurnEnum.PLAYER1_TURN);
-        }
+            // update current player (0 -> 1, 1 -> 0)
+            this.changePlayer(!this.currentPlayer);
+        } 
     }
 
     selectItems(customId) {      
         //white Pieces have pick Number = [17,24]
         if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN && customId >= 17 && customId <= 24){
+            //selects piece is there isn't any selected
             if(!this.whiteAuxiliaryBoard.isSelected() ){
                 this.selectedPieceId = customId;
                 this.whiteAuxiliaryBoard.selected[customId - 17] = 1;	
-            } else if(customId >= 17 && this.whiteAuxiliaryBoard.selected[customId - 17] == 1){
+            } //deselect piece if it is selected
+            else if(customId >= 17 && this.whiteAuxiliaryBoard.selected[customId - 17] == 1){
                 this.whiteAuxiliaryBoard.selected[customId - 17] = 0;	
             } 
         } else if (this.currentPlayer == playerTurnEnum.PLAYER2_TURN && customId > 24) {
+            //selects piece is there isn't any selected
             if(!this.brownAuxiliaryBoard.isSelected() ){
                 this.selectedPieceId = customId;
                 this.brownAuxiliaryBoard.selected[customId - 25] = 1;	
-            } else if(this.brownAuxiliaryBoard.selected[customId - 25] == 1){
-                this.whiteAuxiliaryBoard.selected[customId - 25] = 0;	
+            } //deselect piece if it is selected
+            else if(this.brownAuxiliaryBoard.selected[customId - 25] == 1){
+                this.brownAuxiliaryBoard.selected[customId - 25] = 0;	
             } 
         }
         //selected a piece          

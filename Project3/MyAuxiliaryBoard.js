@@ -52,14 +52,14 @@ class MyAuxiliaryBoard extends CGFobject {
                     //Id for pickable objects is >= 1
                     this.scene.registerForPick(h + this.firstPickNumber, this.piece.getPiece(this.pieces[h-1]));
                     this.piece.displayPiece(this.pieces[h-1], this.selected[h-1]);       
-                    this.scene.popMatrix();           
-                    h += 2;
+                    this.scene.popMatrix();                         
                 }
+                h += 2;
+                this.scene.clearPickRegistration();
             }       
             h = 2;    
         } 
-
-        this.scene.clearPickRegistration();
+  
     }
    
 	/**

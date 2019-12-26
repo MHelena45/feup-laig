@@ -47,6 +47,7 @@ class XMLscene extends CGFscene {
     update(t) {
         if(this.sceneInited)
             this.graph.update(t);
+        this.gameOrchestrator.update(t);
     }
 
 

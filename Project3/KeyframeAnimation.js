@@ -82,14 +82,23 @@ class KeyframeAnimation extends Animation {
             this.animationMatrix = mat4.rotateY(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * transformations[1][1]);
             this.animationMatrix = mat4.rotateZ(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * transformations[1][2]);
             this.animationMatrix = mat4.scale(this.animationMatrix, this.animationMatrix, transformations[2]);
-            this.firstTime = new Date().getTime();
-            this.currentAnimationKey = 0;
+          //  this.restart();
         }
         
     }
 
     apply() {  
         this.scene.multMatrix(this.animationMatrix);
+    }
+
+    restart(){
+        this.firstTime = new Date().getTime();
+        this.currentAnimationKey = 0;
+    }
+
+    eraseTransformations(){
+        this.instances = [];
+        this.animations = new Map();
     }
 
     /** Operations with arrays, applied to all the elements */

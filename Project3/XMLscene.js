@@ -128,7 +128,7 @@ class XMLscene extends CGFscene {
 
         this.initDefaultCamera();
 
-      //  this.interface.setActiveCamera(null);
+        this.interface.setActiveCamera(null);
     }
 
     // controls if M/m is release

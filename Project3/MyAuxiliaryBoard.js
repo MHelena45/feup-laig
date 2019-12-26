@@ -29,8 +29,8 @@ class MyAuxiliaryBoard extends CGFobject {
         return false;
     }
 
-    updatePieces(newPieces) {
-        this.pieces = newPieces; 
+    removePiece(piece) {
+        this.pieces[piece - this.firstPickNumber - 1] = 0;
     }
 
     pieceSelected() {
@@ -91,14 +91,5 @@ class MyAuxiliaryBoard extends CGFobject {
         } 
     }
    
-	/**
-     * @method updateTexCoords
-	 * Updates the list of texture coordinates of the triangle
-     * @param {value of the length_u in texture} length_u 
-     * @param {value of the length_v in texture} length_v 
-     */
-	updateTexCoords(length_u, length_v) {		
-
-	}
 
 }

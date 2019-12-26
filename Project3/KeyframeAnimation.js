@@ -15,6 +15,7 @@ class KeyframeAnimation extends Animation {
         this.firstTime;                     //time since animation start
         this.deltaTime;                     
         this.currentAnimationKey = 0;
+        this.end = false;
     }
 
     sortInstances(){
@@ -82,7 +83,8 @@ class KeyframeAnimation extends Animation {
             this.animationMatrix = mat4.rotateY(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * transformations[1][1]);
             this.animationMatrix = mat4.rotateZ(this.animationMatrix, this.animationMatrix, DEGREE_TO_RAD * transformations[1][2]);
             this.animationMatrix = mat4.scale(this.animationMatrix, this.animationMatrix, transformations[2]);
-          //  this.restart();
+            this.end = true;
+            this.restart();
         }
         
     }

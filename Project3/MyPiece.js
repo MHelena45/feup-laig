@@ -10,10 +10,10 @@ class MyPiece extends CGFobject {
 
         // white Material
         this.whiteMaterial = new CGFappearance(this.scene);
-        this.whiteMaterial.setAmbient(0.7, 0.7, 0.7, 1);
-        this.whiteMaterial.setDiffuse(1, 0, 0, 1);
-        this.whiteMaterial.setSpecular(0.9, 0.1, 0.1, 1);
-        this.whiteMaterial.setShininess(10.0);  
+        this.whiteMaterial.setAmbient(0.40, 0.40, 0.40, 1);
+        this.whiteMaterial.setDiffuse(0.4, 0.4, 0.4, 1);
+        this.whiteMaterial.setSpecular(0.90, 0.90, 0.90, 1);
+        this.whiteMaterial.setShininess(1.0);  
         
         // brown Material
         this.brownMaterial = new CGFappearance(this.scene);
@@ -25,7 +25,7 @@ class MyPiece extends CGFobject {
         // red Material
         this.selectMaterial = new CGFappearance(this.scene);
         this.selectMaterial.setAmbient(1, 0, 0, 1);
-        this.selectMaterial.setDiffuse(1, 0, 0, 1);
+        this.selectMaterial.setDiffuse(0.9, 0.1, 0.1, 1);
         this.selectMaterial.setSpecular(0.9, 0.1, 0.1, 1);
         this.selectMaterial.setShininess(10.0);  
 
@@ -70,14 +70,14 @@ class MyPiece extends CGFobject {
                 this.cone.display();
                 break;
             case 51: case 52:
-                this.scene.translate(0, 0, 0.5);
+                this.scene.translate(0, 0, 0.85);
                 this.cube.display();
                 break;
             case 71: case 72:
                 this.cylinder.display();
                 break;
             case 91: case 92:
-                this.scene.translate(0, 0, 0.5);
+                this.scene.translate(0, 0, 0.85);
                 this.sphere.display();
                 break;
             default:

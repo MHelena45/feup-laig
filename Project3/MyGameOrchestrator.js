@@ -24,7 +24,6 @@ class MyGameOrchestrator {
 
         /// Board
         this.board = new MyGameBoard(this.scene);
-        this.tempBoard;
         this.whiteAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, 10, 16);
         this.brownAuxiliaryBoard = new MyAuxiliaryBoard(this.scene, -20, 24);
         this.pieceAnimation = new PieceAnimation(this.scene);
@@ -55,6 +54,7 @@ class MyGameOrchestrator {
         //used for animated movement of the camera and not just a change of 2 points
         this.cameraMovement = 100;
 
+        this.gameOver = false;
         this.moves = [];
         this.setupProlog();
     }
@@ -71,7 +71,7 @@ class MyGameOrchestrator {
         this.prologInterface.getPrologRequest(
             "init_board",
             function (data) {
-                thisGame.tempBoard = JSON.parse(data.target.response);
+                thisGame.board.boardMatrix = JSON.parse(data.target.response);
                 /// Initialize white pieces
                 thisGame.prologInterface.getPrologRequest(
                     "init_white_pieces",
@@ -124,13 +124,14 @@ class MyGameOrchestrator {
                 let validMove = response[0];
                 // move is valid
                 if (validMove) {
-                    thisGame.board.boardMatrix = response[1];
-                    thisGame.whiteAuxiliaryBoard.pieces = response[2];
-                    thisGame.brownAuxiliaryBoard.pieces = response[3];
+                    thisGame.board.tempBoard = response[1];
+                    if(thisGame.currentPlayer == playerTurnEnum.PLAYER1_TURN)
+                        thisGame.whiteAuxiliaryBoard.removePiece(thisGame.selectedPieceId);
+                    else thisGame.brownAuxiliaryBoard.removePiece(thisGame.selectedPieceId);
                     thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
                     
-                    this.moves.push(move);
-                    // thisGame.isGameOver(row, column, piece);
+                    thisGame.moves.push(move);
+                    thisGame.isGameOver(row, column, piece);
                 
                 }
                 // move is not valid (ask player to play again)
@@ -201,29 +202,22 @@ class MyGameOrchestrator {
 
     /**
      * verifies if game is over
-     * @param {Number} column last move column
      * @param {Number} row last move row
+     * @param {Number} column last move column
      * @param {Number} piece last move piece
      */
-    isGameOver(column, row, piece) {
-        // change game state to loading
-        //this.gameState = gameStateEnum.LOADING;
-
+    isGameOver( row, column, piece) {
         // build request
         let thisGame = this;
         let move = [row, column, piece];
-        let request = "game_over(" + JSON.stringify(thisGame.board.boardMatrix)
+        let request = "game_over(" + JSON.stringify( thisGame.board.tempBoard )
         + ","+ JSON.stringify(move) + ")";
         // send request
         this.prologInterface.getPrologRequest(
             request,
             function (data) {
                 let response = JSON.parse(data.target.response);
-                let gameOver = response[0];
-                // game is over
-                if (gameOver) {
-                    thisGame.gameState = gameStateEnum.GAME_OVER;
-                } 
+                thisGame.gameOver = response[0];
             }
         );
     }
@@ -359,6 +353,11 @@ class MyGameOrchestrator {
         this.brownAuxiliaryBoard.display();
         if(this.gameState == gameStateEnum.ANIMATING_PIECE) {
             this.pieceAnimation.display();
+        }
+        if(this.gameState == gameStateEnum.GAME_OVER) {
+            alert("Game Over!");
+            this.reset();
+            this.gameState == gameStateEnum.LOADING;
         }
     }
 

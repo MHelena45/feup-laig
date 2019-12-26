@@ -18,7 +18,7 @@ class MyAuxiliaryBoard extends CGFobject {
 
     }
 
-    deselect(){
+    deselect() {
         for(let i = 0; i < this.selected.length; i++)
             this.selected[i] = 0;
     }

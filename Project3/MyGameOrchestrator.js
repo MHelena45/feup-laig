@@ -117,20 +117,17 @@ class MyGameOrchestrator {
         this.prologInterface.getPrologRequest(
             request,
             function (data) {
-                debugger;
                 let response = JSON.parse(data.target.response);
                 let validMove = response[0];
-                debugger;
                 // move is valid
                 if (validMove) {
-                    debugger;
                     thisGame.board.boardMatrix = response[1];
                     thisGame.whiteAuxiliaryBoard.pieces = response[2];
                     thisGame.brownAuxiliaryBoard.pieces = response[3];
                     //thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
                     thisGame.gameState = gameStateEnum.CHANGE_PLAYER;
                     this.moves.push(...move);
-                  //  thisGame.isGameOver(row, column, piece);
+                    // thisGame.isGameOver(row, column, piece);
                 
                 }
                 // move is not valid (ask player to play again)

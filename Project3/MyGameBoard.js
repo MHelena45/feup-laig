@@ -18,6 +18,7 @@ class MyGameBoard {
         this.scene = scene;
         /// internal matrix representation of the board
         this.boardMatrix;
+        this.tempBoard; //used for piece animation
         
         this.sphere = new MySphere(scene, 1, 0.15, 10, 10);
         this.square = new Plane(this.scene, 2, 2);   
@@ -70,7 +71,8 @@ class MyGameBoard {
             if(this.selected[i] == 1)
                 break;
         }
-        return i++;
+        i++;
+        return i;
     }
 
     isSelected() {

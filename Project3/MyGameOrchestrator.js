@@ -126,7 +126,7 @@ class MyGameOrchestrator {
                     thisGame.whiteAuxiliaryBoard.pieces = response[2];
                     thisGame.brownAuxiliaryBoard.pieces = response[3];
                     thisGame.gameState = gameStateEnum.CHANGE_PLAYER;
-                    this.moves.push(...move);
+                    this.moves.push(move);
                     // thisGame.isGameOver(row, column, piece);
                 
                 }
@@ -145,6 +145,9 @@ class MyGameOrchestrator {
         
     }
 
+    /**
+     * 
+     */
     undo() {
         // get last move and remove it from the moves array
         let lastMove = this.moves.pop();
@@ -168,6 +171,29 @@ class MyGameOrchestrator {
         }
         // change player
         this.gameState = gameStateEnum.CHANGE_PLAYER;
+    }
+
+    /**
+     * 
+     */
+    botMove() {
+        // build request
+        let thisGame = this;
+        let request = "bot_move(" + JSON.stringify(this.difficultyLevel) + "," + JSON.stringify(thisGame.board.boardMatrix) + ","
+        + JSON.stringify(thisGame.whiteAuxiliaryBoard.pieces) + "," + JSON.stringify(thisGame.brownAuxiliaryBoard.pieces) + ","
+        + JSON.stringify(this.currentPlayer + 1) + ")";
+        // send request
+        this.prologInterface.getPrologRequest(
+            request,
+            function (data) {
+                let response = JSON.parse(data.target.response);
+                thisGame.board.boardMatrix = response[0];
+                thisGame.whiteAuxiliaryBoard.pieces = response[1];
+                thisGame.brownAuxiliaryBoard.pieces = response[2];
+                thisGame.gameState = gameStateEnum.CHANGE_PLAYER;
+                this.moves.push(move);
+            }
+        );
     }
 
     /**

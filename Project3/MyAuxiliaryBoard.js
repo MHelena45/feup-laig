@@ -89,7 +89,6 @@ class MyAuxiliaryBoard extends CGFobject {
             }       
             h = 2;    
         } 
-  
     }
    
 	/**

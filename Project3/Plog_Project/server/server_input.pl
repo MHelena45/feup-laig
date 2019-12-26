@@ -54,3 +54,12 @@ parse_input(game_over(Board, Move), [GameOver]):-
 parse_input(game_over(Board, Move), [GameOver]):-
     \+game_over(0, Board, _, Move, _, _, _, _, _, _),
     GameOver = true.
+
+% ======================================================================================
+%   Bot Move
+% ======================================================================================
+% Move -> [row, column, piece]
+% Player -> 1 (white pieces) or 2 (brown pieces)
+parse_input(bot_move(Level, Board, White_Pieces, Brown_Pieces, Player), [New_Board, New_White_Pieces, New_Brown_Pieces]):-
+    choose_move(Board, White_Pieces, Brown_Pieces, Level, Move, Player),
+    move(0, Move, Board, White_Pieces, Brown_Pieces, Player, New_Board, New_White_Pieces, New_Brown_Pieces).

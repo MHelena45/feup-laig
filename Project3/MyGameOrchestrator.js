@@ -41,7 +41,7 @@ class MyGameOrchestrator {
         /// Labels and ID's for object selection on MyInterface
         this.levels = { '1': 1, '2': 2, '3': 3 }; 
         this.playerOptions = { 'human': 0, 'bot' : 1};
-        this.themeOptions = {'Christmas': 0, 'Space': 1};
+        this.themeOptions = {'Christmas': 0, 'Space': 1, 'Indoor': 2};
 
         /// Setup game states and initial arrays
         this.gameState= gameStateEnum.LOADING;
@@ -70,20 +70,6 @@ class MyGameOrchestrator {
         // menu display is stopped when press start
         let x = document.querySelector("#menu");
         x.style.display = "none";  
-
-        let level = document.querySelector('select[name="level"]');
-        let brown_player = document.querySelector('select[name="brown_player"]');
-        let white_player = document.querySelector('select[name="white_player"]');
-
-        /// Difficulty Level DropBox
-        this.difficultyLevel = parseInt(level.value);
-        this.brownPlayer = parseInt(brown_player.value);
-        this.whitePlayer = parseInt(white_player.value);
-
-        //if both are bot so it can start now
-        if(this.brownPlayer == 1 && this.whitePlayer == 1) {
-            this.start();
-        }
 
         event.preventDefault();
     }
@@ -276,10 +262,17 @@ class MyGameOrchestrator {
     //Load of new scenes
     updateTheme(){
         let filename;
-        if(this.theme == 0){
-            filename="LAIG_TP3_XML_T6_G02_Theme_Christmas.xml";
-        } else if(this.theme == 1){
-            filename="LAIG_TP3_XML_T6_G02_Theme_Space.xml";
+        switch(this.theme) {
+            case "0":
+                filename="LAIG_TP3_XML_T6_G02_Theme_Christmas.xml";
+                break;
+            case "1":
+                filename="LAIG_TP3_XML_T6_G02_Theme_Space.xml";
+                break;
+            case "2":
+                filename="LAIG_TP3_XML_T6_G02_Theme_Indoor.xml";
+                break;
+
         }
         this.scene.graph = new MySceneGraph(filename, this.scene);
         this.scene.sceneInited = false;

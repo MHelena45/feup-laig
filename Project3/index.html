@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>LAIG - Project 3</title>
     <link rel="icon" href="data:,">
-    <script src="hidebox.js" defer></script>
+
     <style>
         body,
         html {
@@ -15,15 +15,49 @@
             overflow: hidden;
         }
 
+        .wrap {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input {
+            width: 10vw;
+            height: 9vh;
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 500;
+            color: #000;
+            background-color: #fff;
+            border: none;
+            border-radius: 45px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease 0s;
+            cursor: pointer;
+            outline: none;
+            margin-top: 2%;
+        }
+
+        input:hover {
+            background-color: rgb(29, 151, 102);
+            box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+            color: #fff;
+            transform: translateY(-7%);
+        }
+
         #menu {
-            margin: 30vh 20vw;
-            width: 40vw;
-            height: 20vh;
-            padding: 5%;
+            margin: 25vh 15vw;
+            width: 50vw;
+            height: 50vh;
+            padding: 3%;
             position: fixed;
             background-color: #bebdbd;
-            border-radius: 2%;
+            border-radius: 2.5%;
             border-style: solid;
+            text-align: center;
         }
 
         canvas {
@@ -36,31 +70,19 @@
 <body>
 
     <section id="menu">
-        <p>Starting options (can be changed before start is press on the right side)</p>
-        <select name="level" required>
-            <option value="1" selected disabled>Level</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </select>
-
-        <select name="brown_player" required>
-            <option value="0" selected disabled>Brown Player</option>
-            <option value="1">bot</option>
-            <option value="0">Human</option>
-        </select>
-
-        <select name="white_player" required>
-            <option value="1" selected disabled>white Player</option>
-            <option value="1">bot</option>
-            <option value="0">Human</option>
-        </select>
+        <h1>Instructions</h1>
+        <p>Welcome to the quantik!</p>
+        <p>In the menu on the right you can see eight option. Before start you have to choose the level of
+            difficulty of the bot plays, if the player
+            with the white pieces is a a human player ou a computer, and the same for the player with brown
+            pieces. With that chosen you can press start and the time will start counting. During the game you
+            can undo the last play, reset the game and see the movie of the current game at anytime.
+        </p>
 
         <input type="submit" value="START">
 
 
     </section>
-
 
     <script src="main.js"></script>
 

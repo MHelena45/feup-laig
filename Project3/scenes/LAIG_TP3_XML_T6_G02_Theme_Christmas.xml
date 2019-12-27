@@ -8,8 +8,8 @@
         </perspective>
 
         <perspective id="upCamera" near="0.1" far="500" angle="45">
-            <from x="0" y="55" z="-5" />
-            <to x="0" y="0" z="0" />
+            <from x="0" y="55" z="8" />
+            <to x="0" y="0" z="-2" />
         </perspective>
     </views>
 
@@ -110,14 +110,8 @@
         </transformation>
     </transformations>
 
-     <animations>
-        <animation id="starAnimation" >
-            <keyframe instant="0">
-                <translate x="0" y="0" z="0" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1.50" y="1.50" z="1.50" /> 
-            </keyframe> 
-        </animation> 
+    <animations>
+
     </animations>
 
     <primitives>
@@ -259,7 +253,7 @@
             </children>
         </component>
 
-          <!-- skybox below --> 
+        <!-- skybox below --> 
         <component id="skybox">
             <transformation>
                 <translate x="0" y="10" z="0"/>

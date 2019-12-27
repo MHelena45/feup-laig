@@ -8,8 +8,8 @@
         </perspective>
 
         <perspective id="upCamera" near="0.1" far="500" angle="45">
-            <from x="0" y="55" z="-5" />
-            <to x="0" y="0" z="0" />
+            <from x="0" y="55" z="8" />
+            <to x="0" y="0" z="-2" />
         </perspective>
     </views>
 

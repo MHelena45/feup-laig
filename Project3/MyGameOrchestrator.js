@@ -75,18 +75,15 @@ class MyGameOrchestrator {
         let brown_player = document.querySelector('select[name="brown_player"]');
         let white_player = document.querySelector('select[name="white_player"]');
 
-        console.log(Number.isInteger(this.difficultyLevel));
-        console.log(this.brownPlayer);
-        console.log(this.whitePlayer);
-
         /// Difficulty Level DropBox
         this.difficultyLevel = parseInt(level.value);
         this.brownPlayer = parseInt(brown_player.value);
         this.whitePlayer = parseInt(white_player.value);
 
-        console.log(Number.isInteger(this.difficultyLevel));
-        console.log(this.brownPlayer);
-        console.log(this.whitePlayer);
+        //if both are bot so it can start now
+        if(this.brownPlayer == 1 && this.whitePlayer == 1) {
+            this.start();
+        }
 
         event.preventDefault();
     }

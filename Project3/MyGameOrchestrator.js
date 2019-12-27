@@ -424,31 +424,35 @@ class MyGameOrchestrator {
         }         
     }
 
-    start() {    
-        if(this.gameState == gameStateEnum.MENU) {
+    setPlayer1View() {
+        let views = this.scene.graph.getViews();
+        let views_ID = this.scene.graph.getViewsID();
+        this.scene.camera = views[views_ID[0]];   
+        //during the game we can not move the camera    
+        this.scene.interface.setActiveCamera(null); 
+    }
+
+    deselectAll() {
+        this.whiteAuxiliaryBoard.deselect();
+        this.brownAuxiliaryBoard.deselect();
+        this.board.deselect();
+    }
+
+    start() {  
+        if (this.gameState == gameStateEnum.LOADING) {
+            alert("Board is loading. Wait 3 seconds!");
+        } else {
             //makes sure the camera is where it should start
-            let views = this.scene.graph.getViews();
-            let views_ID = this.scene.graph.getViewsID();
-            this.scene.camera = views[views_ID[0]];   
-            //during the game we can not move the camera    
-            this.scene.interface.setActiveCamera(null);  
-            //if we are restarting and the winner was player 2 we have to rotate the camera
-            if(this.currentPlayer == playerTurnEnum.PLAYER2_TURN)
-                this.scene.camera.orbit([0, 1, 0], Math.PI);
+            this.setPlayer1View();
             this.gameState = gameStateEnum.PLAYER_CHOOSING;
             this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
-            this.whiteAuxiliaryBoard.deselect();
-            this.board.deselect();
+            this.deselectAll();
             this.scoreboard.reset();
-        } else if (this.gameState == gameStateEnum.LOADING) {
-            alert("Board is loading. Wait 3 seconds!");
-        }
+        } 
 
     }
 
     reset() {
-        if (this.gameState != gameStateEnum.PLAYER_CHOOSING)
-            return;
         this.setupProlog();
         this.scoreboard.reset();
         this.gameState = gameStateEnum.MENU;

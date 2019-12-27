@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <title>LAIG - Project 3</title>
     <link rel="icon" href="data:,">
-
 <style>
 body, html {
     border: 0;
     padding: 0;
     margin: 0;
     overflow: hidden;
+}
+
+#menu {
+    width: 40vw;
+    height: 40vh;
+    padding: 5%;
 }
 
 canvas {
@@ -20,6 +25,32 @@ canvas {
 </style>
 </head>
 <body>
+
+<section id="menu">
+    <p>Starting options (can be changed before start is press on the right side)</p>
+
+    <select name="level">
+        <option value="1" selected disabled>Level</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </select> 
+
+    <select name="brown_player">
+        <option value="Human" selected disabled>Brown Player</option>
+        <option value="bot">bot</option>
+        <option value="human">Human</option>
+    </select> 
+
+    <select name="white_player">
+        <option value="bot" selected disabled>white Player</option>
+        <option value="bot">bot</option>
+        <option value="human">Human</option>
+    </select> 
+
+    <button>Start</button> 
+</section>
+
 
 <script src="main.js"></script>
 

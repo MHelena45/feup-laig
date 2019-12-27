@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>LAIG - Project 3</title>
     <link rel="icon" href="data:,">
+    <script src="hidebox.js" defer></script>
 <style>
 body, html {
     border: 0;
@@ -13,13 +14,14 @@ body, html {
 }
 
 #menu {
-    margin: 40vh 30vw;
+    margin: 30vh 20vw;
     width: 40vw;
-    height: 10vh;
+    height: 20vh;
     padding: 5%;
     position: fixed;
     background-color: #bebdbd;
     border-radius: 2%;
+    border-style: solid;
 }
 
 canvas {
@@ -33,26 +35,29 @@ canvas {
 <section id="menu">
     <p>Starting options (can be changed before start is press on the right side)</p>
 
-    <select name="level">
-        <option value="1" selected disabled>Level</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-    </select> 
+    <form action="changeValues.php" method="post"></form>
+        <select name="level">
+            <option value="1" selected disabled>Level</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select> 
 
-    <select name="brown_player">
-        <option value="Human" selected disabled>Brown Player</option>
-        <option value="bot">bot</option>
-        <option value="human">Human</option>
-    </select> 
+        <select name="brown_player">
+            <option value="Human" selected disabled>Brown Player</option>
+            <option value="bot">bot</option>
+            <option value="human">Human</option>
+        </select> 
 
-    <select name="white_player">
-        <option value="bot" selected disabled>white Player</option>
-        <option value="bot">bot</option>
-        <option value="human">Human</option>
-    </select> 
+        <select name="white_player">
+            <option value="bot" selected disabled>white Player</option>
+            <option value="bot">bot</option>
+            <option value="human">Human</option>
+        </select> 
 
-    <button>Start</button> 
+        <input type="submit" value="changeDefault">
+    </form>
+
 </section>
 
 

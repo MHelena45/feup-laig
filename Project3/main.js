@@ -53,7 +53,7 @@ main=function()
 
     myInterface.setActiveCamera(myScene.camera);
 
-	// get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 
+	//starting theme is the Christmas theme, that can be changed
     var filename=getUrlVars()['file'] || "LAIG_TP3_XML_T6_G02_Theme_Christmas.xml";
 
 	// create and load graph, and associate it to scene. 

@@ -1,7 +1,6 @@
-/*
-
-*/
-
+/**
+ * MyAuxiliaryBoard is a class used to hold the pieces that can be play
+ */
 class MyAuxiliaryBoard extends CGFobject {
     /**
      * Constructor
@@ -42,7 +41,7 @@ class MyAuxiliaryBoard extends CGFobject {
     getPickId(prologPiece) {
         for(let j = 0; j < this.pieces.length; j++)
             if(this.pieces[j] == prologPiece)
-                return (this.firstPickNumber + j);
+                return (this.firstPickNumber + j + 1);
         return null; //piece doesn't exist in auxiliary board
     }
 

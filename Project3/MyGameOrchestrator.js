@@ -206,7 +206,7 @@ class MyGameOrchestrator {
 
                 let tilePickNumber = (row - 1) * 4 + column;
                 thisGame.pieceAnimation.calculateFrames(piecePickId, tilePickNumber, piece);  
-                
+
                 // build move for js
                 let move = [row, column, piece, piecePickId];
                 thisGame.moves.push(move);
@@ -284,6 +284,13 @@ class MyGameOrchestrator {
 
     movie() {
         if(this.gameState != gameStateEnum.ANIMATING_PIECE_MOVIE) {
+            //changes the camera to a upper position (with camera movement as to slow the movement)
+            let views = this.scene.graph.getViews();
+            let views_ID = this.scene.graph.getViewsID();
+            this.scene.camera = views[views_ID[1]];   
+            //during the movie we can move the camera    
+            this.scene.interface.setActiveCamera(this.scene.camera);    
+        
             this.board.boardMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
             this.board.tempBoard = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
             this.whiteAuxiliaryBoard.pieces = [11, 11, 51, 51, 71, 71, 91, 91];
@@ -417,8 +424,14 @@ class MyGameOrchestrator {
         }         
     }
 
-    start() {
+    start() {    
         if(this.gameState == gameStateEnum.MENU) {
+            //makes sure the camera is where it should start
+            let views = this.scene.graph.getViews();
+            let views_ID = this.scene.graph.getViewsID();
+            this.scene.camera = views[views_ID[0]];   
+            //during the game we can not move the camera    
+            this.scene.interface.setActiveCamera(null);  
             //if we are restarting and the winner was player 2 we have to rotate the camera
             if(this.currentPlayer == playerTurnEnum.PLAYER2_TURN)
                 this.scene.camera.orbit([0, 1, 0], Math.PI);

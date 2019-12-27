@@ -130,6 +130,7 @@ class XMLscene extends CGFscene {
 
         this.interface.setActiveCamera(null);
     }
+    
 
     // controls if M/m is release
 	checkKeys() {

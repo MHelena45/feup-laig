@@ -149,6 +149,8 @@ class MyGameOrchestrator {
      * 
      */
     Undo() {
+        if (this.gameState != gameStateEnum.PLAYER_CHOOSING)
+            return;
         // get last move and remove it from the moves array
         let lastMove = this.moves.pop();
         // lastMove => [Row, Column, Piece]
@@ -202,7 +204,7 @@ class MyGameOrchestrator {
      * @param {Number} column last move column
      * @param {Number} piece last move piece
      */
-    isGameOver( row, column, piece) {
+    isGameOver(row, column, piece) {
         // build request
         let thisGame = this;
         let move = [row, column, piece];
@@ -252,7 +254,7 @@ class MyGameOrchestrator {
         }
 
         if (this.gameState == gameStateEnum.PLAYER_CHOOSING) {
-            this.scoreboard.update(time / 1000);
+            this.scoreboard.update();
         }
     }
 
@@ -378,13 +380,15 @@ class MyGameOrchestrator {
             this.whiteAuxiliaryBoard.deselect();
             this.board.deselect();
             this.scoreboard.reset();
-        } else {
+        } else if (this.gameState == gameStateEnum.LOADING) {
             alert("Board is loading. Wait 3 seconds!");
         }
 
     }
 
     reset() {
+        if (this.gameState != gameStateEnum.PLAYER_CHOOSING)
+            return;
         this.setupProlog();
         this.scoreboard.reset();
     }

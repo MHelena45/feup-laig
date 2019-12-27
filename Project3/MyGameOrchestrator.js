@@ -203,16 +203,19 @@ class MyGameOrchestrator {
                     piecePickId = thisGame.whiteAuxiliaryBoard.getPickId(piece);
                 else
                     piecePickId = thisGame.brownAuxiliaryBoard.getPickId(piece);
+
+                let tilePickNumber = (row - 1) * 4 + column;
+                thisGame.pieceAnimation.calculateFrames(piecePickId, tilePickNumber, piece);  
+                
                 // build move for js
                 let move = [row, column, piece, piecePickId];
                 thisGame.moves.push(move);
                 // update baords with response
-                thisGame.board.boardMatrix = response[0];
+                thisGame.board.tempBoard = response[0];
                 thisGame.whiteAuxiliaryBoard.pieces = response[1];
                 thisGame.brownAuxiliaryBoard.pieces = response[2];
+      
                 thisGame.isGameOver(row, column, piece);
-
-                debugger;
 
                 thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
             }
@@ -341,10 +344,10 @@ class MyGameOrchestrator {
                 if (this.whitePlayer == 0) {
                     if(this.whiteAuxiliaryBoard.isSelected() && this.board.isSelected()) {
                         let piece = this.whiteAuxiliaryBoard.pieceSelected();
+                        this.pieceAnimation.calculateFrames(this.selectedPieceId, this.board.pickNumberSelected(), piece);                        
                         let coordinates = this.board.tileSelected();
                         this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
                         this.gameState = gameStateEnum.LOADING;     
-                        this.pieceAnimation.calculateFrames(this.selectedPieceId, this.board.pickNumberSelected(), piece);
                         this.whiteAuxiliaryBoard.deselect();
                         this.board.deselect();
                     }

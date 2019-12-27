@@ -86,7 +86,6 @@ class PieceAnimation extends CGFobject {
     }
 
     update(time){
-        console.log(this.pieceMoving);
         this.animation.update();
         //if animation end, check if the game ended with that play
         if(this.animation.end == true) {

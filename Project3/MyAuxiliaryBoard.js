@@ -39,6 +39,13 @@ class MyAuxiliaryBoard extends CGFobject {
                 return this.pieces[i];
     }
 
+    getPickId(prologPiece) {
+        for(let j = 0; j < this.pieces.length; j++)
+            if(this.pieces[j] == prologPiece)
+                return (this.firstPickNumber + j);
+        return null; //piece doesn't exist in auxiliary board
+    }
+
     /**
      * Places piece in correct position of pieces array
      * @param {int} piece two digit number containing information about the piece

@@ -291,7 +291,7 @@ class MyGameOrchestrator {
 
             this.currentFrame++;  
         } else {
-            this.reset();
+            this.setupProlog();
             alert("Movie Finished");
         }
                 
@@ -406,12 +406,13 @@ class MyGameOrchestrator {
             this.pieceAnimation.display();
         }
         else if(this.gameState == gameStateEnum.GAME_OVER) {
-            alert("Game Over!");
             if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN)
                 this.scoreboard.whitePlayerWins++;
             else this.scoreboard.brownPlayerWins++;
-            this.reset();
-            this.gameState == gameStateEnum.LOADING;
+            console.log(this.scoreboard.whitePlayerWins);
+            console.log(this.scoreboard.brownPlayerWins);
+            this.movie();
+            alert("Game Over!");
         }
     }
 

@@ -95,7 +95,7 @@ class PieceAnimation extends CGFobject {
                     this.scene.gameOrchestrator.gameState = gameStateEnum.GAME_OVER
                 else this.scene.gameOrchestrator.gameState = gameStateEnum.CHANGE_PLAYER;
             } else { //when gameStateEnum.ANIMATING_PIECE_MOVIE
-                this.scene.gameOrchestrator.next_frame_movie();
+                this.scene.gameOrchestrator.nextFrameMovie();
             }
 
         }

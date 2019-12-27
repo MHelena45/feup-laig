@@ -4,7 +4,7 @@ const gameStateEnum = {
     PLAYER_CHOOSING: 2,     // player is choosing what to play
     ANIMATING_PIECE: 3,     // moving piece for animation
     GAME_OVER: 4,           // game is over play again
-    CHANGE_PLAYER: 5,        //used to animate camera and change between players
+    CHANGE_PLAYER: 5,       //used to animate camera and change between players
     ANIMATING_PIECE_MOVIE: 6
 }
 
@@ -128,13 +128,14 @@ class MyGameOrchestrator {
                     thisGame.board.tempBoard = response[1];
                     if(thisGame.currentPlayer == playerTurnEnum.PLAYER1_TURN)
                         thisGame.whiteAuxiliaryBoard.removePiece(thisGame.selectedPieceId);
-                    else thisGame.brownAuxiliaryBoard.removePiece(thisGame.selectedPieceId);
-                    thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
-                    
+                    else
+                        thisGame.brownAuxiliaryBoard.removePiece(thisGame.selectedPieceId);
+                    // add new move to moves array
                     move = [row, column, piece, thisGame.selectedPieceId];
                     thisGame.moves.push(move);
                     thisGame.isGameOver(row, column, piece);
-                
+                    
+                    thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
                 }
                 // move is not valid (ask player to play again)
                 else {
@@ -148,7 +149,7 @@ class MyGameOrchestrator {
     /**
      * 
      */
-    Undo() {
+    undo() {
         if (this.gameState != gameStateEnum.PLAYER_CHOOSING)
             return;
         // get last move and remove it from the moves array
@@ -189,11 +190,17 @@ class MyGameOrchestrator {
             request,
             function (data) {
                 let response = JSON.parse(data.target.response);
+                // update baords with response
                 thisGame.board.boardMatrix = response[0];
                 thisGame.whiteAuxiliaryBoard.pieces = response[1];
                 thisGame.brownAuxiliaryBoard.pieces = response[2];
-                thisGame.gameState = gameStateEnum.CHANGE_PLAYER;
+                // add new move to moves array
+                let prologMove = reponse[3];
+                // ADICIONAR AQUI O PICK ID
+                let move = [prologMove[1], prologMove[0], prologMove[2]];
                 this.moves.push(move);
+
+                thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
             }
         );
     }
@@ -260,28 +267,28 @@ class MyGameOrchestrator {
 
     movie() {
         if(this.gameState != gameStateEnum.ANIMATING_PIECE_MOVIE) {
-            this.board.boardMatrix = [ [0, 0, 0, 0] , [0, 0, 0, 0], [0, 0, 0, 0] , [0, 0, 0, 0]];
-            this.board.tempBoard = [ [0, 0, 0, 0] , [0, 0, 0, 0], [0, 0, 0, 0] , [0, 0, 0, 0]];
+            this.board.boardMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
+            this.board.tempBoard = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
             this.whiteAuxiliaryBoard.pieces = [11, 11, 51, 51, 71, 71, 91, 91];
             this.brownAuxiliaryBoard.pieces = [12, 12, 52, 52, 72, 72, 92, 92];
-            this.next_frame_movie();
+            this.nextFrameMovie();
             this.gameState = gameStateEnum.ANIMATING_PIECE_MOVIE;
         }         
     }
 
-    next_frame_movie() {
+    nextFrameMovie() {
         if(this.currentFrame < this.moves.length) {
             //changes board
             if(this.currentFrame >= 1) {
-                let move = this.moves[this.currentFrame-1];
-                this.board.boardMatrix[ move[0] -1][move[1] - 1] = move[2];
+                let move = this.moves[this.currentFrame - 1];
+                this.board.boardMatrix[move[0] - 1][move[1] - 1] = move[2];
             }
 
             //calculates the nest frames to do the move
             let move = this.moves[this.currentFrame];
             let column = move[0];
             let row = move[1];
-            let tilePickNumber = (row- 1) * 4 + column;
+            let tilePickNumber = (row - 1) * 4 + column;
             let prologPiece = move[2];
             this.pieceAnimation.calculateFrames(move[3], tilePickNumber, prologPiece);
 
@@ -315,32 +322,46 @@ class MyGameOrchestrator {
 
             //checks if there is a piece and a tile selected to move the piece to there
             if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN) {
-                if(this.whiteAuxiliaryBoard.isSelected() && this.board.isSelected()) {
-                    let piece = this.whiteAuxiliaryBoard.pieceSelected();
-                    let coordinates = this.board.tileSelected();
-                    this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
-                    this.gameState = gameStateEnum.LOADING;     
-                    this.pieceAnimation.calculateFrames(this.selectedPieceId, this.board.pickNumberSelected(), piece);
-                    this.whiteAuxiliaryBoard.deselect();
-                    this.board.deselect();
+                // player is human
+                if (this.whitePlayer == 0) {
+                    if(this.whiteAuxiliaryBoard.isSelected() && this.board.isSelected()) {
+                        let piece = this.whiteAuxiliaryBoard.pieceSelected();
+                        let coordinates = this.board.tileSelected();
+                        this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
+                        this.gameState = gameStateEnum.LOADING;     
+                        this.pieceAnimation.calculateFrames(this.selectedPieceId, this.board.pickNumberSelected(), piece);
+                        this.whiteAuxiliaryBoard.deselect();
+                        this.board.deselect();
+                    }
+                }
+                // player is a bot
+                else if (this.whitePlayer == 1) {
+                    this.botMove();
                 }
             }
             else if(this.currentPlayer == playerTurnEnum.PLAYER2_TURN) {
-                if(this.brownAuxiliaryBoard.isSelected() && this.board.isSelected()) {
-                    let piece = this.brownAuxiliaryBoard.pieceSelected();
-                    let coordinates = this.board.tileSelected();
-                    this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
-                    this.gameState = gameStateEnum.LOADING; 
-                    this.pieceAnimation.calculateFrames(this.selectedPieceId, this.board.pickNumberSelected(), piece);       
-                    this.brownAuxiliaryBoard.deselect();
-                    this.board.deselect();
+                // player is a human
+                if(this.brownPlayer == 0) {
+                    if(this.brownAuxiliaryBoard.isSelected() && this.board.isSelected()) {
+                        let piece = this.brownAuxiliaryBoard.pieceSelected();
+                        let coordinates = this.board.tileSelected();
+                        this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
+                        this.gameState = gameStateEnum.LOADING; 
+                        this.pieceAnimation.calculateFrames(this.selectedPieceId, this.board.pickNumberSelected(), piece);       
+                        this.brownAuxiliaryBoard.deselect();
+                        this.board.deselect();
+                    }
+                }
+                // player is a bot
+                else if (this.brownPlayer == 1) {
+                    debugger;
+                    this.botMove();
                 }
             }
             // check if time per turn is over
             if(this.scoreboard.isTimeOver()) {
                 this.gameState = gameStateEnum.CHANGE_PLAYER;
             }
-
         } else if(this.gameState == gameStateEnum.CHANGE_PLAYER) {
             // update current player (0 -> 1, 1 -> 0)
             this.changePlayer(!this.currentPlayer);

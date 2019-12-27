@@ -4,7 +4,7 @@ const gameStateEnum = {
     PLAYER_CHOOSING: 2,     // player is choosing what to play
     ANIMATING_PIECE: 3,     // moving piece for animation
     GAME_OVER: 4,           // game is over play again
-    CHANGE_PLAYER: 5,        //used to animate camera and change between players
+    CHANGE_PLAYER: 5,       //used to animate camera and change between players
     ANIMATING_PIECE_MOVIE: 6
 }
 
@@ -148,7 +148,7 @@ class MyGameOrchestrator {
     /**
      * 
      */
-    Undo() {
+    undo() {
         if (this.gameState != gameStateEnum.PLAYER_CHOOSING)
             return;
         // get last move and remove it from the moves array
@@ -315,6 +315,7 @@ class MyGameOrchestrator {
 
             //checks if there is a piece and a tile selected to move the piece to there
             if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN) {
+                // player is human
                 if(this.whiteAuxiliaryBoard.isSelected() && this.board.isSelected()) {
                     let piece = this.whiteAuxiliaryBoard.pieceSelected();
                     let coordinates = this.board.tileSelected();
@@ -324,8 +325,10 @@ class MyGameOrchestrator {
                     this.whiteAuxiliaryBoard.deselect();
                     this.board.deselect();
                 }
+                // player is a bot
             }
             else if(this.currentPlayer == playerTurnEnum.PLAYER2_TURN) {
+                // player is a human
                 if(this.brownAuxiliaryBoard.isSelected() && this.board.isSelected()) {
                     let piece = this.brownAuxiliaryBoard.pieceSelected();
                     let coordinates = this.board.tileSelected();

@@ -96,6 +96,8 @@ class MyGameOrchestrator {
             this.scene.camera.orbit([0, 1, 0], Math.PI/100);
             this.cameraMovement--;
             if(this.cameraMovement == 0){
+                this.whiteAuxiliaryBoard.deselect();
+                this.brownAuxiliaryBoard.deselect();
                 this.gameState = gameStateEnum.PLAYER_CHOOSING;
                 this.cameraMovement = 100;
                 this.currentPlayer = player;
@@ -298,7 +300,8 @@ class MyGameOrchestrator {
 
             this.currentFrame++;  
         } else {
-            this.setupProlog();
+            this.gameState = gameStateEnum.PLAYER_CHOOSING;
+            this.reset();
             alert("Movie Finished");
         }
                 
@@ -354,7 +357,6 @@ class MyGameOrchestrator {
                 }
                 // player is a bot
                 else if (this.brownPlayer == 1) {
-                    debugger;
                     this.botMove();
                 }
             }
@@ -400,6 +402,9 @@ class MyGameOrchestrator {
 
     start() {
         if(this.gameState == gameStateEnum.MENU) {
+            //if we are restarting and the winner was player 2 we have to rotate the camera
+            if(this.currentPlayer == playerTurnEnum.PLAYER2_TURN)
+                this.scene.camera.orbit([0, 1, 0], Math.PI);
             this.gameState = gameStateEnum.PLAYER_CHOOSING;
             this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
             this.whiteAuxiliaryBoard.deselect();
@@ -416,6 +421,7 @@ class MyGameOrchestrator {
             return;
         this.setupProlog();
         this.scoreboard.reset();
+        this.gameState = gameStateEnum.MENU;
     }
 
     display() {
@@ -430,8 +436,6 @@ class MyGameOrchestrator {
             if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN)
                 this.scoreboard.whitePlayerWins++;
             else this.scoreboard.brownPlayerWins++;
-            console.log(this.scoreboard.whitePlayerWins);
-            console.log(this.scoreboard.brownPlayerWins);
             this.movie();
             alert("Game Over!");
         }

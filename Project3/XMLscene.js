@@ -41,6 +41,7 @@ class XMLscene extends CGFscene {
         
         this.mClick = false; //used to now when M/m is being press  
         
+        //we want to be able to pick pieces and tiles of the board
         this.setPickEnabled(true);
     }
 
@@ -64,7 +65,6 @@ class XMLscene extends CGFscene {
      */
     initDefaultCamera() {
         this.camera = this.graph.views[this.graph.defaultCameraID];
-        this.interface.setActiveCamera(this.camera);
     }
 
     /**

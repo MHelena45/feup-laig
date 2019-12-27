@@ -31,7 +31,7 @@ class MyGameOrchestrator {
 
         /// Difficulty Level DropBox
         this.difficultyLevel = 1;
-        this.brownPlayer = 1;
+        this.brownPlayer = 0;
         this.whitePlayer = 0;
         this.theme = 0;
 
@@ -57,6 +57,17 @@ class MyGameOrchestrator {
         this.moves = [];
         this.currentFrame = 0;
         this.setupProlog();
+    }
+
+    updateValues() {
+        let level = document.querySelector('select[name="level"]');
+        let brown_player = document.querySelector('select[name="brown_player"]');
+        let white_player = document.querySelector('select[name="white_player"]');
+
+        /// Difficulty Level DropBox
+        this.difficultyLevel = level.value;
+        this.brownPlayer = brown_player.value;
+        this.whitePlayer = white_player.value;
     }
 
     /**
@@ -256,22 +267,6 @@ class MyGameOrchestrator {
         this.scene.sceneInited = false;
     }
  
-    updateLevel(){
-        console.log("Level change!");
-    }
-
-    updateBrownPlayer(){
-        if(this.brownPlayer == 1)
-            console.log("Play Bot");
-        else console.log("Play Human");
-    }
-
-    updateWhitePlayer(){
-        if(this.whitePlayer == 1)
-            console.log("Play Bot");
-        else console.log("Play Human");
-    }
-
     update(time) {
         if(this.gameState == gameStateEnum.ANIMATING_PIECE || this.gameState == gameStateEnum.ANIMATING_PIECE_MOVIE) {
             this.pieceAnimation.update(time);

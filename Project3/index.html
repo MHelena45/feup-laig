@@ -1,67 +1,69 @@
 <!DOCTYPE html>
 <html>
+
 <head lang="en">
     <meta charset="UTF-8">
     <title>LAIG - Project 3</title>
     <link rel="icon" href="data:,">
     <script src="hidebox.js" defer></script>
-<style>
-body, html {
-    border: 0;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-}
+    <style>
+        body,
+        html {
+            border: 0;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
 
-#menu {
-    margin: 30vh 20vw;
-    width: 40vw;
-    height: 20vh;
-    padding: 5%;
-    position: fixed;
-    background-color: #bebdbd;
-    border-radius: 2%;
-    border-style: solid;
-}
+        #menu {
+            margin: 30vh 20vw;
+            width: 40vw;
+            height: 20vh;
+            padding: 5%;
+            position: fixed;
+            background-color: #bebdbd;
+            border-radius: 2%;
+            border-style: solid;
+        }
 
-canvas {
-    width: 100%;
-    height: 100%;
-}
-</style>
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
+
 <body>
 
-<section id="menu">
-    <p>Starting options (can be changed before start is press on the right side)</p>
-
-    <form action="changeValues.php" method="post"></form>
-        <select name="level">
+    <section id="menu">
+        <p>Starting options (can be changed before start is press on the right side)</p>
+        <select name="level" required>
             <option value="1" selected disabled>Level</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
-        </select> 
+        </select>
 
-        <select name="brown_player">
+        <select name="brown_player" required>
             <option value="Human" selected disabled>Brown Player</option>
             <option value="bot">bot</option>
             <option value="human">Human</option>
-        </select> 
+        </select>
 
-        <select name="white_player">
+        <select name="white_player" required>
             <option value="bot" selected disabled>white Player</option>
             <option value="bot">bot</option>
             <option value="human">Human</option>
-        </select> 
+        </select>
 
-        <input type="submit" value="changeDefault">
-    </form>
-
-</section>
+        <input type="submit" value="START">
 
 
-<script src="main.js"></script>
+    </section>
+
+
+    <script src="main.js"></script>
 
 </body>
+
 </html>

@@ -9,5 +9,5 @@ function handleEvent(event) {
   event.preventDefault()
 }
 
-let link = document.querySelector("#menu")
-link.addEventListener('click', handleEvent)
+let menu = document.querySelector('input[value="START"]');
+menu.addEventListener('click', handleEvent)

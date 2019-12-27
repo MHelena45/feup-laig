@@ -56,10 +56,17 @@ class MyGameOrchestrator {
 
         this.moves = [];
         this.currentFrame = 0;
+
+        let menu = document.querySelector('input[value="START"]');
+        menu.addEventListener('click', this.update_values);
         this.setupProlog();
     }
 
-    updateValues() {
+    update_values(event) {
+        // menu display is stopped when press start
+        let x = document.querySelector("#menu");
+        x.style.display = "none";  
+
         let level = document.querySelector('select[name="level"]');
         let brown_player = document.querySelector('select[name="brown_player"]');
         let white_player = document.querySelector('select[name="white_player"]');
@@ -68,6 +75,7 @@ class MyGameOrchestrator {
         this.difficultyLevel = level.value;
         this.brownPlayer = brown_player.value;
         this.whitePlayer = white_player.value;
+        event.preventDefault();
     }
 
     /**

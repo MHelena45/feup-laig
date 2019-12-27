@@ -192,15 +192,27 @@ class MyGameOrchestrator {
             request,
             function (data) {
                 let response = JSON.parse(data.target.response);
+
+                // get generated move
+                let row = response[3][0];
+                let column = response[3][1];
+                let piece = response[3][2];
+                let piecePickId;
+                // get pick id
+                if(thisGame.currentPlayer == playerTurnEnum.PLAYER1_TURN)
+                    piecePickId = thisGame.whiteAuxiliaryBoard.getPickId(piece);
+                else
+                    piecePickId = thisGame.brownAuxiliaryBoard.getPickId(piece);
+                // build move for js
+                let move = [row, column, piece, piecePickId];
+                thisGame.moves.push(move);
                 // update baords with response
                 thisGame.board.boardMatrix = response[0];
                 thisGame.whiteAuxiliaryBoard.pieces = response[1];
                 thisGame.brownAuxiliaryBoard.pieces = response[2];
-                // add new move to moves array
-                let prologMove = reponse[3];
-                // ADICIONAR AQUI O PICK ID
-                let move = [prologMove[1], prologMove[0], prologMove[2]];
-                this.moves.push(move);
+                thisGame.isGameOver(row, column, piece);
+
+                debugger;
 
                 thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
             }
@@ -339,6 +351,7 @@ class MyGameOrchestrator {
                 }
                 // player is a bot
                 else if (this.whitePlayer == 1) {
+                    this.gameState = gameStateEnum.LOADING;     
                     this.botMove();
                 }
             }
@@ -357,6 +370,7 @@ class MyGameOrchestrator {
                 }
                 // player is a bot
                 else if (this.brownPlayer == 1) {
+                    this.gameState = gameStateEnum.LOADING;     
                     this.botMove();
                 }
             }

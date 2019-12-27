@@ -336,6 +336,10 @@ class MyGameOrchestrator {
                     this.board.deselect();
                 }
             }
+            // check if time per turn is over
+            if(this.scoreboard.isTimeOver()) {
+                this.gameState = gameStateEnum.CHANGE_PLAYER;
+            }
 
         } else if(this.gameState == gameStateEnum.CHANGE_PLAYER) {
             // update current player (0 -> 1, 1 -> 0)

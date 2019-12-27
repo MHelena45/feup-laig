@@ -9,7 +9,7 @@ class MyScoreboard extends CGFobject {
         // scoreboard
         this.whitePlayerWins = 0;
         this.brownPlayerWins = 0;
-        this.timePerPlay = 20;
+        this.timePerTurn = 20;
         this.firstTime;
 
         // ---- scoreboard primitives
@@ -68,11 +68,22 @@ class MyScoreboard extends CGFobject {
         this.scoreboardShader = new CGFshader(this.scene.gl, "shaders/scoreboard.vert", "shaders/scoreboard.frag");
     }
 
+    isTimeOver() {
+        let currentTime = new Date().getTime();
+        if((currentTime - this.firstTime) / 1000 >= this.timePerTurn) {
+            // set texture to 0's
+            this.timeTensMaterial.setTexture(this.numbersTextures[0]);
+            this.timeUnitsMaterial.setTexture(this.numbersTextures[0]);
+            return true;
+        }
+        else return false;
+    }
+
     update() {
         this.firstTime = this.firstTime || new Date().getTime();
         let currentTime = new Date().getTime();
         let deltaTime = (currentTime - this.firstTime) / 1000;
-        let stopwatch = this.timePerPlay - Math.floor(deltaTime % 20);
+        let stopwatch = this.timePerTurn - Math.floor(deltaTime);
         // deltaTime
         this.timeTensMaterial.setTexture(this.numbersTextures[Math.floor(stopwatch / 10)]);
         this.timeUnitsMaterial.setTexture(this.numbersTextures[stopwatch % 10]);

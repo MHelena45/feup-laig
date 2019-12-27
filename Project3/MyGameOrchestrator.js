@@ -264,12 +264,12 @@ class MyGameOrchestrator {
             this.board.tempBoard = [ [0, 0, 0, 0] , [0, 0, 0, 0], [0, 0, 0, 0] , [0, 0, 0, 0]];
             this.whiteAuxiliaryBoard.pieces = [11, 11, 51, 51, 71, 71, 91, 91];
             this.brownAuxiliaryBoard.pieces = [12, 12, 52, 52, 72, 72, 92, 92];
-            this.next_frame_movie();
+            this.nextFrameMovie();
             this.gameState = gameStateEnum.ANIMATING_PIECE_MOVIE;
         }         
     }
 
-    next_frame_movie() {
+    nextFrameMovie() {
         if(this.currentFrame < this.moves.length) {
             //changes board
             if(this.currentFrame >= 1) {

@@ -31,7 +31,7 @@ class MyGameOrchestrator {
 
         /// Difficulty Level DropBox
         this.difficultyLevel = 1;
-        this.brownPlayer = 1;
+        this.brownPlayer = 0;
         this.whitePlayer = 0;
         this.theme = 0;
 
@@ -56,7 +56,26 @@ class MyGameOrchestrator {
 
         this.moves = [];
         this.currentFrame = 0;
+
+        let menu = document.querySelector('input[value="START"]');
+        menu.addEventListener('click', this.update_values);
         this.setupProlog();
+    }
+
+    update_values(event) {
+        // menu display is stopped when press start
+        let x = document.querySelector("#menu");
+        x.style.display = "none";  
+
+        let level = document.querySelector('select[name="level"]');
+        let brown_player = document.querySelector('select[name="brown_player"]');
+        let white_player = document.querySelector('select[name="white_player"]');
+
+        /// Difficulty Level DropBox
+        this.difficultyLevel = level.value;
+        this.brownPlayer = brown_player.value;
+        this.whitePlayer = white_player.value;
+        event.preventDefault();
     }
 
     /**
@@ -256,22 +275,6 @@ class MyGameOrchestrator {
         this.scene.sceneInited = false;
     }
  
-    updateLevel(){
-        console.log("Level change!");
-    }
-
-    updateBrownPlayer(){
-        if(this.brownPlayer == 1)
-            console.log("Play Bot");
-        else console.log("Play Human");
-    }
-
-    updateWhitePlayer(){
-        if(this.whitePlayer == 1)
-            console.log("Play Bot");
-        else console.log("Play Human");
-    }
-
     update(time) {
         if(this.gameState == gameStateEnum.ANIMATING_PIECE || this.gameState == gameStateEnum.ANIMATING_PIECE_MOVIE) {
             this.pieceAnimation.update(time);
@@ -424,31 +427,35 @@ class MyGameOrchestrator {
         }         
     }
 
-    start() {    
-        if(this.gameState == gameStateEnum.MENU) {
+    setPlayer1View() {
+        let views = this.scene.graph.getViews();
+        let views_ID = this.scene.graph.getViewsID();
+        this.scene.camera = views[views_ID[0]];   
+        //during the game we can not move the camera    
+        this.scene.interface.setActiveCamera(null); 
+    }
+
+    deselectAll() {
+        this.whiteAuxiliaryBoard.deselect();
+        this.brownAuxiliaryBoard.deselect();
+        this.board.deselect();
+    }
+
+    start() {  
+        if (this.gameState == gameStateEnum.LOADING) {
+            alert("Board is loading. Wait 3 seconds!");
+        } else {
             //makes sure the camera is where it should start
-            let views = this.scene.graph.getViews();
-            let views_ID = this.scene.graph.getViewsID();
-            this.scene.camera = views[views_ID[0]];   
-            //during the game we can not move the camera    
-            this.scene.interface.setActiveCamera(null);  
-            //if we are restarting and the winner was player 2 we have to rotate the camera
-            if(this.currentPlayer == playerTurnEnum.PLAYER2_TURN)
-                this.scene.camera.orbit([0, 1, 0], Math.PI);
+            this.setPlayer1View();
             this.gameState = gameStateEnum.PLAYER_CHOOSING;
             this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
-            this.whiteAuxiliaryBoard.deselect();
-            this.board.deselect();
+            this.deselectAll();
             this.scoreboard.reset();
-        } else if (this.gameState == gameStateEnum.LOADING) {
-            alert("Board is loading. Wait 3 seconds!");
-        }
+        } 
 
     }
 
     reset() {
-        if (this.gameState != gameStateEnum.PLAYER_CHOOSING)
-            return;
         this.setupProlog();
         this.scoreboard.reset();
         this.gameState = gameStateEnum.MENU;

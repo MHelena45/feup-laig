@@ -57,9 +57,13 @@ class MyGameOrchestrator {
         this.moves = [];
         this.currentFrame = 0;
 
-        let menu = document.querySelector('input[value="START"]');
-        menu.addEventListener('click', this.update_values);
+        this.set_event_handler();
         this.setupProlog();
+    }
+
+    set_event_handler() {
+        let menu = document.querySelector('input[value="START"]');
+        menu.addEventListener('click', this.update_values.bind(this));
     }
 
     update_values(event) {
@@ -71,10 +75,19 @@ class MyGameOrchestrator {
         let brown_player = document.querySelector('select[name="brown_player"]');
         let white_player = document.querySelector('select[name="white_player"]');
 
+        console.log(Number.isInteger(this.difficultyLevel));
+        console.log(this.brownPlayer);
+        console.log(this.whitePlayer);
+
         /// Difficulty Level DropBox
-        this.difficultyLevel = level.value;
-        this.brownPlayer = brown_player.value;
-        this.whitePlayer = white_player.value;
+        this.difficultyLevel = parseInt(level.value);
+        this.brownPlayer = parseInt(brown_player.value);
+        this.whitePlayer = parseInt(white_player.value);
+
+        console.log(Number.isInteger(this.difficultyLevel));
+        console.log(this.brownPlayer);
+        console.log(this.whitePlayer);
+
         event.preventDefault();
     }
 

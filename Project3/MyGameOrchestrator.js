@@ -204,7 +204,7 @@ class MyGameOrchestrator {
                 else
                     piecePickId = thisGame.brownAuxiliaryBoard.getPickId(piece);
 
-                let tilePickNumber = (row - 1) * 4 + column;
+                let tilePickNumber = (column - 1) * 4 + row;
                 thisGame.pieceAnimation.calculateFrames(piecePickId, tilePickNumber, piece);  
 
                 // build move for js

@@ -34,42 +34,12 @@
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="1.0" linear="0" quadratic="0" /> 
         </omni>
-
-        <!-- ligth coming for the shooting star, linear attenuation because stars give ligth but not as must as the sun -->
-        <spot id="starLight" enabled="1" angle="70" exponent="50">        
-            <location x="-30" y="20" z="10.5" w="1.0" />
-            <target x="-30" y="20" z="10" />
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1" g="1" b="1" a="1.0" />
-            <attenuation constant="0" linear="1.0" quadratic="0" /> 
-        </spot>
-
-        <!-- ligth near the telescope, with quadratic attenuation to only ligth the telescope -->
-        <omni id="telescopeLight" enabled="1">
-            <location x="-33.5" y="1.2" z="12" w="1.0" />
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="0" quadratic="1.0" /> 
-        </omni>
-
-        <!-- ligth coming for the sun, attenuation linear because of the real intensity of the ligth of the sun  --> 
-        <omni id="sunLight" enabled="1">
-            <location x="0" y="20" z="2.1" w="1.0" />
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="1.0" linear="0" quadratic="0" /> 
-        </omni>    
+  
     </lights>
 
     <textures>
-        <texture id="starTexture" file="scenes/images/star.jpg" />
-        <texture id="skyTexture" file="scenes/images/sky.jpg" />
         <texture id="trunkTexture" file="scenes/images/tree.jpg" />
         <texture id="pineTreeTexture" file="scenes/images/pineTree.jpg" />
-        <texture id="grassTexture" file="scenes/images/grass.jpg" />
         <texture id="redTexture" file="scenes/images/red.jpg" />
         <texture id="sunTexture" file="scenes/images/sun.jpg" />
         <texture id="mercuryTexture" file="scenes/images/mercury.jpg" />
@@ -184,7 +154,7 @@
         </transformation>
 
         <transformation id="shootingStarTransform">
-            <translate x="-35" y="5" z="-10" />
+            <translate x="-35" y="10" z="-10" />
             <scale x="2" y="2" z="2" />
         </transformation> 
 
@@ -1868,68 +1838,6 @@
             </keyframe> 
         </animation> 
 
-        <animation id="starAnimation" >
-            <keyframe instant="0">
-                <translate x="0" y="0" z="0" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1.50" y="1.50" z="1.50" /> 
-            </keyframe> 
-
-            <keyframe instant="1">
-                <translate x="1" y="-1" z="-1" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1.35" y="1.35" z="1.35" /> 
-            </keyframe> 
-
-            <keyframe instant="2">
-                <translate x="2" y="-2" z="-2" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1.10" y="1.10" z="1.10" /> 
-            </keyframe>  
-
-            <keyframe instant="3">
-                <translate x="4" y="-3" z="-3.5" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="1.00" y="1.00" z="1.00" /> 
-            </keyframe> 
-
-            <keyframe instant="4">
-                <translate x="6" y="-4" z="-5" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.90" y="0.90" z="0.50" /> 
-            </keyframe>  
-
-            <keyframe instant="5">
-                <translate x="9" y="-5" z="-6" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.80" y="0.80" z="1" /> 
-            </keyframe> 
-
-            <keyframe instant="6">
-                <translate x="12" y="-6" z="-7" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.70" y="0.70" z="1" /> 
-            </keyframe> 
-
-            <keyframe instant="7">
-                <translate x="16" y="-7" z="-8" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.60" y="0.60" z="1" /> 
-            </keyframe> 
-
-            <keyframe instant="8">
-                <translate x="21" y="-8" z="-9" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.50" y="0.50" z="1" /> 
-            </keyframe> 
-
-            <keyframe instant="9">
-                <translate x="27" y="-9" z="-10" /> 
-                <rotate angle_x="0" angle_y="0" angle_z="0" />
-                <scale x="0.40" y="0.40" z="1" /> 
-            </keyframe> 
-
-        </animation> 
    </animations>
 
     <primitives>
@@ -2032,7 +1940,7 @@
                 <material id="whiteMaterial" />
             </materials>
                 <!-- length is so small for texture to repeat over and over -->
-                <texture id="skyTexture" length_s="1.0" length_t="1.0"/>
+                <texture id="starsTexture" length_s="0.1" length_t="0.1"/>
             <children>
                 <componentref id="frontSkybox" />
                 <componentref id="topSkybox" />
@@ -2040,7 +1948,6 @@
                 <componentref id="backSkybox" />                
                 <componentref id="rightSkybox" />
                 <componentref id="leftSkybox" /> 
-                <componentref id="ground" />
             </children>
         </component>
 
@@ -2108,20 +2015,6 @@
                 <material id="whiteMaterial" />
             </materials>
             <texture id="inherit"/>
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-        </component>  
-
-        <component id="ground">
-            <transformation>
-                <translate x="0" y="-0.056" z="0" />
-                <rotate axis="x" angle="-90" />
-            </transformation>
-            <materials>
-                <material id="whiteMaterial" />
-            </materials>
-            <texture id="grassTexture" length_s="0.1" length_t="0.1"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -2339,7 +2232,6 @@
             <transformation>
                 <transformationref id="shootingStarTransform" />
             </transformation>
-            <animationref id="starAnimation" />
             <materials>
                 <material id="whiteMaterial" />
             </materials>

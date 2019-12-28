@@ -308,7 +308,10 @@ class MyGameOrchestrator {
             //changes the camera to a upper position (with camera movement as to slow the movement)
             let views = this.scene.graph.getViews();
             let views_ID = this.scene.graph.getViewsID();
-            this.scene.camera = views[views_ID[1]];   
+            this.scene.camera = views[views_ID[1]]; 
+            
+            //during the movie we can move the camera    
+            this.scene.interface.setActiveCamera(this.scene.camera);   
         
             //reset the board and auxiliary boards to the initial state
             this.board.boardMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]; 

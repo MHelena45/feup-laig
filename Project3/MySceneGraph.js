@@ -1028,8 +1028,9 @@ class MySceneGraph {
                 (grandChildren[0].nodeName != 'rectangle' && grandChildren[0].nodeName != 'triangle' &&
                     grandChildren[0].nodeName != 'cylinder' && grandChildren[0].nodeName != 'sphere' &&
                     grandChildren[0].nodeName != 'torus' && grandChildren[0].nodeName != 'plane' &&
-                    grandChildren[0].nodeName != 'cylinder2' && grandChildren[0].nodeName != 'patch')) {
-                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere, torus, plane, patch or cylinder2)";
+                    grandChildren[0].nodeName != 'cylinder2' && grandChildren[0].nodeName != 'patch'
+                    && grandChildren[0].nodeName != 'cube' )) {
+                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere, torus, plane, patch, cylinder2 or cube)";
             }
 
             // Specifications for the current primitive.
@@ -1273,6 +1274,11 @@ class MySceneGraph {
                 var patch = new Patch(this.scene, primitiveId, npointsU, npointsV, npartsU, npartsV, controlpoints);
                 this.primitives[primitiveId] = patch;
 
+                break;
+            }
+            case 'cube': {
+                let cube = new MyCube(this.scene, primitiveId);
+                this.primitives[primitiveId] = cube;
                 break;
             }
             default:

@@ -10,9 +10,9 @@ class MyPiece extends CGFobject {
 
         // white Material
         this.whiteMaterial = new CGFappearance(this.scene);
-        this.whiteMaterial.setAmbient(0.40, 0.40, 0.40, 1);
-        this.whiteMaterial.setDiffuse(0.4, 0.4, 0.4, 1);
-        this.whiteMaterial.setSpecular(0.90, 0.90, 0.90, 1);
+        this.whiteMaterial.setAmbient(0.20, 0.20, 0.20, 1);
+        this.whiteMaterial.setDiffuse(0.80, 0.80, 0.80, 1);
+        this.whiteMaterial.setSpecular(0.10, 0.10, 0.10, 1);
         this.whiteMaterial.setShininess(1.0);  
         
         // brown Material
@@ -24,14 +24,13 @@ class MyPiece extends CGFobject {
 
         // red Material
         this.selectMaterial = new CGFappearance(this.scene);
-        this.selectMaterial.setAmbient(1, 0, 0, 1);
+        this.selectMaterial.setAmbient(0.20, 0.00, 0.00, 1);
         this.selectMaterial.setDiffuse(0.9, 0.1, 0.1, 1);
-        this.selectMaterial.setSpecular(0.9, 0.1, 0.1, 1);
-        this.selectMaterial.setShininess(10.0);  
-
+        this.selectMaterial.setSpecular(0.4, 0.1, 0.1, 1);
+        this.selectMaterial.setShininess(1.0);  
 
         this.cylinder = new MyCylinderCover(this.scene, 100, 1, 1, 2, 10, 10);
-        this.cone = new MyCylinder(this.scene, 101, 1, 0, 3, 10, 10);
+        this.cone = new MyCylinder(this.scene, 101, 1.1, 0, 3, 10, 10);
         this.cube = new MyCube(this.scene, 102 );
         this.sphere = new MySphere(scene, 103, 1, 10, 10);
      

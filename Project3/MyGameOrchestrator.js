@@ -475,7 +475,11 @@ class MyGameOrchestrator {
         else if(this.gameState == gameStateEnum.GAME_OVER) {
             if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN)
                 this.scoreboard.whitePlayerWins++;
-            else this.scoreboard.brownPlayerWins++;
+            else
+                this.scoreboard.brownPlayerWins++;
+            // update current score before playing movie
+            this.scoreboard.updateScore();
+            this.scoreboard.display();
             this.movie();
             alert("Game Over!");
         }

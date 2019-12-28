@@ -39,7 +39,6 @@
 
     <textures>
         <texture id="starTexture" file="scenes/images/star.jpg" />
-        <texture id="skyTexture" file="scenes/images/sky.jpg" />
         <texture id="trunkTexture" file="scenes/images/tree.jpg" />
         <texture id="grassTexture" file="scenes/images/grass.jpg" />
         <texture id="redTexture" file="scenes/images/red.jpg" />
@@ -101,6 +100,14 @@
             <diffuse r="0.10" g="0.80" b="0.10" a="1.0" />
             <specular r="0.10" g="1.00" b="0.30" a="1.0" />
         </material>
+
+        <material id="skyboxMaterial" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="1.0" />
+            <ambient r="0.10" g="0.10" b="0.8" a="1.0" />
+            <diffuse r="0.10" g="0.10" b="0.40" a="1.0" />
+            <specular r="0.3" g="0.3" b="0.2" a="1.0" />
+        </material>
+
     </materials>
 
     <!-- where are the transformations of complete objcts, to become easier to move them around -->
@@ -165,6 +172,11 @@
         <primitive id="present">
             <cube />
         </primitive>
+
+        <primitive id="presentTie">
+            <cylinder base="0.4" top="0.4" height="0.3" slices="6" stacks="6" />
+        </primitive>
+
     </primitives>
 
     <components>
@@ -180,6 +192,8 @@
                 <componentref id="skybox" />    
                 <componentref id="tree" /> 
                 <componentref id="snowman" /> 
+                <componentref id="present1" /> 
+                <componentref id="present2" /> 
             </children>
         </component>
 
@@ -267,7 +281,7 @@
                 <material id="whiteMaterial" />
             </materials>
                 <!-- length is so small for texture to repeat over and over -->
-                <texture id="skyTexture" length_s="1.0" length_t="1.0"/>
+                <texture id="none"/>
             <children>
                 <componentref id="frontSkybox" />
                 <componentref id="topSkybox" />
@@ -285,9 +299,9 @@
                 <rotate axis="y" angle="180" /> 
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="skyboxMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -299,9 +313,9 @@
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="skyboxMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -312,9 +326,9 @@
                 <translate x="0" y="0" z="-0.5" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="skyboxMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -326,9 +340,9 @@
                 <rotate axis="y" angle="90" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="skyboxMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -340,13 +354,27 @@
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="skyboxMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
         </component>  
+
+        <component id="leftSkybox">
+            <transformation>
+                <translate x="0.5" y="0" z="0" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="skyboxMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="rectangle"  />
+            </children>
+        </component>
 
         <component id="ground">
             <transformation>
@@ -361,20 +389,6 @@
                 <primitiveref id="rectangle" />
             </children>
         </component>  
-
-        <component id="leftSkybox">
-            <transformation>
-                <translate x="0.5" y="0" z="0" />
-                <rotate axis="y" angle="-90" />
-            </transformation>
-            <materials>
-                <material id="whiteMaterial" />
-            </materials>
-            <texture id="inherit"/>
-            <children>
-                <primitiveref id="rectangle"  />
-            </children>
-        </component>
 
         <component id="tree">
             <transformation>
@@ -773,10 +787,146 @@
                 <translate x="-2" y="0.8" z="-2.2" />
                 <rotate axis="y" angle="50" />
                 <rotate axis="x" angle="-50" />
-                <scale x="1" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="redMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="rectangle2sides" />
+            </children>
+        </component>
+
+        <component id="present1">
+            <transformation>
+                <translate x="-30" y="0" z="-2" />
+                <scale x="1" y="1" z="2" />
+            </transformation>
+            <materials>
+                <material id="redMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="present" />
+                <componentref id="tie" />
+                <componentref id="tie1" /> 
+                <componentref id="tie2" />
+                <componentref id="tie3" />
+                <componentref id="tie4" />
+                <componentref id="tie5" />
+            </children>
+        </component>
+
+        <component id="present2">
+            <transformation>
+                <translate x="30" y="0" z="17" />
+                <scale x="1" y="1" z="2" />
+            </transformation>
+            <materials>
+                <material id="redMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="present" />
+                <componentref id="tie" />
+                <componentref id="tie1" /> 
+                <componentref id="tie2" />
+                <componentref id="tie3" />
+                <componentref id="tie4" />
+                <componentref id="tie5" />
+            </children>
+        </component>
+
+        <component id="tie">
+            <transformation>
+                <translate x="0.08" y="-1" z="1.01" />
+                <rotate axis="x" angle="-90" />
+                <scale x="0.50" y="0.7" z="0.74" />
+            </transformation>
+            <materials>
+                <material id="greenMaterial1" />
+                <material id="greenMaterial2" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="rectangle2sides" />
+            </children>
+        </component>
+
+        <component id="tie1">
+            <transformation>
+                <translate x="0.08" y="-1" z="-1.01" />
+                <rotate axis="x" angle="-90" />
+                <scale x="0.50" y="0.7" z="0.74" />
+            </transformation>
+            <materials>
+                <material id="greenMaterial1" />
+                <material id="greenMaterial2" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="rectangle2sides" />
+            </children>
+        </component>
+
+        <component id="tie2">
+            <transformation>
+                <translate x="0.07" y="1.01" z="-1" />
+                <scale x="0.5" y="1" z="0.67" />
+            </transformation>
+            <materials>
+                <material id="greenMaterial1" />
+                <material id="greenMaterial2" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="rectangle2sides" />
+            </children>
+        </component>
+
+        <component id="tie3">
+            <transformation>
+                <translate x="1.00" y="1.01" z="0" />
+                <rotate axis="y" angle="-90" />
+                <scale x="0.5" y="1" z="0.66" />
+            </transformation>
+            <materials>
+                <material id="greenMaterial1" />
+                <material id="greenMaterial2" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="rectangle2sides" />
+            </children>
+        </component>
+
+        <component id="tie4">
+            <transformation>
+                <translate x="1.01" y="-0.50" z="0.01" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="z" angle="90" />
+                <scale x="0.45" y="0.5" z="0.55" />
+            </transformation>
+            <materials>
+                <material id="greenMaterial1" />
+                <material id="greenMaterial2" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="rectangle2sides" />
+            </children>
+        </component>
+
+        <component id="tie5">
+            <transformation>
+                <translate x="-1.01" y="-0.50" z="0.01" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="z" angle="90" />
+                <scale x="0.45" y="0.5" z="0.55" />
+            </transformation>
+            <materials>
+                <material id="greenMaterial1" />
+                <material id="greenMaterial2" />
             </materials>
             <texture id="none" />
             <children>

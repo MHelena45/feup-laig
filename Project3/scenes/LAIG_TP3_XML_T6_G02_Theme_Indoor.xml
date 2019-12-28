@@ -37,7 +37,6 @@
     </lights>
 
     <textures>
-        <texture id="skyTexture" file="scenes/images/sky.jpg" />
         <texture id="wood" file="scenes/images/wood.jpg" />
     </textures>
 
@@ -63,6 +62,13 @@
             <specular r="0.1" g="0.1" b="0.1" a="1.0" />
         </material>
 
+        <material id="skyboxMaterial" shininess="1">
+            <emission r="0.00" g="0.00" b="0.00" a="1.0" />
+            <ambient r="0.10" g="0.10" b="0.8" a="1.0" />
+            <diffuse r="0.10" g="0.10" b="0.40" a="1.0" />
+            <specular r="0.3" g="0.3" b="0.2" a="1.0" />
+        </material>
+
     </materials>
 
     <transformations>
@@ -84,14 +90,6 @@
     <primitives>
         <primitive id="rectangle">
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
-        </primitive>
-
-        <primitive id="ground">
-            <rectangle x1="-50" y1="-50" x2="50" y2="50" />
-        </primitive>
-
-        <primitive id="sky">
-            <sphere radius="-50" slices="60" stacks="30"/>
         </primitive>
 
         <primitive id="tableTop">
@@ -206,7 +204,8 @@
                 <primitiveref id="tableLeg" />
             </children>
         </component>
-           <!-- skybox below --> 
+
+        <!-- skybox below --> 
         <component id="skybox">
             <transformation>
                 <translate x="0" y="10" z="0"/>
@@ -216,7 +215,7 @@
                 <material id="whiteMaterial" />
             </materials>
                 <!-- length is so small for texture to repeat over and over -->
-                <texture id="skyTexture" length_s="1.0" length_t="1.0"/>
+                <texture id="none"/>
             <children>
                 <componentref id="frontSkybox" />
                 <componentref id="topSkybox" />
@@ -233,9 +232,9 @@
                 <rotate axis="y" angle="180" /> 
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="skyboxMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -247,9 +246,9 @@
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="skyboxMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -260,9 +259,9 @@
                 <translate x="0" y="0" z="-0.5" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="skyboxMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -274,9 +273,9 @@
                 <rotate axis="y" angle="90" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="skyboxMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -288,9 +287,9 @@
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="skyboxMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -302,13 +301,12 @@
                 <rotate axis="y" angle="-90" />
             </transformation>
             <materials>
-                <material id="whiteMaterial" />
+                <material id="skyboxMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="rectangle"  />
             </children>
         </component>
-
     </components>
 </lxs>

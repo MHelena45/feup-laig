@@ -35,12 +35,17 @@
             <attenuation constant="1.0" linear="0" quadratic="0" /> 
         </omni>
   
+          <!-- ligth near the telescope, with quadratic attenuation to only ligth the telescope -->
+        <omni id="telescopeLight" enabled="1">
+            <location x="-30" y="1.2" z="12" w="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="0" linear="0" quadratic="1.0" /> 
+        </omni>
     </lights>
 
     <textures>
-        <texture id="trunkTexture" file="scenes/images/tree.jpg" />
-        <texture id="pineTreeTexture" file="scenes/images/pineTree.jpg" />
-        <texture id="redTexture" file="scenes/images/red.jpg" />
         <texture id="sunTexture" file="scenes/images/sun.jpg" />
         <texture id="mercuryTexture" file="scenes/images/mercury.jpg" />
         <texture id="venusTexture" file="scenes/images/venus.jpg" />
@@ -61,13 +66,6 @@
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
-        </material>
-
-         <material id="backgroundMaterial" shininess="10">
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.6" g="0.0" b="0.0" a="1.0" />
         </material>
 
         <material id="sunMaterial" shininess="10">
@@ -112,15 +110,15 @@
             <emission r="0.1" g="0.1" b="0.1" a="1.0" />
             <ambient r="0.15" g="0.15" b="0.15" a="1.0" />
             <diffuse r="0" g="0" b="0" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </material>
 
         <!-- black to simulate rubber -->
         <material id="endLegMaterial" shininess="1">
             <emission r="0" g="0" b="0" a="1.0" />
             <ambient r="0.05" g="0.05" b="0.05" a="0.05" />
-            <diffuse r="0" g="0" b="0" a="0" />
-            <specular r="0" g="0" b="0" a="0" />
+            <diffuse r="0" g="0" b="0" a="1.0" />
+            <specular r="0" g="0" b="0" a="1.0" />
         </material>
 
         <!-- shinny object to simulate the shine of a shootingStar track -->
@@ -128,7 +126,7 @@
             <emission r="1.0" g="1.0" b="1.0" a="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="0" g="0" b="0" a="0" />
+            <specular r="0" g="0" b="0" a="1.0" />
         </material>
 
     </materials>

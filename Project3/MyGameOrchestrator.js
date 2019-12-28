@@ -204,7 +204,7 @@ class MyGameOrchestrator {
     botMove() {
         // build request
         let thisGame = this;
-        let request = "bot_move(" + JSON.stringify(this.difficultyLevel) + "," + JSON.stringify(thisGame.board.boardMatrix) + ","
+        let request = "bot_move(" + JSON.stringify(parseInt(thisGame.difficultyLevel)) + "," + JSON.stringify(thisGame.board.boardMatrix) + ","
         + JSON.stringify(thisGame.whiteAuxiliaryBoard.pieces) + "," + JSON.stringify(thisGame.brownAuxiliaryBoard.pieces) + ","
         + JSON.stringify(this.currentPlayer + 1) + ")";
         // send request
@@ -309,7 +309,6 @@ class MyGameOrchestrator {
             let views = this.scene.graph.getViews();
             let views_ID = this.scene.graph.getViewsID();
             this.scene.camera = views[views_ID[1]]; 
-            
             //during the movie we can move the camera    
             this.scene.interface.setActiveCamera(this.scene.camera);   
         
@@ -449,6 +448,9 @@ class MyGameOrchestrator {
         }         
     }
 
+    /**
+     * puts the camera in the initially position, to the white player start
+     */
     setPlayer1View() {
         let views = this.scene.graph.getViews();
         let views_ID = this.scene.graph.getViewsID();
@@ -460,8 +462,11 @@ class MyGameOrchestrator {
             this.scene.camera.orbit([0, 1, 0], (this.cameraMovement - 100) * (Math.PI/100));
             this.cameraMovement = 100;
         }
-        if(this.currentPlayer == playerTurnEnum.PLAYER2_TURN)
+        if(this.currentPlayer == playerTurnEnum.PLAYER2_TURN){
+            this.currentPlayer = !this.currentPlayer;
             this.scene.camera.orbit([0, 1, 0], Math.PI);
+        }
+
     }
 
     deselectAll() {
@@ -473,24 +478,28 @@ class MyGameOrchestrator {
     start() {  
         if (this.gameState == gameStateEnum.LOADING) {
             alert("Board is loading. Don't forget to open SICStus server!");
-        } else {
+        } else if(this.gameState == gameStateEnum.MENU) {
             //makes sure the camera is where it should start
             this.setPlayer1View();
             this.gameState = gameStateEnum.PLAYER_CHOOSING;
             this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
             this.deselectAll();
             this.scoreboard.reset();
-        } 
-
+            this.moves = []; //reset moves
+        } else {
+            this.reset();
+            alert("Restarting game! Press Start again to begin")
+        }
     }
 
-    reset() {       
+    reset() {    
         this.setupProlog(); //gets the pieces of the board and auxiliary board
         this.scoreboard.reset(); //resets the time in the scoreboard
         this.gameState = gameStateEnum.MENU;
         this.moves = []; //reset moves
         //makes sure the camera is where it should start
         this.setPlayer1View();
+        this.deselectAll();
     }
 
     display() {
@@ -498,9 +507,12 @@ class MyGameOrchestrator {
         this.whiteAuxiliaryBoard.display();
         this.brownAuxiliaryBoard.display();
         this.scoreboard.display();
+
+        //if there is a piece moving, display the pice with the apply animation matrix
         if(this.gameState == gameStateEnum.ANIMATING_PIECE || this.gameState == gameStateEnum.ANIMATING_PIECE_MOVIE) {
             this.pieceAnimation.display();
         }
+        //if the game is in gameOver state, display new score
         else if(this.gameState == gameStateEnum.GAME_OVER) {
             if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN)
                 this.scoreboard.whitePlayerWins++;
@@ -509,7 +521,7 @@ class MyGameOrchestrator {
             // update current score before playing movie
             this.scoreboard.updateScore();
             this.scoreboard.display();
-            this.movie();
+            this.movie(); //starts the movie
             alert("Game Over!");
         }
     }

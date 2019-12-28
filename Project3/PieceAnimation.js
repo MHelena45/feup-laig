@@ -56,7 +56,7 @@ class PieceAnimation extends CGFobject {
     }
 
     calculateFrames(piecePickNumber, boardPickNumber, prologPiece){  
-        this.animation = new KeyframeAnimation(this.scene);    
+        this.animation = new KeyframeAnimation(this.scene); 
         this.pieceMoving = prologPiece;
         let initialPosition = this.initialPositions[piecePickNumber - 17];
         let finalPosition = this.positionTile[boardPickNumber-1];
@@ -65,23 +65,26 @@ class PieceAnimation extends CGFobject {
         let x_diff = (finalPosition[0] - initialPosition[0]) / 10;
         let y_diff = (finalPosition[2] - initialPosition[1]) / 10;
         let z_diff = 1.5; //pice will go up 10 units
-        let i = 0;
+        let i = 0; 
 
-        for(i=0 ; i < 5; i++) {
+        for( i=0 ; i < 5; i++) {
             let translate = [initialPosition[0] + i * x_diff, i * z_diff, initialPosition[1] + i * y_diff];
             // save matrix and instance
             this.animation.instances.push(i/4);
             // saving transformation on map
             this.animation.animations.set(i/4, [translate, [0,0,0], [1, 1, 1]]);
         }
+
+        this.animation.update(); //to create the matrix as soon as it can
+
         for(i=5; i <= 10; i++) {
             let translate = [initialPosition[0] + i * x_diff, 7.5 -(i-5) * z_diff, initialPosition[1] + i * y_diff];
             // save matrix and instance
             this.animation.instances.push(i/4);
             // saving transformation on map
             this.animation.animations.set(i/4, [translate, [0,0,0], [1, 1, 1]]);
-        }     
-  
+        } 
+
     }
 
     update(time){

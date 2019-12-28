@@ -1,5 +1,5 @@
 <lxs>
-    <scene root="Root" axis_length="5"/>
+    <scene root="Root" axis_length="0.1"/>
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
@@ -8,8 +8,8 @@
         </perspective>
 
         <perspective id="upCamera" near="0.1" far="500" angle="45">
-            <from x="0" y="55" z="8" />
-            <to x="0" y="0" z="-2" />
+            <from x="10" y="30" z="0" />
+            <to x="0" y="0" z="0" />
         </perspective>
     </views>
 

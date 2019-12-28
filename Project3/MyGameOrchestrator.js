@@ -5,7 +5,7 @@ const gameStateEnum = {
     ANIMATING_PIECE: 3,     // moving piece for animation
     GAME_OVER: 4,           // game is over play again
     CHANGE_PLAYER: 5,       //used to animate camera and change between players
-    ANIMATING_PIECE_MOVIE: 6
+    ANIMATING_PIECE_MOVIE: 6 //used when movie is being display
 }
 
 const playerTurnEnum = {
@@ -46,28 +46,34 @@ class MyGameOrchestrator {
         /// Setup game states and initial arrays
         this.gameState= gameStateEnum.LOADING;
         this.currentPlayer = playerTurnEnum.PLAYER1_TURN;
-        this.selectedPieceId;
+        this.selectedPieceId; //attribute of the move vector to do the film
 
         //used for animated movement of the camera and not just a change of 2 points
-        this.cameraMovement = 100;
+        this.cameraMovement = 100; //camera moves Pi/100 each time
 
-        this.gameOver = false;
+        this.gameOver = false; //change to true when game is over by the prolog response
         this.scoreboard = new MyScoreboard(this.scene);
 
-        this.moves = [];
-        this.currentFrame = 0;
+        this.moves = []; //olds the moves done in this game
+        this.currentFrame = 0; //current frame/move being display in the movie of the game
 
-        this.set_event_handler();
+        this.set_event_handler(); //used when user clicks start in the instructions
         this.setupProlog();
     }
 
+    /**
+     * sets a event handler to the button start of the instruction
+     */
     set_event_handler() {
         let menu = document.querySelector('input[value="START"]');
-        menu.addEventListener('click', this.update_values.bind(this));
+        menu.addEventListener('click', this.stop_display.bind(this));
     }
 
-    update_values(event) {
-        // menu display is stopped when press start
+    /**
+     * menu display is stopped when press start
+     * @param {*} event 
+     */
+    stop_display(event) {
         let x = document.querySelector("#menu");
         x.style.display = "none";  
 
@@ -106,17 +112,19 @@ class MyGameOrchestrator {
         );
     }
 
-    changePlayer(player) {
+    /**
+     * changes the player after the end of the animated camera rotation
+     */
+    changePlayer() {
         if(this.gameState == gameStateEnum.CHANGE_PLAYER) {         
-            this.scene.camera.orbit([0, 1, 0], Math.PI/100);
+            this.scene.camera.orbit([0, 1, 0], Math.PI/100); //rotates the camera
             this.cameraMovement--;
-            if(this.cameraMovement == 0){
-                this.whiteAuxiliaryBoard.deselect();
-                this.brownAuxiliaryBoard.deselect();
+            if(this.cameraMovement == 0){ //camera is already in the correct position
+                this.deselectAll();
                 this.gameState = gameStateEnum.PLAYER_CHOOSING;
                 this.cameraMovement = 100;
-                this.currentPlayer = player;
-                this.scoreboard.reset();
+                this.currentPlayer = !this.currentPlayer; //change the player to the next one playing
+                this.scoreboard.reset(); //resets time in the board
             }
         }
     }
@@ -143,16 +151,13 @@ class MyGameOrchestrator {
                 // move is valid
                 if (validMove) {
                     thisGame.board.tempBoard = response[1];
-                    if(thisGame.currentPlayer == playerTurnEnum.PLAYER1_TURN)
-                        thisGame.whiteAuxiliaryBoard.removePiece(thisGame.selectedPieceId);
-                    else
-                        thisGame.brownAuxiliaryBoard.removePiece(thisGame.selectedPieceId);
                     // add new move to moves array
                     move = [row, column, piece, thisGame.selectedPieceId];
                     thisGame.moves.push(move);
                     thisGame.isGameOver(row, column, piece);
                     
                     thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
+                    thisGame.removePiece(); //removes piece being played/animate in the moment
                 }
                 // move is not valid (ask player to play again)
                 else {
@@ -164,7 +169,7 @@ class MyGameOrchestrator {
     }
 
     /**
-     * 
+     * undo the last play (can be done multiple time)
      */
     undo() {
         if (this.gameState != gameStateEnum.PLAYER_CHOOSING)
@@ -194,7 +199,7 @@ class MyGameOrchestrator {
     }
 
     /**
-     * 
+     * get the computer move (row, column and prolog piece number)
      */
     botMove() {
         // build request
@@ -220,17 +225,17 @@ class MyGameOrchestrator {
                     piecePickId = thisGame.brownAuxiliaryBoard.getPickId(piece);
 
                 let tilePickNumber = (column - 1) * 4 + row;
-                thisGame.pieceAnimation.calculateFrames(piecePickId, tilePickNumber, piece);  
+                thisGame.pieceAnimation.calculateFrames(piecePickId, tilePickNumber, piece);  //calculates thr frames to a keyframeAnimation
 
                 // build move for js
-                let move = [row, column, piece, piecePickId];
+                let move = [row, column, piece, piecePickId]; //used in the movie of the last game
                 thisGame.moves.push(move);
                 // update baords with response
                 thisGame.board.tempBoard = response[0];
                 thisGame.whiteAuxiliaryBoard.pieces = response[1];
                 thisGame.brownAuxiliaryBoard.pieces = response[2];
       
-                thisGame.isGameOver(row, column, piece);
+                thisGame.isGameOver(row, column, piece); //check if the game ended and change the boolean this.gameOver to true if necessary
 
                 thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
             }
@@ -261,6 +266,8 @@ class MyGameOrchestrator {
 
     //Load of new scenes
     updateTheme(){
+        let state = this.gameState;
+        this.gameState = gameStateEnum.LOADING;
         let filename;
         switch(this.theme) {
             case "0":
@@ -272,10 +279,10 @@ class MyGameOrchestrator {
             case "2":
                 filename="LAIG_TP3_XML_T6_G02_Theme_Indoor.xml";
                 break;
-
         }
         this.scene.graph = new MySceneGraph(filename, this.scene);
         this.scene.sceneInited = false;
+        this.gameState = state;
     }
  
     update(time) {
@@ -288,17 +295,23 @@ class MyGameOrchestrator {
         }
     }
 
+    removePiece() {
+        if(this.currentPlayer == playerTurnEnum.PLAYER1_TURN)
+            this.whiteAuxiliaryBoard.removePiece(this.selectedPieceId);
+        else
+            this.brownAuxiliaryBoard.removePiece(this.selectedPieceId);
+
+    }
+
     movie() {
         if(this.gameState != gameStateEnum.ANIMATING_PIECE_MOVIE) {
             //changes the camera to a upper position (with camera movement as to slow the movement)
             let views = this.scene.graph.getViews();
             let views_ID = this.scene.graph.getViewsID();
             this.scene.camera = views[views_ID[1]];   
-            //during the movie we can move the camera    
-            this.scene.interface.setActiveCamera(this.scene.camera);    
         
-            this.board.boardMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
-            this.board.tempBoard = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
+            //reset the board and auxiliary boards to the initial state
+            this.board.boardMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]; 
             this.whiteAuxiliaryBoard.pieces = [11, 11, 51, 51, 71, 71, 91, 91];
             this.brownAuxiliaryBoard.pieces = [12, 12, 52, 52, 72, 72, 92, 92];
             this.nextFrameMovie();
@@ -327,7 +340,11 @@ class MyGameOrchestrator {
             else this.whiteAuxiliaryBoard.removePiece(move[3]);
 
             this.currentFrame++;  
+        } else if(this.moves.length == 0){ //no game has been played
+            alert("No movie available.");
+            this.gameState = gameStateEnum.PLAYER_CHOOSING;
         } else {
+            this.currentFrame = 0;
             this.gameState = gameStateEnum.PLAYER_CHOOSING;
             this.reset();
             alert("Movie Finished");
@@ -343,7 +360,6 @@ class MyGameOrchestrator {
                         let obj = this.scene.pickResults[i][0];
                         if (obj) {
                             let customId = this.scene.pickResults[i][1];
-                            console.log("Picked object: " + obj + ", with pick id " + customId);
                             this.selectItems(customId);         			
                         }
                     }
@@ -376,10 +392,10 @@ class MyGameOrchestrator {
                 if(this.brownPlayer == 0) {
                     if(this.brownAuxiliaryBoard.isSelected() && this.board.isSelected()) {
                         let piece = this.brownAuxiliaryBoard.pieceSelected();
+                        this.pieceAnimation.calculateFrames(this.selectedPieceId, this.board.pickNumberSelected(), piece); 
                         let coordinates = this.board.tileSelected();
                         this.move(coordinates[0], coordinates[1], piece) //piece is a prolog number  
-                        this.gameState = gameStateEnum.LOADING; 
-                        this.pieceAnimation.calculateFrames(this.selectedPieceId, this.board.pickNumberSelected(), piece);       
+                        this.gameState = gameStateEnum.LOADING;       
                         this.brownAuxiliaryBoard.deselect();
                         this.board.deselect();
                     }
@@ -396,7 +412,7 @@ class MyGameOrchestrator {
             }
         } else if(this.gameState == gameStateEnum.CHANGE_PLAYER) {
             // update current player (0 -> 1, 1 -> 0)
-            this.changePlayer(!this.currentPlayer);
+            this.changePlayer();
         }
     }
 
@@ -436,6 +452,13 @@ class MyGameOrchestrator {
         this.scene.camera = views[views_ID[0]];   
         //during the game we can not move the camera    
         this.scene.interface.setActiveCamera(null); 
+
+        if(this.cameraMovement != 100) {
+            this.scene.camera.orbit([0, 1, 0], (this.cameraMovement - 100) * (Math.PI/100));
+            this.cameraMovement = 100;
+        }
+        if(this.currentPlayer == playerTurnEnum.PLAYER2_TURN)
+            this.scene.camera.orbit([0, 1, 0], Math.PI);
     }
 
     deselectAll() {
@@ -446,7 +469,7 @@ class MyGameOrchestrator {
 
     start() {  
         if (this.gameState == gameStateEnum.LOADING) {
-            alert("Board is loading. Wait 3 seconds!");
+            alert("Board is loading. Don't forget to open SICStus server!");
         } else {
             //makes sure the camera is where it should start
             this.setPlayer1View();
@@ -458,10 +481,13 @@ class MyGameOrchestrator {
 
     }
 
-    reset() {
-        this.setupProlog();
-        this.scoreboard.reset();
+    reset() {       
+        this.setupProlog(); //gets the pieces of the board and auxiliary board
+        this.scoreboard.reset(); //resets the time in the scoreboard
         this.gameState = gameStateEnum.MENU;
+        this.moves = []; //reset moves
+        //makes sure the camera is where it should start
+        this.setPlayer1View();
     }
 
     display() {

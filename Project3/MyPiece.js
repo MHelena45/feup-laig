@@ -40,21 +40,22 @@ class MyPiece extends CGFobject {
         switch(prologNumberPiece){
             case 11: case 12:
                 return this.cone;
-                break;
             case 51: case 52:
                 return this.cube;
-                break;
             case 71: case 72:
                 return this.cylinder;
-                break;
             case 91: case 92:
                 return this.sphere;
-                break;
             default:
                 break;
         }
     }
 
+    /**
+     * display piece with the correct color. If selected that color is red
+     * @param {the number of the piece in prolog notation} prologNumberPiece 
+     * @param {if the pices is selected or not} selected 
+     */
     displayPiece(prologNumberPiece, selected) {
         //pieces of player 1 end with 1 and of player 2 end with 2 always in prolog representation
         if(selected == 1)

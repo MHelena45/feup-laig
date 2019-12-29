@@ -1,10 +1,10 @@
 /**
- * MyBoardQuarter
+ * MyBoardLaterals
  * @constructor
  * @param scene - Reference to MyScene object
  *
  */
-class MyBoardQuarter extends CGFobject {
+class MyBoardLaterals extends CGFobject {
     constructor(scene) {
         super(scene);
         this.initBuffers();

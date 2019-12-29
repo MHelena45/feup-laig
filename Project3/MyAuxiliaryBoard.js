@@ -109,6 +109,7 @@ class MyAuxiliaryBoard extends CGFobject {
             }       
             h = 2;    
         } 
+        //prevents other item to have the pick number of the last piece
         this.scene.clearPickRegistration();
     }
    

@@ -15,8 +15,6 @@ class MyInterface extends CGFinterface {
      */
     init(application) {
         super.init(application);
-        // init GUI. For more information on the methods, check:
-        //  http://workshop.chromeexperiments.com/examples/gui
         
         this.gui = new dat.GUI();
 

@@ -44,7 +44,7 @@ class MyGameBoard {
 
         this.selected = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-        this.board = new MyBoardQuarter(scene);
+        this.board = new MyBoardLaterals(scene);
         this.board.initBuffers();
 
     }

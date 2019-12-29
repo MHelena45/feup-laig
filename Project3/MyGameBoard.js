@@ -49,11 +49,17 @@ class MyGameBoard {
 
     }
 
+    /**
+     * deselects piece selected
+     */
     deselect(){
         for(let i = 0; i < this.selected.length; i++)
             this.selected[i] = 0;
     }
 
+    /**
+     * returns the row and column of the tile selected
+     */
     tileSelected() {
         let i;
         for(i = 0; i < this.selected.length; i++) {
@@ -65,6 +71,9 @@ class MyGameBoard {
         return [row, column];
     }
 
+    /**
+     * return the pick number of the tile selected
+     */
     pickNumberSelected() {
         let i;
         for(i = 0; i < this.selected.length; i++) {
@@ -75,6 +84,9 @@ class MyGameBoard {
         return i;
     }
 
+    /**
+     * return true if a tile is selected and false if there isn't a tile select
+     */
     isSelected() {
         for(let i = 0; i < this.selected.length; i++)
             if(this.selected[i] == 1)
@@ -83,7 +95,7 @@ class MyGameBoard {
     }
 
     display(){
-
+        //start display of the board sides
         this.notSelectMaterial.apply();
         this.board.display();
 
@@ -103,6 +115,7 @@ class MyGameBoard {
         this.scene.rotate(3 * Math.PI /2, 0, 1, 0);
         this.board.display();
         this.scene.popMatrix();
+        //end display of the board side
 
         let h = 1;
         /* Down squares */

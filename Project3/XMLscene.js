@@ -152,9 +152,9 @@ class XMLscene extends CGFscene {
      */
     display() {
         this.gameOrchestrator.orchestrate();
+        this.clearPickRegistration();
 
         // ---- BEGIN Background, camera and axis setup
-
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -165,11 +165,9 @@ class XMLscene extends CGFscene {
 
         // Apply transformations corresponding to the camera position relative to the origin
         this.applyViewMatrix();
-
         this.pushMatrix();
 
         //display of the axis is not necessary for the game
-
         this.checkKeys();
 
         for (var i = 0; i < this.lights.length; i++) {
@@ -187,7 +185,8 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
-        this.gameOrchestrator.display();
+
+        this.gameOrchestrator.display(); //display board and add pick number to objects
 
     }
     

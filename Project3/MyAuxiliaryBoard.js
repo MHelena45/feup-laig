@@ -46,6 +46,21 @@ class MyAuxiliaryBoard extends CGFobject {
     }
 
     /**
+     * checks if there aren't any pieces left. 
+     * The game ends when one player doesn't have any pieces left.
+     */
+    isEmpty() {
+        if(this.pieces != null) {
+            for(let i = 0; i < this.pieces.length; i++){
+                if(this.pieces[i] != 0)
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Places piece in correct position of pieces array
      * @param {int} piece two digit number containing information about the piece
      */
@@ -78,7 +93,7 @@ class MyAuxiliaryBoard extends CGFobject {
 
     display() {
         let h = 1;
-        /* Down squares */
+        //display pieces in 2 lines
         for(let j = 1; j <= 2; j++){
             for(let i = 1; i <= 4; i++){   
                 //checks if the piece i
@@ -91,10 +106,10 @@ class MyAuxiliaryBoard extends CGFobject {
                     this.scene.popMatrix();                         
                 }
                 h += 2;
-                this.scene.clearPickRegistration();
             }       
             h = 2;    
         } 
+        this.scene.clearPickRegistration();
     }
    
 

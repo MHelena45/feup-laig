@@ -56,6 +56,27 @@ parse_input(game_over(Board, Move), [GameOver]):-
     GameOver = true.
 
 % ======================================================================================
+%   Game Tied
+% ======================================================================================
+% Get both players List of Moves with only valid moves
+% valid_moves(1, Board, White_Pieces, Brown_Pieces, Player, List_Of_Moves).
+% if List_Of_Moves == 0 then game is tied
+% Player -> 1 (white pieces) or 2 (brown pieces)
+parse_input(game_tied(Board, White_Pieces, Brown_Pieces), [Game_Tied]):-
+    valid_moves(1, Board, White_Pieces, Brown_Pieces, 1, List_Of_White_Moves),
+    valid_moves(1, Board, White_Pieces, Brown_Pieces, 2, List_Of_Brown_Moves),
+    % game is over if at least one player has 0 possible moves
+    (  
+        List_Of_Brown_Moves == 0
+        ;
+        List_Of_White_Moves == 0
+    ),
+    Game_Tied = true.
+
+parse_input(game_tied(_, _, _), [Game_Tied]):-
+    Game_Tied = false.
+
+% ======================================================================================
 %   Bot Move
 % ======================================================================================
 % Move -> [row, column, piece]

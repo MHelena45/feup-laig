@@ -1,16 +1,17 @@
 const gameStateEnum = {
-    MENU: 0,                // show menu and handle settings
-    LOADING: 1,             // load file, render and request scene, board, pieces, etc
-    PLAYER_CHOOSING: 2,     // player is choosing what to play
-    ANIMATING_PIECE: 3,     // moving piece for animation
-    GAME_OVER: 4,           // game is over play again
-    CHANGE_PLAYER: 5,       //used to animate camera and change between players
-    ANIMATING_PIECE_MOVIE: 6 //used when movie is being display
+    MENU: 0,                    // show menu and handle settings
+    LOADING: 1,                 // load file, render and request scene, board, pieces, etc
+    PLAYER_CHOOSING: 2,         // player is choosing what to play
+    ANIMATING_PIECE: 3,         // moving piece for animation
+    GAME_OVER: 4,               // game is over
+    GAME_TIED: 5,               // game is tied
+    CHANGE_PLAYER: 6,           //used to animate camera and change between players
+    ANIMATING_PIECE_MOVIE: 7    //used when movie is being display
 }
 
 const playerTurnEnum = {
-    PLAYER1_TURN: 0,        // player 1 is playing
-    PLAYER2_TURN: 1         // player 2 is playing
+    PLAYER1_TURN: 0,            // player 1 is playing
+    PLAYER2_TURN: 1             // player 2 is playing
 }
 
 class MyGameOrchestrator {
@@ -52,6 +53,7 @@ class MyGameOrchestrator {
         this.cameraMovement = 100; //camera moves Pi/100 each time
 
         this.gameOver = false; //change to true when game is over by the prolog response
+        this.gameTied = false; //change to true when game is over by the prolog response
         this.scoreboard = new MyScoreboard(this.scene);
 
         this.moves = []; //olds the moves done in this game
@@ -154,7 +156,9 @@ class MyGameOrchestrator {
                     // add new move to moves array
                     move = [row, column, piece, thisGame.selectedPieceId];
                     thisGame.moves.push(move);
+                    // detect if game is over or tied
                     thisGame.isGameOver(row, column, piece);
+                    thisGame.isGameTied();
 
                     thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
                     thisGame.removePiece(); //removes piece being played/animate in the moment
@@ -251,8 +255,9 @@ class MyGameOrchestrator {
                 thisGame.board.tempBoard = response[0];
                 thisGame.whiteAuxiliaryBoard.pieces = response[1];
                 thisGame.brownAuxiliaryBoard.pieces = response[2];
-
-                thisGame.isGameOver(row, column, piece); //check if the game ended and change the boolean this.gameOver to true if necessary
+                // detect if game is over or tied
+                thisGame.isGameOver(row, column, piece);
+                thisGame.isGameTied();
 
                 thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
             }
@@ -277,6 +282,25 @@ class MyGameOrchestrator {
             function (data) {
                 let response = JSON.parse(data.target.response);
                 thisGame.gameOver = response[0];
+            }
+        );
+    }
+
+    /**
+     * verifies if game is over
+     */
+    isGameTied() {
+        // build request
+        let thisGame = this;
+        let request = "game_tied(" + JSON.stringify(thisGame.board.tempBoard)
+            + "," + JSON.stringify(thisGame.whiteAuxiliaryBoard.pieces)
+            + "," + JSON.stringify(thisGame.brownAuxiliaryBoard.pieces) + ")";
+        // send request
+        this.prologInterface.getPrologRequest(
+            request,
+            function (data) {
+                let response = JSON.parse(data.target.response);
+                thisGame.gameTied = response[0];
             }
         );
     }

@@ -73,7 +73,7 @@ parse_input(game_tied(Board, White_Pieces, Brown_Pieces), [Game_Tied]):-
 parse_input(game_tied(Board, White_Pieces, Brown_Pieces), [Game_Tied]):-
     valid_moves(1, Board, White_Pieces, Brown_Pieces, 2, List_Of_Brown_Moves),
     length(List_Of_Brown_Moves, List_Of_Brown_Moves_Size),
-    List_Of_Brown_Moves_Size == 0
+    List_Of_Brown_Moves_Size == 0,
     Game_Tied = true.
 
 parse_input(game_tied(_, _, _), [Game_Tied]):-
@@ -84,6 +84,11 @@ parse_input(game_tied(_, _, _), [Game_Tied]):-
 % ======================================================================================
 % Move -> [row, column, piece]
 % Player -> 1 (white pieces) or 2 (brown pieces)
-parse_input(bot_move(Level, Board, White_Pieces, Brown_Pieces, Player), [New_Board, New_White_Pieces, New_Brown_Pieces, Move]):-
+parse_input(bot_move(Level, Board, White_Pieces, Brown_Pieces, Player), [New_Board, New_White_Pieces, New_Brown_Pieces, Move, Game_Tied]):-
     choose_move(Board, White_Pieces, Brown_Pieces, Level, Move, Player),
-    move(0, Move, Board, White_Pieces, Brown_Pieces, Player, New_Board, New_White_Pieces, New_Brown_Pieces).
+    move(0, Move, Board, White_Pieces, Brown_Pieces, Player, New_Board, New_White_Pieces, New_Brown_Pieces),
+    Game_Tied = false.
+
+% bot_move only fails when there aren't any more plays left
+parse_input(bot_move(Level, Board, White_Pieces, Brown_Pieces, Player), [New_Board, New_White_Pieces, New_Brown_Pieces, Move, Game_Tied]):-
+    Game_Tied = true. 

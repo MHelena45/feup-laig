@@ -119,15 +119,23 @@ class MyGameOrchestrator {
      */
     changePlayer() {
         if (this.gameState == gameStateEnum.CHANGE_PLAYER) {
-            this.scene.camera.orbit([0, 1, 0], Math.PI / 100); //rotates the camera
-            this.cameraMovement--;
-            if (this.cameraMovement == 0) { //camera is already in the correct position
-                this.deselectAll();
-                this.gameState = gameStateEnum.PLAYER_CHOOSING;
-                this.cameraMovement = 100;
-                this.currentPlayer = !this.currentPlayer; //change the player to the next one playing
-                this.scoreboard.reset(); //resets time in the board
+            //when cameraMovement has a value ]100, 110[ is just waiting for the response of this.gameTied()
+            if(this.cameraMovement == 250){ //check if the game is tied
+                //if the current player is bot, don't need to check if game is tied, it won't have plays
+                if((this.currentPlayer == playerTurnEnum.PLAYER1_TURN && this.whitePlayer == 0) ||                
+                   (this.currentPlayer == playerTurnEnum.PLAYER2_TURN && this.brownPlayer == 0))
+                    this.isGameTied();
+            } else if(this.cameraMovement < 100) {
+                this.scene.camera.orbit([0, 1, 0], Math.PI / 100); //rotates the camera
+                if (this.cameraMovement == 0) { //camera is already in the correct position
+                    this.deselectAll();
+                    this.gameState = gameStateEnum.PLAYER_CHOOSING;
+                    this.cameraMovement = 251;
+                    this.currentPlayer = !this.currentPlayer; //change the player to the next one playing
+                    this.scoreboard.reset(); //resets time in the board
+                }
             }
+            this.cameraMovement--;
         }
     }
 
@@ -156,12 +164,12 @@ class MyGameOrchestrator {
                     // add new move to moves array
                     move = [row, column, piece, thisGame.selectedPieceId];
                     thisGame.moves.push(move);
+                    
                     // detect if game is over or tied
                     thisGame.isGameOver(row, column, piece);
-                    thisGame.isGameTied();
-
                     thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
                     thisGame.removePiece(); //removes piece being played/animate in the moment
+
                 }
                 // move is not valid (ask player to play again)
                 else {
@@ -210,9 +218,9 @@ class MyGameOrchestrator {
                 this.scene.camera.orbit([0, 1, 0], Math.PI); //rotates the camera
                 this.currentPlayer = !this.currentPlayer;
             } //if it was changing the player, was to go to the same position it was
-            else if (this.cameraMovement != 100) {
+            else if (this.cameraMovement < 100) {
                 this.scene.camera.orbit([0, 1, 0], (this.cameraMovement - 100) * (Math.PI / 100));
-                this.cameraMovement = 100;
+                this.cameraMovement = 250;
             } //if it was animating the piece was to change state only (board doesn't have the piece yet, only temp board has it)
             this.gameState = gameStateEnum.PLAYER_CHOOSING;
         }
@@ -255,11 +263,16 @@ class MyGameOrchestrator {
                 thisGame.board.tempBoard = response[0];
                 thisGame.whiteAuxiliaryBoard.pieces = response[1];
                 thisGame.brownAuxiliaryBoard.pieces = response[2];
-                // detect if game is over or tied
+
+                //if there isn't a bot play available, game is tied
+                thisGame.gameTied = response[4];
+
+                // detect if game is over
                 thisGame.isGameOver(row, column, piece);
-                thisGame.isGameTied();
 
                 thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
+
+                
             }
         );
     }
@@ -520,7 +533,7 @@ class MyGameOrchestrator {
         //during the game we can not move the camera    
         this.scene.interface.setActiveCamera(null);
 
-        if (this.cameraMovement != 100) {
+        if (this.cameraMovement < 100) {
             this.scene.camera.orbit([0, 1, 0], (this.cameraMovement - 100) * (Math.PI / 100));
             this.cameraMovement = 100;
         }

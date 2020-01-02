@@ -67,22 +67,28 @@ class PieceAnimation extends CGFobject {
         let z_diff = 1.5; //pice will go up 10 units
         let i = 0; 
 
+        let translate = [initialPosition[0], 0, initialPosition[1]];
+        // save matrix and instance
+        this.animation.instances.push(0);
+        // saving transformation on map
+        this.animation.animations.set(0, [translate, [0,0,0], [1, 1, 1]]);      
+
         for( i=0 ; i < 5; i++) {
             let translate = [initialPosition[0] + i * x_diff, i * z_diff, initialPosition[1] + i * y_diff];
             // save matrix and instance
-            this.animation.instances.push(i/4);
+            this.animation.instances.push(0.5 + i/3);
             // saving transformation on map
-            this.animation.animations.set(i/4, [translate, [0,0,0], [1, 1, 1]]);
+            this.animation.animations.set(0.5 + i/3, [translate, [0,0,0], [1, 1, 1]]);
+            if(i == 2)
+                this.animation.update(); //to create the matrix as soon as it can
         }
-
-        this.animation.update(); //to create the matrix as soon as it can
 
         for(i=5; i <= 10; i++) {
             let translate = [initialPosition[0] + i * x_diff, 7.5 -(i-5) * z_diff, initialPosition[1] + i * y_diff];
             // save matrix and instance
-            this.animation.instances.push(i/4);
+            this.animation.instances.push(0.5 + i/3);
             // saving transformation on map
-            this.animation.animations.set(i/4, [translate, [0,0,0], [1, 1, 1]]);
+            this.animation.animations.set(0.5 + i/3, [translate, [0,0,0], [1, 1, 1]]);
         } 
 
     }

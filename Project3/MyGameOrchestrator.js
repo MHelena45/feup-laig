@@ -264,15 +264,36 @@ class MyGameOrchestrator {
                 thisGame.whiteAuxiliaryBoard.pieces = response[1];
                 thisGame.brownAuxiliaryBoard.pieces = response[2];
 
-                //if there isn't a bot play available, game is tied
-                thisGame.gameTied = response[4];
-
                 // detect if game is over
                 thisGame.isGameOver(row, column, piece);
 
                 thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
 
                 
+            }
+        );
+    }
+
+    /**
+     * verifies if game is over
+     */
+    evaluateGame(row, column, piece) {
+        // build request
+        let thisGame = this;
+        let move = [row, column, piece];
+        let request = "evaluate_game("
+            + JSON.stringify(thisGame.board.tempBoard)
+            + "," + JSON.stringify(thisGame.whiteAuxiliaryBoard.pieces)
+            + "," + JSON.stringify(thisGame.brownAuxiliaryBoard.pieces)
+            + "," + JSON.stringify(move)
+            + ")";
+        // send request
+        this.prologInterface.getPrologRequest(
+            request,
+            function (data) {
+                let response = JSON.parse(data.target.response);
+                thisGame.gameOver = response[0];
+                thisGame.gameTied = response[1];
             }
         );
     }

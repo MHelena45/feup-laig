@@ -95,7 +95,7 @@ class PieceAnimation extends CGFobject {
                 this.scene.gameOrchestrator.board.boardMatrix = this.scene.gameOrchestrator.board.tempBoard;
                 if(this.scene.gameOrchestrator.gameOver == true)
                     this.scene.gameOrchestrator.gameState = gameStateEnum.GAME_OVER;
-                if(this.scene.gameOrchestrator.gameTied == true)
+                else if(this.scene.gameOrchestrator.gameTied == true)
                     this.scene.gameOrchestrator.gameState = gameStateEnum.GAME_TIED;
                 else
                     this.scene.gameOrchestrator.gameState = gameStateEnum.CHANGE_PLAYER;

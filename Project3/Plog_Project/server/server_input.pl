@@ -62,15 +62,18 @@ parse_input(game_over(Board, Move), [GameOver]):-
 % valid_moves(1, Board, White_Pieces, Brown_Pieces, Player, List_Of_Moves).
 % if List_Of_Moves == 0 then game is tied
 % Player -> 1 (white pieces) or 2 (brown pieces)
+% Player 1 (white pieces)
 parse_input(game_tied(Board, White_Pieces, Brown_Pieces), [Game_Tied]):-
     valid_moves(1, Board, White_Pieces, Brown_Pieces, 1, List_Of_White_Moves),
+    length(List_Of_White_Moves, List_Of_White_Moves_Size),
+    List_Of_White_Moves_Size == 0,
+    Game_Tied = true.
+
+% Player 2 (brown pieces)
+parse_input(game_tied(Board, White_Pieces, Brown_Pieces), [Game_Tied]):-
     valid_moves(1, Board, White_Pieces, Brown_Pieces, 2, List_Of_Brown_Moves),
-    % game is over if at least one player has 0 possible moves
-    (  
-        List_Of_Brown_Moves == 0
-        ;
-        List_Of_White_Moves == 0
-    ),
+    length(List_Of_Brown_Moves, List_Of_Brown_Moves_Size),
+    List_Of_Brown_Moves_Size == 0
     Game_Tied = true.
 
 parse_input(game_tied(_, _, _), [Game_Tied]):-

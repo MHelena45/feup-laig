@@ -578,21 +578,35 @@ class MyGameOrchestrator {
         this.brownAuxiliaryBoard.display();
         this.board.display();
 
+
         //if there is a piece moving, display the pice with the apply animation matrix
         if (this.gameState == gameStateEnum.ANIMATING_PIECE || this.gameState == gameStateEnum.ANIMATING_PIECE_MOVIE) {
             this.pieceAnimation.display();
         }
+
         //if the game is in gameOver state, display new score
-        else if (this.gameState == gameStateEnum.GAME_OVER) {
+        if (this.gameState == gameStateEnum.GAME_OVER) {
             if (this.currentPlayer == playerTurnEnum.PLAYER1_TURN)
                 this.scoreboard.whitePlayerWins++;
             else
                 this.scoreboard.brownPlayerWins++;
             // update current score before playing movie
             this.scoreboard.updateScore();
+            this.scoreboard.reset();
+            this.scoreboard.updateStopWatch();
             this.scoreboard.display();
             this.movie(); //starts the movie
             alert("Game Over!");
+        }
+        //if the game is in gameOver state, display new score
+        else if (this.gameState == gameStateEnum.GAME_TIED) {
+            // update current score before playing movie
+            this.scoreboard.updateScore();
+            this.scoreboard.reset();
+            this.scoreboard.updateStopWatch();
+            this.scoreboard.display();
+            this.movie(); //starts the movie
+            alert("Game Tied!");
         }
     }
 

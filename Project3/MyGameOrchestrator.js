@@ -595,8 +595,8 @@ class MyGameOrchestrator {
             this.scoreboard.reset();
             this.scoreboard.updateStopWatch();
             this.scoreboard.display();
-            this.movie(); //starts the movie
             alert("Game Over!");
+            this.movie(); //starts the movie
         }
         //if the game is in gameOver state, display new score
         else if (this.gameState == gameStateEnum.GAME_TIED) {
@@ -605,8 +605,8 @@ class MyGameOrchestrator {
             this.scoreboard.reset();
             this.scoreboard.updateStopWatch();
             this.scoreboard.display();
-            this.movie(); //starts the movie
             alert("Game Tied!");
+            this.movie(); //starts the movie
         }
     }
 

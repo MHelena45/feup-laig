@@ -61,63 +61,51 @@ class PieceAnimation extends CGFobject {
         let initialPosition = this.initialPositions[piecePickNumber - 17];
         let finalPosition = this.positionTile[boardPickNumber-1];
 
-        //defines a lot of keyframes to do a arc form (good approximation of a curve)
+        // gets the difference of x and y of both position (x is 0 in both positions)
         let x_diff = finalPosition[0] - initialPosition[0];
         let y_diff = finalPosition[2] - initialPosition[1];
 
+        //defines a lot of keyframes to do a arc form (good approximation of a curve)
         let x_increment = x_diff / 10;
         let y_increment = y_diff / 10;
 
         //trajectory in arc
         let ang = Math.PI / 10; //because the movement as 10 frames
         let radius = Math.sqrt(Math.pow(x_diff, 2) + Math.pow(y_diff, 2));
-        let i = 0; 
-
-        let translate = [initialPosition[0], 0, initialPosition[1]];
-        // save matrix and instance
-        this.animation.instances.push(0);
-        // saving transformation on map
-        this.animation.animations.set(0, [translate, [0,0,0], [1, 1, 1]]);      
+        let i = 0;   
 
         for( i=0 ; i < 5; i++) {
             let translate = [initialPosition[0] + i * x_increment, radius * Math.sin(ang * i), initialPosition[1] + i * y_increment];
             // save matrix and instance
-            this.animation.instances.push(0.2 + i/3);
+            this.animation.instances.push(i/3);
             // saving transformation on map
-            this.animation.animations.set(0.2 + i/3, [translate, [0,0,0], [1, 1, 1]]);
-            if(i == 2)
+            this.animation.animations.set(i/3, [translate, [0,0,0], [1, 1, 1]]);
+            if(i == 3)
                 this.animation.update(); //to create the matrix as soon as it can
         }
 
         for(i=5; i <= 10; i++) {
-            console.log(radius * Math.sin(ang * i));
             let translate = [initialPosition[0] + i * x_increment, radius * Math.sin(ang * i), initialPosition[1] + i * y_increment];
             // save matrix and instance
-            this.animation.instances.push(0.2 + i/3);
+            this.animation.instances.push(i/3);
             // saving transformation on map
-            this.animation.animations.set(0.2 + i/3, [translate, [0,0,0], [1, 1, 1]]);
+            this.animation.animations.set(i/3, [translate, [0,0,0], [1, 1, 1]]);
         } 
 
     }
 
     update(time){
         this.animation.update();
-        //if animation end, check if the game ended with that play
+        //if animation end, change player and check if the game ended with that play
         if(this.animation.end == true) {
             if(this.scene.gameOrchestrator.gameState == gameStateEnum.ANIMATING_PIECE) {
                 this.scene.gameOrchestrator.board.boardMatrix = this.scene.gameOrchestrator.board.tempBoard;
-                if(this.scene.gameOrchestrator.gameOver == true)
-                    this.scene.gameOrchestrator.gameState = gameStateEnum.GAME_OVER;
-                else if(this.scene.gameOrchestrator.gameTied == true)
-                    this.scene.gameOrchestrator.gameState = gameStateEnum.GAME_TIED;
-                else
-                    this.scene.gameOrchestrator.gameState = gameStateEnum.CHANGE_PLAYER;
+                //before changing the player checks if game is over or tied
+                this.scene.gameOrchestrator.gameState = gameStateEnum.CHANGE_PLAYER;
             } else { //when gameStateEnum.ANIMATING_PIECE_MOVIE
-                this.scene.gameOrchestrator.nextFrameMovie();
+                this.scene.gameOrchestrator.nextMoveOfTheMovie();
             }
-
         }
-            
     }
 
     display() {

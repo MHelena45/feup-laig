@@ -118,13 +118,19 @@ class MyGameOrchestrator {
      * changes the player after the end of the animated camera rotation
      */
     changePlayer() {
-        if (this.gameState == gameStateEnum.CHANGE_PLAYER) {
+        //check if the game ended with the last play before changing player
+        if(this.gameOver == true)
+            this.gameState = gameStateEnum.GAME_OVER;
+        else if(this.gameTied == true)
+            this.gameState = gameStateEnum.GAME_TIED;
+        else if (this.gameState == gameStateEnum.CHANGE_PLAYER) {
             this.cameraMovement--;
-            this.scene.camera.orbit([0, 1, 0], Math.PI / 100); //rotates the camera
+            if(this.cameraMovement < 100)
+                this.scene.camera.orbit([0, 1, 0], Math.PI / 100); //rotates the camera
             if (this.cameraMovement == 0) { //camera is already in the correct position
                 this.deselectAll();
                 this.gameState = gameStateEnum.PLAYER_CHOOSING;
-                this.cameraMovement = 100;
+                this.cameraMovement = 140; //doesn't rotates right away, waits a litter bit
                 this.currentPlayer = !this.currentPlayer; //change the player to the next one playing
                 this.scoreboard.reset(); //resets time in the board
             }                    
@@ -212,7 +218,7 @@ class MyGameOrchestrator {
             } //if it was changing the player, was to go to the same position it was
             else if (this.cameraMovement < 100) {
                 this.scene.camera.orbit([0, 1, 0], (this.cameraMovement - 100) * (Math.PI / 100));
-                this.cameraMovement = 100;
+                this.cameraMovement = 120;
             } //if it was animating the piece was to change state only (board doesn't have the piece yet, only temp board has it)
             this.gameState = gameStateEnum.PLAYER_CHOOSING;
         }
@@ -256,10 +262,9 @@ class MyGameOrchestrator {
                 thisGame.whiteAuxiliaryBoard.pieces = response[1];
                 thisGame.brownAuxiliaryBoard.pieces = response[2];
 
-                // detect if game is over
+                // detect if game is over or tied
                 thisGame.evaluateGame(row, column, piece);
                 thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
-
                 
             }
         );
@@ -267,6 +272,8 @@ class MyGameOrchestrator {
 
     /**
      * verifies if game is over or tied (there isn't more plays for the next player)
+     * if the other play still has plays available, he has to have the opportunity to play
+     * (because one play can be a winning play)
      */
     evaluateGame(row, column, piece) {
         // build request
@@ -277,7 +284,7 @@ class MyGameOrchestrator {
             + "," + JSON.stringify(thisGame.whiteAuxiliaryBoard.pieces)
             + "," + JSON.stringify(thisGame.brownAuxiliaryBoard.pieces)
             + "," + JSON.stringify(move)
-            + "," + JSON.stringify(Number(!thisGame.currentPlayer))
+            + "," + JSON.stringify(Number(!thisGame.currentPlayer)) //next player
             + ")";
         // send request
         this.prologInterface.getPrologRequest(
@@ -311,6 +318,11 @@ class MyGameOrchestrator {
         this.gameState = state;
     }
 
+    /**
+     * when a piece is moving or when the player is choosing the update function of piece animation ( that calls
+     * the update function of keyframeAnimation) and the update function of the board have to be call, respectively
+     * @param {*} time 
+     */
     update(time) {
         if (this.gameState == gameStateEnum.ANIMATING_PIECE || this.gameState == gameStateEnum.ANIMATING_PIECE_MOVIE) {
             this.pieceAnimation.update(time);
@@ -321,6 +333,11 @@ class MyGameOrchestrator {
         }
     }
 
+    /**
+     * Although the prolog returns the auxiliary board without the piece, the piece that prolog removes
+     * can be other piece with the same form that the player wants to play. That isn't iterative :'C
+     * e.g. The player selects the cylinder close to him, but prolog always removes the piece far from the player.
+     */
     removePiece() {
         if (this.currentPlayer == playerTurnEnum.PLAYER1_TURN)
             this.whiteAuxiliaryBoard.removePiece(this.selectedPieceId);
@@ -329,6 +346,11 @@ class MyGameOrchestrator {
 
     }
 
+    /**
+     * Makes the movie of the last game (finished or not as long one move has be made)
+     * When the user press reset the movements are not erase to allow the user to see the movie
+     * if we wish so
+     */
     movie() {
         if (this.gameState != gameStateEnum.ANIMATING_PIECE_MOVIE) {
             //changes the camera to a upper position (with camera movement as to slow the movement)
@@ -344,12 +366,15 @@ class MyGameOrchestrator {
             this.board.tempBoard = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
             this.whiteAuxiliaryBoard.pieces = [11, 11, 51, 51, 71, 71, 91, 91];
             this.brownAuxiliaryBoard.pieces = [12, 12, 52, 52, 72, 72, 92, 92];
-            this.nextFrameMovie();
+            this.nextMoveOfTheMovie();
             this.gameState = gameStateEnum.ANIMATING_PIECE_MOVIE;
         }
     }
 
-    nextFrameMovie() {
+    /**
+     * gets the next move play for the movie, and starts the animation
+     */
+    nextMoveOfTheMovie() {
         if (this.currentFrame < this.moves.length) {
             //changes board
             if (this.currentFrame >= 1) {

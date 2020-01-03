@@ -56,7 +56,7 @@ parse_input(evaluate_game(Board, White_Pieces, Brown_Pieces, Move, Player), [Gam
     % evaluate game over
     get_game_over(Board, Move, Game_Over),
     % evaluate game tied
-    get_game_tied(Board, White_Pieces, Brown_Pieces, Player, Game_Tied).
+    get_game_tied(Player, Board, White_Pieces, Brown_Pieces, Game_Tied).
 
 % game_over(_Show_Message, Board, _Winner, [Row|[Column|_Piece]], _White_Pieces, _Brown_Pieces, _Mode, _Difficulty_Level, _Score1, _Score2)
 % game_over 'returns' yes if game is not over
@@ -72,21 +72,19 @@ get_game_over(_Board, _Move, Game_Over):-
 % valid_moves(1, Board, White_Pieces, Brown_Pieces, Player, List_Of_Moves).
 % if List_Of_Moves == 0 then game is tied
 % Player -> 1 (white pieces) or 2 (brown pieces)
-% Player 1 (white pieces)
-get_game_tied(Board, White_Pieces, Brown_Pieces, Player, Game_Tied):-
-    Player == 0,
+% Player 1 (white pieces) represented with 1 in js code
+get_game_tied(0, Board, White_Pieces, Brown_Pieces, Game_Tied):-
     valid_moves(1, Board, White_Pieces, Brown_Pieces, 1, List_Of_White_Moves),
     length(List_Of_White_Moves, List_Of_White_Moves_Size),
     List_Of_White_Moves_Size == 0,
     Game_Tied = true.
 
-% Player 2 (brown pieces)
-get_game_tied(Board, White_Pieces, Brown_Pieces, Player, Game_Tied):-
-    Player == 1,
+% Player 2 (brown pieces) represented with 0 in js code
+get_game_tied(1, Board, White_Pieces, Brown_Pieces, Game_Tied):-
     valid_moves(1, Board, White_Pieces, Brown_Pieces, 2, List_Of_Brown_Moves),
     length(List_Of_Brown_Moves, List_Of_Brown_Moves_Size),
     List_Of_Brown_Moves_Size == 0,
     Game_Tied = true.
 
-get_game_tied(_Board, _White_Pieces, _Brown_Pieces, _Player, Game_Tied):-
+get_game_tied(_Player, _Board, _White_Pieces, _Brown_Pieces,  Game_Tied):-
     Game_Tied = false.

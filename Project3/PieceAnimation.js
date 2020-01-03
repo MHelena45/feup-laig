@@ -62,9 +62,15 @@ class PieceAnimation extends CGFobject {
         let finalPosition = this.positionTile[boardPickNumber-1];
 
         //defines a lot of keyframes to do a arc form (good approximation of a curve)
-        let x_diff = (finalPosition[0] - initialPosition[0]) / 10;
-        let y_diff = (finalPosition[2] - initialPosition[1]) / 10;
-        let z_diff = 1.5; //pice will go up 10 units
+        let x_diff = finalPosition[0] - initialPosition[0];
+        let y_diff = finalPosition[2] - initialPosition[1];
+
+        let x_increment = x_diff / 10;
+        let y_increment = y_diff / 10;
+
+        //trajectory in arc
+        let ang = Math.PI / 10; //because the movement as 10 frames
+        let radius = Math.sqrt(Math.pow(x_diff, 2) + Math.pow(y_diff, 2));
         let i = 0; 
 
         let translate = [initialPosition[0], 0, initialPosition[1]];
@@ -74,21 +80,22 @@ class PieceAnimation extends CGFobject {
         this.animation.animations.set(0, [translate, [0,0,0], [1, 1, 1]]);      
 
         for( i=0 ; i < 5; i++) {
-            let translate = [initialPosition[0] + i * x_diff, i * z_diff, initialPosition[1] + i * y_diff];
+            let translate = [initialPosition[0] + i * x_increment, radius * Math.sin(ang * i), initialPosition[1] + i * y_increment];
             // save matrix and instance
-            this.animation.instances.push(0.5 + i/3);
+            this.animation.instances.push(0.2 + i/3);
             // saving transformation on map
-            this.animation.animations.set(0.5 + i/3, [translate, [0,0,0], [1, 1, 1]]);
+            this.animation.animations.set(0.2 + i/3, [translate, [0,0,0], [1, 1, 1]]);
             if(i == 2)
                 this.animation.update(); //to create the matrix as soon as it can
         }
 
         for(i=5; i <= 10; i++) {
-            let translate = [initialPosition[0] + i * x_diff, 7.5 -(i-5) * z_diff, initialPosition[1] + i * y_diff];
+            console.log(radius * Math.sin(ang * i));
+            let translate = [initialPosition[0] + i * x_increment, radius * Math.sin(ang * i), initialPosition[1] + i * y_increment];
             // save matrix and instance
-            this.animation.instances.push(0.5 + i/3);
+            this.animation.instances.push(0.2 + i/3);
             // saving transformation on map
-            this.animation.animations.set(0.5 + i/3, [translate, [0,0,0], [1, 1, 1]]);
+            this.animation.animations.set(0.2 + i/3, [translate, [0,0,0], [1, 1, 1]]);
         } 
 
     }

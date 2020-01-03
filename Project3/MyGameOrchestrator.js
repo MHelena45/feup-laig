@@ -119,23 +119,15 @@ class MyGameOrchestrator {
      */
     changePlayer() {
         if (this.gameState == gameStateEnum.CHANGE_PLAYER) {
-            //when cameraMovement has a value ]100, 110[ is just waiting for the response of this.gameTied()
-            if(this.cameraMovement == 250){ //check if the game is tied
-                //if the current player is bot, don't need to check if game is tied, it won't have plays
-                if((this.currentPlayer == playerTurnEnum.PLAYER1_TURN && this.whitePlayer == 0) ||                
-                   (this.currentPlayer == playerTurnEnum.PLAYER2_TURN && this.brownPlayer == 0))
-                    this.isGameTied();
-            } else if(this.cameraMovement < 100) {
-                this.scene.camera.orbit([0, 1, 0], Math.PI / 100); //rotates the camera
-                if (this.cameraMovement == 0) { //camera is already in the correct position
-                    this.deselectAll();
-                    this.gameState = gameStateEnum.PLAYER_CHOOSING;
-                    this.cameraMovement = 251;
-                    this.currentPlayer = !this.currentPlayer; //change the player to the next one playing
-                    this.scoreboard.reset(); //resets time in the board
-                }
-            }
             this.cameraMovement--;
+            this.scene.camera.orbit([0, 1, 0], Math.PI / 100); //rotates the camera
+            if (this.cameraMovement == 0) { //camera is already in the correct position
+                this.deselectAll();
+                this.gameState = gameStateEnum.PLAYER_CHOOSING;
+                this.cameraMovement = 100;
+                this.currentPlayer = !this.currentPlayer; //change the player to the next one playing
+                this.scoreboard.reset(); //resets time in the board
+            }                    
         }
     }
 
@@ -166,7 +158,7 @@ class MyGameOrchestrator {
                     thisGame.moves.push(move);
                     
                     // detect if game is over or tied
-                    thisGame.isGameOver(row, column, piece);
+                    thisGame.evaluateGame(row, column, piece)
                     thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
                     thisGame.removePiece(); //removes piece being played/animate in the moment
 
@@ -220,7 +212,7 @@ class MyGameOrchestrator {
             } //if it was changing the player, was to go to the same position it was
             else if (this.cameraMovement < 100) {
                 this.scene.camera.orbit([0, 1, 0], (this.cameraMovement - 100) * (Math.PI / 100));
-                this.cameraMovement = 250;
+                this.cameraMovement = 100;
             } //if it was animating the piece was to change state only (board doesn't have the piece yet, only temp board has it)
             this.gameState = gameStateEnum.PLAYER_CHOOSING;
         }
@@ -265,8 +257,7 @@ class MyGameOrchestrator {
                 thisGame.brownAuxiliaryBoard.pieces = response[2];
 
                 // detect if game is over
-                thisGame.isGameOver(row, column, piece);
-
+                thisGame.evaluateGame(row, column, piece);
                 thisGame.gameState = gameStateEnum.ANIMATING_PIECE;
 
                 
@@ -275,7 +266,7 @@ class MyGameOrchestrator {
     }
 
     /**
-     * verifies if game is over
+     * verifies if game is over or tied (there isn't more plays for the next player)
      */
     evaluateGame(row, column, piece) {
         // build request
@@ -286,6 +277,7 @@ class MyGameOrchestrator {
             + "," + JSON.stringify(thisGame.whiteAuxiliaryBoard.pieces)
             + "," + JSON.stringify(thisGame.brownAuxiliaryBoard.pieces)
             + "," + JSON.stringify(move)
+            + "," + JSON.stringify(Number(!thisGame.currentPlayer))
             + ")";
         // send request
         this.prologInterface.getPrologRequest(
@@ -294,47 +286,6 @@ class MyGameOrchestrator {
                 let response = JSON.parse(data.target.response);
                 thisGame.gameOver = response[0];
                 thisGame.gameTied = response[1];
-            }
-        );
-    }
-
-    /**
-     * verifies if game is over
-     * @param {Number} row last move row
-     * @param {Number} column last move column
-     * @param {Number} piece last move piece
-     */
-    isGameOver(row, column, piece) {
-        // build request
-        let thisGame = this;
-        let move = [row, column, piece];
-        let request = "game_over(" + JSON.stringify(thisGame.board.tempBoard)
-            + "," + JSON.stringify(move) + ")";
-        // send request
-        this.prologInterface.getPrologRequest(
-            request,
-            function (data) {
-                let response = JSON.parse(data.target.response);
-                thisGame.gameOver = response[0];
-            }
-        );
-    }
-
-    /**
-     * verifies if game is over
-     */
-    isGameTied() {
-        // build request
-        let thisGame = this;
-        let request = "game_tied(" + JSON.stringify(thisGame.board.tempBoard)
-            + "," + JSON.stringify(thisGame.whiteAuxiliaryBoard.pieces)
-            + "," + JSON.stringify(thisGame.brownAuxiliaryBoard.pieces) + ")";
-        // send request
-        this.prologInterface.getPrologRequest(
-            request,
-            function (data) {
-                let response = JSON.parse(data.target.response);
-                thisGame.gameTied = response[0];
             }
         );
     }

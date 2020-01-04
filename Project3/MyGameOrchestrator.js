@@ -363,7 +363,6 @@ class MyGameOrchestrator {
 
             //reset the board and auxiliary boards to the initial state
             this.board.boardMatrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
-            this.board.tempBoard = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
             this.whiteAuxiliaryBoard.pieces = [11, 11, 51, 51, 71, 71, 91, 91];
             this.brownAuxiliaryBoard.pieces = [12, 12, 52, 52, 72, 72, 92, 92];
             this.nextMoveOfTheMovie();
@@ -375,6 +374,7 @@ class MyGameOrchestrator {
      * gets the next move play for the movie, and starts the animation
      */
     nextMoveOfTheMovie() {
+        console.log(this.currentFrame);
         if (this.currentFrame < this.moves.length) {
             //changes board
             if (this.currentFrame >= 1) {
@@ -399,10 +399,33 @@ class MyGameOrchestrator {
             alert("No movie available.");
             this.gameState = gameStateEnum.PLAYER_CHOOSING;
         } else {
+            if(this.gameTied || this.gameOver) {
+                this.gameState = gameStateEnum.MENU;
+                this.reset();
+                alert("Movie Finished");
+            } else {
+                console.log("Here");
+                //puts last piece of the movie in the board
+                let move = this.moves[this.currentFrame - 1];
+                this.board.boardMatrix[move[0] - 1][move[1] - 1] = move[2];
+                
+                this.gameState = gameStateEnum.PLAYER_CHOOSING;
+                //puts the camera back on its place
+                let views = this.scene.graph.getViews();
+                let views_ID = this.scene.graph.getViewsID();
+                this.scene.camera = views[views_ID[0]];
+                //camera can't be move during player_choosig   
+                this.scene.interface.setActiveCamera(null);
+                this.scoreboard.reset();
+                if (this.cameraMovement < 100) {
+                    this.gameState = gameStateEnum.CHANGE_PLAYER;
+                } else {
+                    this.currentPlayer = !this.currentPlayer;
+                    this.scene.camera.orbit([0, 1, 0], Math.PI);
+                }
+            }
             this.currentFrame = 0;
-            this.gameState = gameStateEnum.MENU;
-            this.reset();
-            alert("Movie Finished");
+                
         }
 
     }
